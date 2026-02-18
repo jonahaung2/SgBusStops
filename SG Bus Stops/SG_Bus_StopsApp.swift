@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct SG_Bus_StopsApp: App {
+    init() {
+        AppSecrets.bootstrapAPIKey()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A1B2C3032F47000100DD7139 /* Services in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3022F47000100DD7139 /* Services */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		47808E932F46201600DD7139 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,11 +31,26 @@
 		47808E852F46201400DD7139 /* SG Bus Stops.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SG Bus Stops.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47808E922F46201600DD7139 /* SG Bus StopsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SG Bus StopsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47808E9C2F46201600DD7139 /* SG Bus StopsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SG Bus StopsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C4012F47010100DD7139 /* Config/App.Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/App.Debug.xcconfig; sourceTree = "<group>"; };
+		A1B2C4022F47010100DD7139 /* Config/App.Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/App.Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4748E7792F46390300AEC6AC /* Exceptions for "SG Bus Stops" folder in "SG Bus Stops" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 47808E842F46201400DD7139 /* SG Bus Stops */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		47808E872F46201400DD7139 /* SG Bus Stops */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4748E7792F46390300AEC6AC /* Exceptions for "SG Bus Stops" folder in "SG Bus Stops" target */,
+			);
 			path = "SG Bus Stops";
 			sourceTree = "<group>";
 		};
@@ -52,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B2C3032F47000100DD7139 /* Services in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4748E7202F46342E00AEC6AC /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C4012F47010100DD7139 /* Config/App.Debug.xcconfig */,
+				A1B2C4022F47010100DD7139 /* Config/App.Release.xcconfig */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		47808E7C2F46201400DD7139 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +108,7 @@
 				47808E952F46201600DD7139 /* SG Bus StopsTests */,
 				47808E9F2F46201600DD7139 /* SG Bus StopsUITests */,
 				47808E862F46201400DD7139 /* Products */,
+				4748E7202F46342E00AEC6AC /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +142,7 @@
 			);
 			name = "SG Bus Stops";
 			packageProductDependencies = (
+				A1B2C3022F47000100DD7139 /* Services */,
 			);
 			productName = "SG Bus Stops";
 			productReference = 47808E852F46201400DD7139 /* SG Bus Stops.app */;
@@ -195,6 +226,9 @@
 			);
 			mainGroup = 47808E7C2F46201400DD7139;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A1B2C3012F47000100DD7139 /* XCLocalSwiftPackageReference "SG Bus Stops/Packages/Services" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 47808E862F46201400DD7139 /* Products */;
 			projectDirPath = "";
@@ -392,6 +426,7 @@
 		};
 		47808EA72F46201600DD7139 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1B2C4012F47010100DD7139 /* Config/App.Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -399,7 +434,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Config/AppInfo.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -424,6 +460,7 @@
 		};
 		47808EA82F46201600DD7139 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1B2C4022F47010100DD7139 /* Config/App.Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -431,7 +468,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Config/AppInfo.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -578,6 +616,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A1B2C3012F47000100DD7139 /* XCLocalSwiftPackageReference "SG Bus Stops/Packages/Services" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "SG Bus Stops/Packages/Services";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1B2C3022F47000100DD7139 /* Services */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3012F47000100DD7139 /* XCLocalSwiftPackageReference "SG Bus Stops/Packages/Services" */;
+			productName = Services;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 47808E7D2F46201400DD7139 /* Project object */;
 }

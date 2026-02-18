@@ -1,0 +1,2 @@
+#include? "Secrets.xcconfig"
+INFOPLIST_KEY_PUBLIC_API_KEY = $(PUBLIC_API_KEY)
