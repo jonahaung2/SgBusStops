@@ -11,16 +11,13 @@ import SwiftUI
 
 @main
 struct SgBusStopsApp: App {
+    init() {
+        AppSecrets.bootstrapAPIKey()
+    }
 
-	init() {
-		AppSecrets.bootstrapAPIKey()
-	}
     var body: some Scene {
         WindowGroup {
             LocationCheckerScene()
-				.task {
-					await SwiftDataStore.shared.start()
-				}
         }
     }
 }

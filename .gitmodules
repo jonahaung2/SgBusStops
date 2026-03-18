@@ -1,0 +1,18 @@
+[submodule "Packages/Client"]
+	path = Packages/Client
+	url = https://github.com/jonahaung2/SgBusStops-Client.git
+[submodule "Packages/Models"]
+	path = Packages/Models
+	url = https://github.com/jonahaung2/SgBusStops-Models.git
+[submodule "Packages/Services"]
+	path = Packages/Services
+	url = https://github.com/jonahaung2/SgBusStops-Services.git
+[submodule "Packages/UI"]
+	path = Packages/UI
+	url = https://github.com/jonahaung2/SgBusStops-UI.git
+[submodule "Packages/SgMaps/SgMaps"]
+	path = Packages/SgMaps/SgMaps
+	url = https://github.com/jonahaung2/SgMaps.git
+[submodule "Packages/SgMaps/SgMapExample"]
+	path = Packages/SgMaps/SgMapExample
+	url = https://github.com/jonahaung2/SgMapExample.git

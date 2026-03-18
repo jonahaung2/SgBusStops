@@ -5,16 +5,18 @@
 //  Created by Aung Ko Min on 19/2/26.
 //
 
-import MRTMap
+import Services
 import SwiftUI
 
 struct MainTabView: View {
+	
     @State private var router = Router()
-    @State private var selectedMRTName: String?
+	private let locationService = LocationService()
+	@Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         TabView(selection: $router.currentTab) {
-            ForEach(TabPath.allCases, id: \.self) { tab in
+            ForEach(TabPath.allCases) { tab in
                 Tab(value: tab, role: tab.canSearch ? .search : nil) {
                     NavigationStack {
                         view(for: tab)
@@ -26,9 +28,16 @@ struct MainTabView: View {
                 }
             }
         }
+		.redacted(reason: locationService.isRequestingLocation ? .placeholder : .init())
+		.environment(locationService)
         .listSectionSpacing(4)
         .listSectionMargins(.horizontal, 4)
         .listSectionSeparator(.hidden)
+		.task(id: scenePhase) {
+			if scenePhase == .active {
+				await locationService.startLocation()
+			}
+		}
     }
 
     @ViewBuilder
@@ -40,6 +49,8 @@ struct MainTabView: View {
             BusStopsScene()
         case .settings:
             SettingsScene()
-        }
+		case .saved:
+			SavedArrivalsScene()
+		}
     }
 }

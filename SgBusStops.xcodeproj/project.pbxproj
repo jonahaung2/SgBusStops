@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		472926DB2F4706D200B5E2F4 /* Services in Frameworks */ = {isa = PBXBuildFile; productRef = 472926DA2F4706D200B5E2F4 /* Services */; };
+		47EF4A252F58BFA00028A2A5 /* SgMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 47EF4A242F58BFA00028A2A5 /* SgMaps */; };
+		47EF4A282F58C0D10028A2A5 /* SgMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 47EF4A272F58C0D10028A2A5 /* SgMaps */; };
+		47EF4A2B2F58C1250028A2A5 /* Services in Frameworks */ = {isa = PBXBuildFile; productRef = 47EF4A2A2F58C1250028A2A5 /* Services */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,7 +90,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47EF4A2B2F58C1250028A2A5 /* Services in Frameworks */,
 				472926DB2F4706D200B5E2F4 /* Services in Frameworks */,
+				47EF4A252F58BFA00028A2A5 /* SgMaps in Frameworks */,
+				47EF4A282F58C0D10028A2A5 /* SgMaps in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +165,9 @@
 			name = SgBusStops;
 			packageProductDependencies = (
 				472926DA2F4706D200B5E2F4 /* Services */,
+				47EF4A242F58BFA00028A2A5 /* SgMaps */,
+				47EF4A272F58C0D10028A2A5 /* SgMaps */,
+				47EF4A2A2F58C1250028A2A5 /* Services */,
 			);
 			productName = SgBusStops;
 			productReference = 47808E852F46201400DD7139 /* SgBusStops.app */;
@@ -243,7 +252,8 @@
 			mainGroup = 47808E7C2F46201400DD7139;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				472926D92F4706D200B5E2F4 /* XCLocalSwiftPackageReference "Packages/Services" */,
+				47EF4A262F58C0D10028A2A5 /* XCLocalSwiftPackageReference "Packages/SgMaps/SgMaps" */,
+				47EF4A292F58C1250028A2A5 /* XCLocalSwiftPackageReference "Packages/Services" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 47808E862F46201400DD7139 /* Products */;
@@ -636,7 +646,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		472926D92F4706D200B5E2F4 /* XCLocalSwiftPackageReference "Packages/Services" */ = {
+		47EF4A262F58C0D10028A2A5 /* XCLocalSwiftPackageReference "Packages/SgMaps/SgMaps" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/SgMaps/SgMaps;
+		};
+		47EF4A292F58C1250028A2A5 /* XCLocalSwiftPackageReference "Packages/Services" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Services;
 		};
@@ -644,6 +658,18 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		472926DA2F4706D200B5E2F4 /* Services */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Services;
+		};
+		47EF4A242F58BFA00028A2A5 /* SgMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SgMaps;
+		};
+		47EF4A272F58C0D10028A2A5 /* SgMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SgMaps;
+		};
+		47EF4A2A2F58C1250028A2A5 /* Services */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Services;
 		};

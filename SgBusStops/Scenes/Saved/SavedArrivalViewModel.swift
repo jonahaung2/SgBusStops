@@ -1,25 +1,25 @@
 //
-//  NearByViewModel.swift
+//  SavedArrivalViewModel.swift
 //  SgBusStops
 //
-//  Created by Aung Ko Min on 19/2/26.
+//  Created by Aung Ko Min on 18/3/26.
 //
-import Client
-import Foundation
+
+import SwiftUI
 import Models
 import Services
-import SgMaps
 
 @Observable
 @MainActor
-final class NearbyStopsViewModel {
-
-	var nearbyStops = [BusStop]()
-	var busArrivals = [ArrivalItemViewModel]()
+final class SavedArrivalViewModel {
+	var items = [ArrivalItemViewModel]()
+	var errorMessage: String?
 	private let fetcher = BusStopFetcher()
-
-	func fetchFavourites() async {
+}
+extension SavedArrivalViewModel {
+	func task() async {
 		let favourites = FavouriteArrivalModel.fetchAll()
+		errorMessage = nil
 		do {
 			let items = try await AsyncOrderedStream.mapOrdered(inputs: favourites) { favourite in
 				let arrival = try await self.fetcher
@@ -31,17 +31,12 @@ final class NearbyStopsViewModel {
 					arrival.map { ArrivalItem(busStopCode: favourite.busStopCode, arrival: $0) }
 				}
 				return items
-
+				
 			}
-			busArrivals = items.flatMap(\.self).map{ .init(item: $0)}
+			self.items = items.flatMap(\.self).map{ .init(item: $0)}
 		} catch {
-			busArrivals = []
+			errorMessage = error.localizedDescription
+			items = []
 		}
-	}
-}
-
-extension BusStop {
-	var mapItem: MapItem {
-		.init(desc, coordinate: coordinate)
 	}
 }

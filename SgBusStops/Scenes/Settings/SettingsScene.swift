@@ -1,6 +1,7 @@
 import Client
 import Models
 import Services
+import SgMaps
 import SwiftUI
 import UIKit
 
@@ -31,28 +32,46 @@ struct SettingsScene: View {
             Section("Connectivity") {
                 LabeledContent("API Key") {
                     Text(hasAPIKey ? "Configured" : "Missing")
-						.foregroundStyle(hasAPIKey ? .green : .red)
+                        .foregroundStyle(hasAPIKey ? .green : .red)
                 }
                 if !hasAPIKey {
                     Text("Set PUBLIC_API_KEY in app configuration to enable live data.")
-						.font(.footnote)
-						.foregroundStyle(.secondary)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Section("Maps") {
+                NavigationLink {
+                    SgAreaMapView { area in
+                        print(area)
+                    }
+
+                } label: {
+                    Text("Area Map")
+                }
+                NavigationLink {
+                    SgMrtMapView { mrt in
+                        print(mrt)
+                    }
+
+                } label: {
+                    Text("MRT Map")
                 }
             }
             Section("Data") {
-				Stepper.init {
-					Text("Nearby distance").badge("\(Int(nearbyDistance))m ")
-				} onIncrement: {
-					if nearbyDistance < 2000 {
-						nearbyDistance += 50
-					}
-				} onDecrement: {
-					if nearbyDistance > 50 {
-						nearbyDistance -= 50
-					}
-				} onEditingChanged: { changed in
-					print(changed)
-				}
+                Stepper {
+                    Text("Nearby distance").badge("\(Int(nearbyDistance))m ")
+                } onIncrement: {
+                    if nearbyDistance < 2000 {
+                        nearbyDistance += 50
+                    }
+                } onDecrement: {
+                    if nearbyDistance > 50 {
+                        nearbyDistance -= 50
+                    }
+                } onEditingChanged: { changed in
+                    print(changed)
+                }
 
                 Button("Delete Cache", role: .destructive) {
                     Task {

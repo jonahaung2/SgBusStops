@@ -20,6 +20,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>TO DO</string>
 	<key>PUBLIC_API_KEY</key>

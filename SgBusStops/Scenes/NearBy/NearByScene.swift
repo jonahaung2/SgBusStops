@@ -7,106 +7,79 @@
 
 import Models
 import Services
+import SgMaps
 import SwiftUI
 import UI
 
 struct NearByScene: View {
+
     @State private var viewModel: NearbyStopsViewModel
     @AppStorage("nearbyDistance") private var distance: Double = 1000
-    @Environment(\.scenePhase) private var scenePhase
+    @Environment(LocationService.self) private var locationService
+    @Environment(BusStopStore.self) private var busStopStore
 
     init() {
         _viewModel = .init(wrappedValue: .init())
     }
 
     var body: some View {
-        VStack {
-            if let location = viewModel.location {
-                List {
-                    Section {
-                        if let errorMessage = viewModel.errorMessage {
-                            errorView(text: errorMessage)
-                        } else {
-                            ForEach(viewModel.nearbyStops) { stop in
-                                BusStopCell(busStop: stop)
-                            }
-                        }
-                    } header: {
-                        VStack(alignment: .center) {
-                            if viewModel.nearbyStops.isEmpty, viewModel.isLoading {
-                                Text("Please wait while the app updates the bus stop list.")
-                                LoadingIndicator(20)
-                                    .padding(.top)
-                            } else {
-                                if let address = viewModel.address {
-                                    Text(address)
-                                }
-                            }
-                        }
-                        .font(.footnote.italic())
-                        .lineHeight(.tight)
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
-						.unredacted()
-                    }
-                }
-				.redacted(reason: viewModel.isLoading ? [.placeholder] : [])
-                .onChange(of: scenePhase) { _, newValue in
-                    switch newValue {
-                    case .active:
-                        viewModel.startLocation()
-					case .inactive:
-						viewModel.cancel()
-                    default:
-                        break
-                    }
-                }
-                .onChange(of: location, initial: true) { _, newValue in
-                    Task {
-                        await viewModel.fetchNear(by: newValue, distance: distance)
-                    }
-                }
-            } else {
-                VStack {
-                    LoadingIndicator(22)
-                }
-                .task {
-                    viewModel.startLocation()
-                }
-                .onDisappear {
-                    viewModel.cancel()
+        List {
+            if viewModel.busArrivals.isEmpty == false {
+				ForEach(viewModel.busArrivals) { model in
+					BusServiceArrivalSection(model)
+						.id(model.id)
                 }
             }
-        }.refreshable {
-            if let location = viewModel.location {
-                await viewModel.refreshNear(by: location, distance: distance)
-            } else {
-                viewModel.startLocation()
+            Section {
+                ForEach(viewModel.nearbyStops) { stop in
+                    BusStopCell(busStop: stop)
+                        .id(stop.id)
+                }
+            } header: {
+                VStack(alignment: .center) {
+                    if let address = locationService.address {
+                        Text(address)
+                    } else if locationService.lastError == .timeout {
+                        Text("Location request timed out. Pull to refresh to try again.")
+                            .foregroundStyle(.orange)
+                    }
+                }
+                .font(.footnote.italic())
+                .lineHeight(.tight)
             }
         }
-    }
-
-    private func errorView(text: String) -> some View {
-        ContentUnavailableView {
-            Label("No bus stop found near you.", systemImage: "signpost.right.and.left.fill")
-        } description: {
-            Text(text)
-        } actions: {
-            if let location = viewModel.location {
-                Button("Try Once More Again") {
-                    Task {
-                        await viewModel.fetchNear(by: location, distance: distance)
+        .toolbar {
+            if !viewModel.nearbyStops.isEmpty {
+                ToolbarItem(placement: .primaryAction) {
+                    NavigationLink {
+                        AnimatedMap(
+                            viewModel.nearbyStops.map(\.mapItem),
+                            selection: viewModel.nearbyStops
+                                .first!.mapItem,
+                        )
+                    } label: {
+                        Image(systemName: "mappin.and.ellipse")
                     }
                 }
-                .buttonStyle(.borderedProminent)
-                .buttonSizing(.flexible)
-            } else {
-                Button("Try Once More Again") {
-                    viewModel.startLocation()
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonSizing(.flexible)
             }
+        }
+        .task(id: locationService.location) {
+            if let location = locationService.location {
+                viewModel.nearbyStops = await busStopStore
+                    .near(by: location, distance: distance)
+            }
+        }
+		.repeatingTask {
+			await viewModel.fetchFavourites()
+		}
+        .refreshable {
+            try? await Task.sleep(until: .now + .seconds(1))
+            await locationService.startLocation()
+            if let location = locationService.location {
+                viewModel.nearbyStops = await busStopStore
+                    .near(by: location, distance: distance)
+            }
+			await viewModel.fetchFavourites()
         }
     }
 }
