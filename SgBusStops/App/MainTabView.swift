@@ -7,50 +7,55 @@
 
 import Services
 import SwiftUI
+import Models
 
 struct MainTabView: View {
-	
-    @State private var router = Router()
+
+	@State private var router = Router()
 	private let locationService = LocationService()
 	@Environment(\.scenePhase) private var scenePhase
 
-    var body: some View {
-        TabView(selection: $router.currentTab) {
-            ForEach(TabPath.allCases) { tab in
-                Tab(value: tab, role: tab.canSearch ? .search : nil) {
-                    NavigationStack {
-                        view(for: tab)
-                            .navigationTitle(tab.description)
-                    }
-                } label: {
-                    Label(tab.description, systemImage: tab.systemName)
-                        .labelStyle(.iconOnly)
-                }
-            }
-        }
-		.redacted(reason: locationService.isRequestingLocation ? .placeholder : .init())
+	var body: some View {
+		TabView(selection: $router.currentTab) {
+			ForEach(router.navRouters) { navRouter in
+				Tab(value: navRouter.id, role: navRouter.id.canSearch ? .search : nil) {
+					NavigationStack(path: .init(get: { navRouter.path }, set: { navRouter.path = $0 })) {
+						view(for: navRouter.id)
+							.navigationTitle(navRouter.id.description)
+							.navigationDestination(for: BusStop.self) { busStop in
+								BusStopDetailsScene(busStop)
+							}
+					}
+					.environment(navRouter)
+				} label: {
+					Label(navRouter.id.description, systemImage: navRouter.id.systemName)
+						.labelStyle(.iconOnly)
+				}
+			}
+		}
+		.tabBarMinimizeBehavior(.onScrollDown)
 		.environment(locationService)
-        .listSectionSpacing(4)
-        .listSectionMargins(.horizontal, 4)
-        .listSectionSeparator(.hidden)
+		.listSectionSpacing(8)
+		.listSectionMargins(.horizontal, 4)
+		.listSectionSeparator(.hidden)
 		.task(id: scenePhase) {
 			if scenePhase == .active {
 				await locationService.startLocation()
 			}
 		}
-    }
+	}
 
-    @ViewBuilder
-    private func view(for tab: TabPath) -> some View {
-        switch tab {
-        case .nearBy:
-            NearByScene()
-        case .busStops:
-            BusStopsScene()
-        case .settings:
-            SettingsScene()
+	@ViewBuilder
+	private func view(for tab: TabPath) -> some View {
+		switch tab {
+		case .nearBy:
+			NearByScene()
+		case .busStops:
+			BusStopsScene()
+		case .settings:
+			SettingsScene()
 		case .saved:
 			SavedArrivalsScene()
 		}
-    }
+	}
 }

@@ -7,6 +7,9 @@
 
 import SwiftUI
 import Models
+import UI
+import Services
+import Pow
 
 struct ArrivalItemDefaultHeaderView: View {
 
@@ -16,35 +19,28 @@ struct ArrivalItemDefaultHeaderView: View {
 		self.model = model
 	}
     var body: some View {
-		HStack(alignment: .lastTextBaseline) {
-			Text(model.busServiceArrival.serviceNo)
-				.font(.largeTitle.weight(.bold).width(.condensed))
-				.lineHeight(.tight)
-				.foregroundStyle(
-					AngularGradient(
-						colors: [.indigo, Color(uiColor: .label), .red],
-						center: .center,
-					)
-					.opacity(0.8),
-				)
+		HStack(alignment: .lastTextBaseline, spacing: 0) {
+			BusNumberText(model.item.arrival.serviceNo, .title1)
 			Spacer()
-			Text(model.busServiceArrival.operatorCode.rawValue)
-				.font(.footnote.weight(.semibold).smallCaps())
-				.foregroundStyle(.secondary)
-
 			Button {
 				model.toggleFavourite()
 			} label: {
 				Image(systemName: "star")
 					.foregroundStyle(
-						model.isFavourite ? Color.orange.gradient : Color(
-							uiColor: .lightGray).gradient
+						model.isFavourite ? .primary : .quinary
 					)
+					.symbolRenderingMode(.multicolor)
 					.symbolVariant(model.isFavourite ? .fill : .none)
+					.changeEffect(
+						model.isFavourite ? .spray {
+							Image(systemName: "heart.fill").foregroundStyle(.red)
+								.shadow(radius: 1)
+								.font(.footnote.weight(.black))
+						} : .shake,
+						value: model.isFavourite, isEnabled: !model.isUpdatingFavourite
+					)
 			}
-			.disabled(model.isUpdatingFavourite)
 		}
-		.sensoryFeedback(.selection, trigger: model.isFavourite)
 		.alert(
 			"Unable to Update Favourite",
 			isPresented: Binding(

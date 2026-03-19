@@ -13,31 +13,7 @@ import SgMaps
 @Observable
 @MainActor
 final class NearbyStopsViewModel {
-
 	var nearbyStops = [BusStop]()
-	var busArrivals = [ArrivalItemViewModel]()
-	private let fetcher = BusStopFetcher()
-
-	func fetchFavourites() async {
-		let favourites = FavouriteArrivalModel.fetchAll()
-		do {
-			let items = try await AsyncOrderedStream.mapOrdered(inputs: favourites) { favourite in
-				let arrival = try await self.fetcher
-					.fetchArrivalForBusService(
-						busServiceNumber: favourite.busServiceNumber,
-						busStopCode: favourite.busStopCode
-					)
-				let items: [ArrivalItem] = await MainActor.run {
-					arrival.map { ArrivalItem(busStopCode: favourite.busStopCode, arrival: $0) }
-				}
-				return items
-
-			}
-			busArrivals = items.flatMap(\.self).map{ .init(item: $0)}
-		} catch {
-			busArrivals = []
-		}
-	}
 }
 
 extension BusStop {

@@ -13,16 +13,20 @@ import SwiftUI
 @MainActor
 final class ArrivalItemViewModel: Identifiable {
 	
-	var id: String { busStopCode + busServiceArrival.serviceNo }
-	var busServiceArrival: BusServicArrival
-	let busStopCode: String
+	var id: String { item.id }
+	var item: ArrivalItem
+
 	var isFavourite: Bool = false
 	var isUpdatingFavourite = false
 	var favouriteErrorMessage: String?
 
 	init(item: ArrivalItem) {
-		self.busServiceArrival = item.arrival
-		self.busStopCode = item.busStopCode
+		self.item = item
+		fetchFavourite()
+	}
+
+	func update(item: ArrivalItem) {
+		self.item = item
 		fetchFavourite()
 	}
 
@@ -31,7 +35,7 @@ final class ArrivalItemViewModel: Identifiable {
 			return
 		}
 
-		let serviceNo = busServiceArrival.serviceNo
+		let serviceNo = item.arrival.serviceNo
 		let shouldSave = !isFavourite
 		isUpdatingFavourite = true
 		favouriteErrorMessage = nil
@@ -46,13 +50,13 @@ final class ArrivalItemViewModel: Identifiable {
 					try await FavouriteArrivalModel
 						.save(
 							.init(
-								busStopCode: busStopCode,
+								busStopCode: item.busStop.busStopCode,
 								busServiceNumber: serviceNo
 							)
 						)
 				} else {
 					try await FavouriteArrivalModel
-						.remove(busStopCode: busStopCode, busServiceNo: serviceNo)
+						.remove(busStopCode: item.busStop.busStopCode, busServiceNo: serviceNo)
 				}
 				fetchFavourite()
 			} catch {
@@ -65,8 +69,8 @@ final class ArrivalItemViewModel: Identifiable {
 extension ArrivalItemViewModel {
 	private func fetchFavourite() {
 		let savedFavourite = FavouriteArrivalModel.fetch(
-			busStopCode: busStopCode,
-			busServiceNo: busServiceArrival
+			busStopCode: item.busStop.busStopCode,
+			busServiceNo: item.arrival
 				.serviceNo
 		)
 		isFavourite = savedFavourite != nil

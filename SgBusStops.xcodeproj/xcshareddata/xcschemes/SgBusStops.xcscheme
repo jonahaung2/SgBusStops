@@ -9,16 +9,16 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ServicesTests"
-               BuildableName = "ServicesTests"
-               BlueprintName = "ServicesTests"
-               ReferencedContainer = "container:SgBusStops/Packages/Services">
+               BlueprintIdentifier = "47808E842F46201400DD7139"
+               BuildableName = "SgBusStops.app"
+               BlueprintName = "SgBusStops"
+               ReferencedContainer = "container:SgBusStops.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,10 +35,21 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ServicesTests"
-               BuildableName = "ServicesTests"
-               BlueprintName = "ServicesTests"
-               ReferencedContainer = "container:SgBusStops/Packages/Services">
+               BlueprintIdentifier = "47808E912F46201600DD7139"
+               BuildableName = "SgBusStopsTests.xctest"
+               BlueprintName = "SgBusStopsTests"
+               ReferencedContainer = "container:SgBusStops.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "47808E9B2F46201600DD7139"
+               BuildableName = "SgBusStopsUITests.xctest"
+               BlueprintName = "SgBusStopsUITests"
+               ReferencedContainer = "container:SgBusStops.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,6 +64,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "47808E842F46201400DD7139"
+            BuildableName = "SgBusStops.app"
+            BlueprintName = "SgBusStops"
+            ReferencedContainer = "container:SgBusStops.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -60,6 +81,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "47808E842F46201400DD7139"
+            BuildableName = "SgBusStops.app"
+            BlueprintName = "SgBusStops"
+            ReferencedContainer = "container:SgBusStops.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -10,6 +10,7 @@ import Services
 import SgMaps
 import SwiftUI
 import UI
+internal import _LocationEssentials
 
 struct NearByScene: View {
 
@@ -24,12 +25,6 @@ struct NearByScene: View {
 
     var body: some View {
         List {
-            if viewModel.busArrivals.isEmpty == false {
-				ForEach(viewModel.busArrivals) { model in
-					BusServiceArrivalSection(model)
-						.id(model.id)
-                }
-            }
             Section {
                 ForEach(viewModel.nearbyStops) { stop in
                     BusStopCell(busStop: stop)
@@ -69,17 +64,8 @@ struct NearByScene: View {
                     .near(by: location, distance: distance)
             }
         }
-		.repeatingTask {
-			await viewModel.fetchFavourites()
-		}
         .refreshable {
-            try? await Task.sleep(until: .now + .seconds(1))
             await locationService.startLocation()
-            if let location = locationService.location {
-                viewModel.nearbyStops = await busStopStore
-                    .near(by: location, distance: distance)
-            }
-			await viewModel.fetchFavourites()
-        }
+		}
     }
 }

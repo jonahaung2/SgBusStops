@@ -38,7 +38,9 @@ struct BusStopDetailsScene: View {
 					ContentUnavailableView("No bus arrival yet", systemImage: "bus.fill")
 				}
 			} else {
+
 				Section {
+
 				} header: {
 					VStack(alignment: .trailing, spacing: 4) {
 						Text(viewModel.busStop.desc)
@@ -47,6 +49,7 @@ struct BusStopDetailsScene: View {
 					.frame(maxWidth: .infinity)
 					.foregroundStyle(.primary)
 				}
+
 				ForEach(viewModel.arrivalItems) { model in
 					BusServiceArrivalSection(model)
 				}
@@ -68,7 +71,7 @@ struct BusStopDetailsScene: View {
 			await viewModel.fetchArrivalForBusStop()
 		}
 		.refreshable {
-			await viewModel.startRefreshing()
+			await viewModel.fetchArrivalForBusStop()
 		}
 		.toolbarTitleDisplayMode(.inline)
 		.navigationTitle(viewModel.busStop.roadName)

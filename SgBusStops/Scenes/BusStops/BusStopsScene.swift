@@ -25,22 +25,18 @@ struct BusStopsScene: View {
     var body: some View {
         List {
             ForEach(viewModel.groupedBusStops, id: \.roadName) { group in
-				if let first = group.roadName.first {
-
-					Section {
-						ForEach(group.stops) { stop in
-							BusStopCell(busStop: stop)
-						}
-					} header: {
-						Text(group.roadName)
-							.font(.subheadline.lowercaseSmallCaps().bold())
-							.foregroundStyle(Color(uiColor: .label))
+				Section {
+					ForEach(group.stops) { stop in
+						BusStopCell(busStop: stop)
 					}
-					.sectionIndexLabel(Text(String(first)))
+				} header: {
+					Text(group.roadName)
+						.font(.subheadline.lowercaseSmallCaps().bold())
+						.foregroundStyle(Color(uiColor: .label))
 				}
-
             }
         }
+		.animation(.default, value: viewModel.groupedBusStops.count)
 		.listSectionIndexVisibility(.automatic)
         .searchable(text: $viewModel.searchText, prompt: "Search Bus Stops")
         .refreshable {

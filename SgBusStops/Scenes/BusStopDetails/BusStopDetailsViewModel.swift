@@ -29,8 +29,17 @@ final class BusStopDetailsViewModel {
 		errorMessage = nil
 		do {
 			let arrival = try await busArrivalRepository.fetch(for: busStop.busStopCode)
-			arrivalItems = arrival.services
-				.map{ .init(item: .init(busStopCode: busStop.busStopCode, arrival: $0))}
+			let existing = Dictionary(
+				uniqueKeysWithValues: arrivalItems.map { ($0.id, $0) }
+			)
+			arrivalItems = arrival.services.map { service in
+				let item = ArrivalItem(busStop: busStop, arrival: service)
+				if let model = existing[item.id] {
+					model.update(item: item)
+					return model
+				}
+				return .init(item: item)
+			}
 
 		} catch {
 			errorMessage = error.localizedDescription
