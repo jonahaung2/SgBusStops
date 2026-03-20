@@ -6,13 +6,16 @@
 //
 
 import Models
+import Services
 import SgMaps
 import SwiftUI
 import UI
-import Services
+internal import _LocationEssentials
 
 struct BusStopDetailsScene: View {
+
 	@State private var viewModel: BusStopDetailsViewModel
+
 	init(_ busStop: BusStop) {
 		_viewModel = .init(wrappedValue: .init(busStop: busStop))
 	}
@@ -33,35 +36,24 @@ struct BusStopDetailsScene: View {
 						}
 					}
 				}
-			} else if viewModel.arrivalItems.isEmpty {
-				Section {
-					ContentUnavailableView("No bus arrival yet", systemImage: "bus.fill")
-				}
 			} else {
-
-				Section {
-
-				} header: {
-					VStack(alignment: .trailing, spacing: 4) {
-						Text(viewModel.busStop.desc)
-							.font(.title2).fontWeight(.semibold)
-					}
-					.frame(maxWidth: .infinity)
-					.foregroundStyle(.primary)
-				}
-
 				ForEach(viewModel.arrivalItems) { model in
-					BusServiceArrivalSection(model)
+					BusStopArrivalSection(model)
 				}
+			}
+		}.overlay {
+			if viewModel.arrivalItems.isEmpty {
+				ProgressView().controlSize(.mini)
 			}
 		}
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				NavigationLink {
-					AnimatedMap(
-						[viewModel.busStop.mapItem],
-						selection: viewModel.busStop.mapItem,
-					)
+					AnimatedMap(items: [viewModel.busStop.mapItem]) { item in
+						item.location.coordinate
+					} title: { value in
+						value.name
+					}
 				} label: {
 					Image(systemName: "mappin.and.ellipse")
 				}
@@ -73,8 +65,8 @@ struct BusStopDetailsScene: View {
 		.refreshable {
 			await viewModel.fetchArrivalForBusStop()
 		}
-		.toolbarTitleDisplayMode(.inline)
+		.toolbarTitleDisplayMode(.large)
 		.navigationTitle(viewModel.busStop.roadName)
-		.navigationSubtitle(viewModel.busStop.busStopCode)
+		.navigationSubtitle(viewModel.busStop.desc)
 	}
 }

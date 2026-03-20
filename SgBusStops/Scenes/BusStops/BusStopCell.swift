@@ -12,43 +12,41 @@ import UI
 internal import _LocationEssentials
 
 struct BusStopCell: View {
-    let busStop: BusStop
-    @Environment(LocationService.self) private var locationService
+
+	let busStop: BusStop
+	@Environment(\.currentLocation) private var currentLocation
 	@Environment(NavRouter.self) private var navRouter
 
-    var body: some View {
+	var body: some View {
 		Button {
-			navRouter.path.append(busStop)
+			navRouter.push(busStop)
 		} label: {
-			VStack(alignment: .leading, spacing: 0) {
-				HStack {
-					let desc = Text(busStop.desc)
-						.font(.title3.weight(.semibold))
-
-					let road = Text(busStop.roadName)
-						.font(.footnote.weight(.medium))
+			HStack {
+				VStack(alignment: .leading, spacing: 0) {
+					Text(busStop.desc)
+						.font(.headline)
+					Text(busStop.roadName)
+						.font(.footnote)
 						.foregroundStyle(.secondary)
-
-					Text("\(desc)\n\(road)")
-						.multilineTextAlignment(.leading)
-
-					Spacer()
-					VStack(alignment: .leading, spacing: 0) {
-						Text(busStop.busStopCode)
-							.font(.headline.width(.compressed))
-						if let currentLocation = locationService.location {
-							let distance = busStop.distance(from: currentLocation.clLocation.coordinate)
-							Text("\(distance.formatted(.number.precision(.fractionLength(2)))) km")
-								.font(.caption2)
-								.foregroundStyle(.secondary)
-						}
-					}
 				}
 
+				.multilineTextAlignment(.leading)
+
+				Spacer()
+				VStack(alignment: .leading, spacing: 0) {
+					Text(busStop.busStopCode)
+						.monospacedDigit()
+						.fontWidth(.compressed)
+
+					Text("\(currentLocation.distance(to: busStop.location)) km")
+						.font(.caption2)
+						.foregroundStyle(.secondary)
+				}
 			}
+			.lineHeight(.multiple(factor: 1.3))
 		}
-		.tint(Color.primary)
 		.buttonStyle(.borderless)
 		.transition(.identity)
-    }
+		.id(busStop.id)
+	}
 }

@@ -1,65 +1,36 @@
-import Models
+//
+//  ArrivalColumn.swift
+//  SgBusStops
+//
+//  Created by Aung Ko Min on 20/3/26.
+//
+
 import SwiftUI
+import Models
 import UI
 
-struct BusServiceArrivalCell: View {
-
-	private let model: ArrivalItemViewModel
-
-	init(_ model: ArrivalItemViewModel) {
-		self.model = model
-	}
-
-	private var serviceArrival: BusServicArrival { model.item.arrival }
-
-
-
-	var body: some View {
-		Grid(alignment: .centerLastTextBaseline, horizontalSpacing: 4) {
-			GridRow(alignment: .lastTextBaseline) {
-				ForEach(
-					Array(model.item.arrival.arrivals().enumerated()),
-					id: \.offset
-				) { (index, arrival) in
-					ArrivalColumnView(
-						arrival: arrival,
-						rank: index + 1
-					)
-					.frame(maxWidth: .infinity)
-				}
-			}
-		}
-		.transition(.identity)
-	}
-}
-
-private struct ArrivalColumnView: View {
-
+struct ArrivalColumn: View {
 	let arrival: BusArrival
 	let rank: Int
 
 	var body: some View {
-		VStack(alignment: .leading, spacing: 0) {
+		VStack(alignment: .leading, spacing: 4) {
 			timeView
 				.font(font)
-				.monospacedDigit()
-				.lineLimit(1)
-				.minimumScaleFactor(0.7)
-
 			metaView
 		}
+		.lineHeight(.multiple(factor: 1.2))
 	}
 }
 
-private extension ArrivalColumnView {
-
+private extension ArrivalColumn {
 	@ViewBuilder
 	var timeView: some View {
 		if rank == 1, let endDate = countdownEndDate {
 			Text(
 				timerInterval: Date.now ... endDate,
 				pauseTime: .distantPast,
-				countsDown: true
+				countsDown: true,
 			)
 		} else {
 			arrivalText
@@ -80,11 +51,13 @@ private extension ArrivalColumnView {
 			case ..<(-60):
 				Text("Departed").foregroundStyle(.red)
 			case ..<30:
-				Text("Arriving").foregroundStyle(.green)
+				Text("Arriving")
+					.fontWidth(.condensed)
+					.foregroundStyle(.green.mix(with: .primary, by: 0.1))
 			case ..<60:
-				Text("\(seconds)s")
+				Text("\(seconds)\(Text("s").font(.caption2))")
 			default:
-				Text("\(seconds / 60)m")
+				Text("\(seconds / 60)\(Text("m").font(.caption2))")
 			}
 		} else {
 			Text("N.A").foregroundStyle(.secondary)
@@ -92,8 +65,7 @@ private extension ArrivalColumnView {
 	}
 }
 
-private extension ArrivalColumnView {
-
+private extension ArrivalColumn {
 	var metaView: some View {
 		HStack(spacing: 4) {
 			loadIcon
@@ -103,8 +75,8 @@ private extension ArrivalColumnView {
 
 			if isWheelchairAccessible {
 				Image(systemName: "wheelchair")
-					.font(.caption2.weight(.bold))
-					.foregroundStyle(Color.darkYellow)
+					.font(.caption2)
+					.foregroundStyle(.yellow.mix(with: .primary, by: 0.15))
 			}
 		}
 	}
@@ -113,7 +85,12 @@ private extension ArrivalColumnView {
 	var loadIcon: some View {
 		switch arrival.load {
 		case .seatsAvailable:
-			iconPair("figure.seated.side.right", height: 12, color: .green)
+			HStack(spacing: -4) {
+				Image(systemName: "figure.seated.side.right")
+					.iconStyle(height: 12, color: .green.mix(with: .primary, by: 0.1))
+				Image(systemName: "figure.seated.side.right")
+					.iconStyle(height: 13, color: .green.mix(with: .primary, by: 0.1))
+			}
 		case .standingAvailable:
 			iconPair("figure.wave", height: 15, color: .orange)
 		case .limitedStanding:
@@ -123,7 +100,6 @@ private extension ArrivalColumnView {
 				Image(systemName: "figure.wave")
 					.iconStyle(height: 15, color: .red)
 			}
-
 		case .none:
 			EmptyView()
 		}
@@ -136,7 +112,6 @@ private extension ArrivalColumnView {
 			Image(systemName: name)
 				.iconStyle(height: height, color: color)
 		}
-
 	}
 
 	var typeText: String? {
@@ -152,27 +127,23 @@ private extension ArrivalColumnView {
 		arrival.feature == .wheelchairAccessible
 	}
 }
-private extension Image {
-
-	func iconStyle(height: CGFloat, color: Color) -> some View {
-		self
-			.resizable()
-			.scaledToFit()
-			.frame(height: height)
-			.foregroundStyle(color)
-	}
-}
-
-private extension ArrivalColumnView {
-
+private extension ArrivalColumn {
 	var font: Font {
 		switch rank {
 		case 1:
-				.title.weight(.semibold).width(.condensed)
+				.title2.weight(.semibold)
 		case 2:
-				.title3.weight(.semibold).width(.condensed)
+				.headline
 		default:
-				.footnote.weight(.semibold).width(.condensed)
+				.footnote.weight(.semibold)
 		}
+	}
+}
+private extension Image {
+	func iconStyle(height: CGFloat, color: Color) -> some View {
+		resizable()
+			.scaledToFit()
+			.frame(height: height)
+			.foregroundStyle(color)
 	}
 }

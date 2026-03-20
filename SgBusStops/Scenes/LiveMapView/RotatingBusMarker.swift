@@ -17,9 +17,9 @@ struct RotatingBusMarker: View {
     var body: some View {
         VStack(spacing: 6) {
             ZStack {
-                LoadingIndicator(44)
-                    .scaleEffect(isPulsing ? 1.15 : 0.9)
-                    .opacity(isPulsing ? 0.35 : 0.8)
+//                LoadingIndicator(44)
+//                    .scaleEffect(isPulsing ? 1.15 : 0.9)
+//                    .opacity(isPulsing ? 0.35 : 0.8)
 
                 Circle()
                     .stroke(.red.opacity(0.5), lineWidth: 2)

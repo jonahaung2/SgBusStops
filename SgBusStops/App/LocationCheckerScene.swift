@@ -10,7 +10,7 @@ import SwiftUI
 import UI
 
 struct LocationCheckerScene: View {
-
+	
     @Environment(\.openURL) private var openURL
     @State private var controller = LocationAuthorizationController()
 
@@ -21,16 +21,16 @@ struct LocationCheckerScene: View {
                 BusStopDownloadCheckerScene()
             case .checkingAuthorization, .requestingHardware:
                 VStack(spacing: 16) {
-					LoadingIndicator(24)
+					ProgressView().controlSize(.mini)
                     Text("Checking Location Permission")
                         .font(.headline)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             default:
                 ContentUnavailableView {
-                    Label("Location Access Needed", systemImage: "location.slash")
+                    Label("Enable Location Access", systemImage: "location.slash")
                 } description: {
-                    Text("Location access is needed to display bus stops and routes.")
+					Text("Allow location access to see nearby bus stops and real-time routes around you.")
                 } actions: {
                     Button {
                         if controller.shouldOpenSettings {

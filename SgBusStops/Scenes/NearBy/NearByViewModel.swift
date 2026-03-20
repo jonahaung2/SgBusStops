@@ -4,16 +4,27 @@
 //
 //  Created by Aung Ko Min on 19/2/26.
 //
-import Client
+
 import Foundation
 import Models
 import Services
 import SgMaps
 
 @Observable
-@MainActor
-final class NearbyStopsViewModel {
-	var nearbyStops = [BusStop]()
+final class NearbyStopsViewModel: ViewModel {
+
+	private(set) var nearbyStops = [BusStop]()
+
+	func set(nearbyStops: [BusStop]) {
+		clearError()
+		self.nearbyStops = nearbyStops
+		if nearbyStops.isEmpty {
+			let distance = UserDefaults.standard.double(forKey: "nearbyDistance")
+			if distance != 0 {
+				showError(.init("signpost.right.and.left.fill", title: "No bus stops found", description: "We couldn’t find any bus stops within \(Int(distance)) m nearby. You can expand the search radius in Settings to discover more stops"))
+			}
+		}
+	}
 }
 
 extension BusStop {

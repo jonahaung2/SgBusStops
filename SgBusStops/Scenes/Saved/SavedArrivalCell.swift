@@ -5,50 +5,39 @@
 //  Created by Aung Ko Min on 19/3/26.
 //
 
-import SwiftUI
 import Models
 import Services
+import SwiftUI
 import UI
 
 struct SavedArrivalCell: View {
-	
-	let model: ArrivalItemViewModel
-	@Environment(BusStopStore.self) private var store
+
+	let model: ArrivalRowViewModel
 	@Environment(NavRouter.self) private var navRouter
 
-    var body: some View {
+	var body: some View {
 		Section {
-			BusServiceArrivalCell(model)
+			ArrivalRow(model)
 		} header: {
-			HStack(alignment: .lastTextBaseline) {
-				BusNumberText(model.item.arrival.serviceNo, .title1)
-				Text(model.item.busStop.desc)
-					.font(.footnote.weight(.medium))
-			}
-		} footer: {
-			HStack(alignment: .firstTextBaseline) {
-				if let codeA = model.item.arrival.nextBus?.originCode,
-				   let original = store.busStop(
-					for: codeA
-				   )
-				{
-					if let code = model.item.arrival.nextBus?.destinationCode,
-					   let destination = store.busStop(
-						for: code
-					   )
-					{
-						Text(
-							"\(original.desc) \(Image(systemName: "arrow.right")) \(destination.desc)"
-						)
-						.font(.caption2)
-						.italic()
-					} else {
-						Text(original.desc)
+			HStack(alignment: .center) {
+				Button {
+					navRouter.push(model.item.busStop)
+				} label: {
+					VStack(alignment: .leading, spacing: 0) {
+						Text(model.item.busStop.desc)
+							.font(.subheadline).fontWeight(.medium)
+
+						Text(model.item.busStop.roadName)
+							.font(.caption2).italic()
+							.foregroundStyle(.secondary)
 					}
+					.lineHeight(.leading(increase: 2))
 				}
 				Spacer()
-				model.item.arrival.operatorCode.logo.frame(height: 10)
+				BusNumberText(model.item.arrival.serviceNo, .title1)
 			}
+		} footer: {
+			ArrivalFooter(model: model)
 		}
-    }
+	}
 }

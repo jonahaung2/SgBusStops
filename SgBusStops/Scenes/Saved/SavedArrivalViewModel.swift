@@ -5,54 +5,70 @@
 //  Created by Aung Ko Min on 18/3/26.
 //
 
-import SwiftUI
 import Models
 import Services
+import SwiftUI
 
 @Observable
-@MainActor
-final class SavedArrivalViewModel {
-	var items = [ArrivalItemViewModel]()
-	var errorMessage: String?
+final class SavedArrivalViewModel: ViewModel {
+
+	var items = [ArrivalRowViewModel]()
 	private let fetcher = BusStopFetcher()
 }
+
 extension SavedArrivalViewModel {
+
+	@concurrent
 	func task() async {
-		let favourites = FavouriteArrivalModel.fetchAll()
+		let favourites = await FavouriteArrivalModel.fetchAll()
 		if favourites.isEmpty {
-			errorMessage = "You haven't saved any arrivals."
+			await showError(
+				.init(
+					"star.slash",
+					title: "No Saved Arrivals",
+					description: "You haven’t saved any favorite arrivals. Add one by tapping the star icon at your preferred bus stop."
+				)
+			)
 			return
 		}
-		errorMessage = nil
+		await clearError()
 		do {
 			let items = try await AsyncOrderedStream.mapOrdered(inputs: favourites) { favourite in
 				let arrival = try await self.fetcher
 					.fetchArrivalForBusService(
 						busServiceNumber: favourite.busServiceNumber,
-						busStopCode: favourite.busStopCode
+						busStopCode: favourite.busStopCode,
 					)
 				if let busStop = await favourite.busStop() {
-					let items: [ArrivalItem] = await MainActor.run {
+					return await MainActor.run {
 						arrival.map { ArrivalItem(busStop: busStop, arrival: $0) }
 					}
-					return items
 				}
 				return []
 			}
 			let flattened = items.flatMap(\.self)
-			let existing = Dictionary(
-				uniqueKeysWithValues: self.items.map { ($0.id, $0) }
-			)
-			self.items = flattened.map { item in
-				if let model = existing[item.id] {
-					model.update(item: item)
-					return model
+
+			Task { @MainActor in
+				let existing = Dictionary(
+					uniqueKeysWithValues: self.items.map { ($0.id, $0) },
+				)
+				self.items = flattened.map { item in
+					if let model = existing[item.id] {
+						model.update(item: item)
+						return model
+					}
+					return .init(item: item)
 				}
-				return .init(item: item)
+
 			}
 		} catch {
-			errorMessage = error.localizedDescription
-			items = []
+			await showError(
+				.init(
+					"star.slash",
+					title: "No Saved Arrivals",
+					description: error.localizedDescription
+				)
+			)
 		}
 	}
 
@@ -63,11 +79,17 @@ extension SavedArrivalViewModel {
 				try await FavouriteArrivalModel
 					.remove(
 						busStopCode: item.item.busStop.busStopCode,
-						busServiceNo: item.item.arrival.serviceNo
+						busServiceNo: item.item.arrival.serviceNo,
 					)
 				items.remove(at: index)
 			} catch {
-				errorMessage = error.localizedDescription
+				showError(
+					.init(
+						"shield.slash.fill",
+						title: "Delete failed",
+						description: error.localizedDescription
+					)
+				)
 			}
 		}
 	}
@@ -78,7 +100,7 @@ extension SavedArrivalViewModel {
 		let orderedIDs = items.map {
 			FavouriteArrivalModel.makeID(
 				busStopCode: $0.item.busStop.busStopCode,
-				busServiceNumber: $0.item.arrival.serviceNo
+				busServiceNumber: $0.item.arrival.serviceNo,
 			)
 		}
 
@@ -86,7 +108,13 @@ extension SavedArrivalViewModel {
 			do {
 				try await FavouriteArrivalModel.reorder(ids: orderedIDs)
 			} catch {
-				errorMessage = error.localizedDescription
+				showError(
+					.init(
+						"shield.slash.fill",
+						title: "Moving failed",
+						description: error.localizedDescription
+					)
+				)
 				await task()
 			}
 		}
