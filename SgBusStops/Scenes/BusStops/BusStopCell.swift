@@ -29,7 +29,6 @@ struct BusStopCell: View {
 						.font(.footnote)
 						.foregroundStyle(.secondary)
 				}
-
 				.multilineTextAlignment(.leading)
 
 				Spacer()
@@ -43,9 +42,8 @@ struct BusStopCell: View {
 						.foregroundStyle(.secondary)
 				}
 			}
-			.lineHeight(.multiple(factor: 1.3))
 		}
-		.buttonStyle(.borderless)
+		.lineHeight(.multiple(factor: 1.3))
 		.transition(.identity)
 		.id(busStop.id)
 	}

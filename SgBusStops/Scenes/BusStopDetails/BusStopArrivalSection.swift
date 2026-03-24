@@ -12,7 +12,7 @@ import UI
 
 struct BusStopArrivalSection: View {
     private let model: ArrivalRowViewModel
-    @Environment(BusStopStore.self) private var store
+    @Environment(BusStore.self) private var store
 
     init(_ model: ArrivalRowViewModel) {
         self.model = model

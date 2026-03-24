@@ -5,13 +5,15 @@
 //  Created by Aung Ko Min on 20/3/26.
 //
 
-
 import Models
 import SwiftUI
 import UI
+import Services
 
 struct ArrivalRow: View {
     private let model: ArrivalRowViewModel
+
+	@Environment(NavRouter.self) private var navRouter
 
     init(_ model: ArrivalRowViewModel) {
         self.model = model
@@ -36,6 +38,11 @@ struct ArrivalRow: View {
                 }
             }
         }
+		._onButtonGesture(pressing: { _ in
+
+		}, perform: {
+			navRouter.push(model.item)
+		})
         .transition(.identity)
     }
 }

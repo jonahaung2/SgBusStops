@@ -15,7 +15,7 @@ import UI
 @MainActor
 struct BusStopsScene: View {
 	@State private var viewModel: BusStopsViewModel
-	@Environment(BusStopStore.self) private var busStopStore
+	@Environment(BusStore.self) private var busStopStore
 
 	init() {
 		_viewModel = .init(
@@ -74,10 +74,10 @@ struct BusStopsScene: View {
 		.searchable(text: $viewModel.searchText, prompt: "Search Bus Stops")
 		.refreshable {
 			await busStopStore.fetch()
-			viewModel.items = busStopStore.busStops
+			viewModel.items = busStopStore.allBusStops
 		}
 		.task {
-			viewModel.items = busStopStore.busStops
+			viewModel.items = busStopStore.allBusStops
 		}
 	}
 }

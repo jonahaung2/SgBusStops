@@ -12,20 +12,18 @@ import Models
 struct ArrivalFooter: View {
 
 	let model: ArrivalRowViewModel
-	@Environment(BusStopStore.self) private var store
+	@Environment(BusStore.self) private var store
 
     var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			if let codeA = model.item.arrival.nextBus?.originCode,
 			   let original = store.busStop(
 				for: codeA,
-			   )
-			{
+			   ) {
 				if let code = model.item.arrival.nextBus?.destinationCode,
 				   let destination = store.busStop(
 					for: code,
-				   )
-				{
+				   ) {
 					Text(
 						"\(original.desc) \(Image(systemName: "arrow.forward")) \(destination.desc)",
 					)

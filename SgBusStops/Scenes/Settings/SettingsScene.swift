@@ -1,3 +1,10 @@
+//
+//  SettingsScene.swift
+//  SgBusStops
+//
+//  Created by Aung Ko Min on 18/3/26.
+//
+
 import Client
 import Models
 import Services
@@ -5,9 +12,15 @@ import SgMaps
 import SwiftUI
 import UIKit
 import UI
+import StoreKit
 
 struct SettingsScene: View {
+
 	@Environment(\.openURL) private var openURL
+	@Environment(BusStore.self) private var store
+
+	@AppStorage("nearbyDistance") private var nearbyDistance: Double = 1000
+
 	private var appVersion: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
 	}
@@ -17,100 +30,147 @@ struct SettingsScene: View {
 	}
 
 	private var hasAPIKey: Bool {
-		guard let key = AppSecrets.apiKey() else {
-			return false
-		}
+		guard let key = AppSecrets.apiKey() else { return false }
 		return !key.isEmpty
 	}
 
-	@AppStorage("nearbyDistance") private var nearbyDistance: Double = 1000
-
 	var body: some View {
 		Form {
-			Section {
-				Stepper {
-					Text("\(Int(nearbyDistance))m ")
-				} onIncrement: {
-					if nearbyDistance < 2000 {
-						nearbyDistance += 50
+			if let error = store.error {
+				Section {
+					ContentUnavailableView {
+						Label(error.title, systemImage: error.imageName)
+					} description: {
+						Text(error.description)
+					} actions: {
+						Button("Try Again") {
+							Task {
+								await store.refreshData()
+							}
+						}
 					}
-				} onDecrement: {
-					if nearbyDistance > 50 {
-						nearbyDistance -= 50
-					}
-				} onEditingChanged: { changed in
-					print(changed)
 				}
-			} header: {
-				Text("Nearby distance")
 			}
 
+			// MARK: - Data Update & System Settings
 			Section {
 				Button {
-					Task {
-						do {
-							try await SwiftDataStore.shared.busStopStore.deleteAll()
-						} catch {}
-					}
+					Task { await store.refreshData() }
 				} label: {
 					Label {
-						Text("Update to latest data")
+						if store.isLoading {
+							ProgressView().controlSize(.mini)
+						} else {
+							Text("Refresh Data")
+						}
 					} icon: {
 						IconView {
 							Image(systemName: "tray.and.arrow.down.fill")
 						}
-						.foregroundStyle(RandomShapeStyle.style(for: "tray.and.arrow.down.fill"))
+						.foregroundStyle(Color.indigo)
 					}
 				}
-				Button {
-					guard let url = URL(string: UIApplication.openSettingsURLString) else {
-						return
-					}
-					openURL(url)
-				} label: {
-					Label {
-						Text("Open System Settings")
-					} icon: {
-						IconView {
-							Image(systemName: "shield.pattern.checkered")
-						}
-						.foregroundStyle(RandomShapeStyle.style(for: "shield.pattern.checkered"))
-					}
+			} header: {
+				Text("Updates")
+			} footer: {
+				HStack {
+					Text("Version \(appVersion)")
+					Spacer()
+					Text("Build \(buildNumber)")
 				}
 			}
 
-			Section {
+			Section("Controls") {
 				Label {
 					LabeledContent("API Key") {
-						Text(hasAPIKey ? "Configured" : "Missing")
-							.foregroundStyle(hasAPIKey ? .green : .red)
+						Text(hasAPIKey ? "API Key Set" : "API Key Missing")
 					}
 				} icon: {
 					IconView {
 						Image(systemName: "key.shield")
 					}
-					.foregroundStyle(RandomShapeStyle.style(for: "key.shield"))
+					.foregroundStyle(Color.green)
 				}
-				if !hasAPIKey {
-					Text("Set PUBLIC_API_KEY in app configuration to enable live data.")
-						.font(.footnote)
-						.foregroundStyle(.secondary)
+
+				Label {
+					Stepper(
+						"Nearby Radius: \(nearbyDistance.formatted()) m",
+						value: .init(get: { nearbyDistance }, set: { nearbyDistance = $0 }),
+						in: 50...3000,
+						step: 50
+					)
+				} icon: {
+					IconView {
+						Image(systemName: "location.fill")
+					}
+					.foregroundStyle(Color.orange)
 				}
-			} header: {
-				HStack {
-					Text("Version \(appVersion)")
-					Text("Build \(buildNumber)")
+			}
+
+			Section("App") {
+				Label {
+					Button {
+						guard let url = URL(string: "https://jonahaung2.github.io/sg-bus-app-privacy/") else { return }
+						openURL(url)
+					} label: {
+						Text("Privacy Policy")
+					}
+				} icon: {
+					IconView {
+						Image(systemName: "quote.closing")
+					}
+					.foregroundStyle(Color.red)
 				}
-			} footer: {
+				Label {
+					Button("Rate This App") {
+						requestAppReview()
+					}
+				} icon: {
+					IconView {
+						Image(systemName: "star.fill")
+					}
+					.foregroundStyle(Color.blue)
+				}
+
+				Button {
+					guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+					openURL(url)
+				} label: {
+					Label {
+						Text("Open iOS Settings")
+					} icon: {
+						IconView {
+							Image(systemName: "shield.pattern.checkered")
+						}
+						.foregroundStyle(Color.brown)
+					}
+				}
+			}
+
+			// MARK: - About
+			Section {} footer: {
 				Text(.init(aboutThisApp))
 			}
 		}
 	}
 
+	// MARK: - About This App
 	private let aboutThisApp = """
-**About This App**
-This app was developed by [Aung Ko Min](https://github.com/jonahaung) to help commuters quickly check real-time bus arrivals in one click, with no ads or clutter.
-All transit data is sourced from publicly available APIs provided by the Singapore Land Transport Authority (LTA) DataMall. For official information, see [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en.html)
-The developer is not responsible for the accuracy, completeness, or availability of transit data. Use the app as a guide — actual bus arrivals may vary.
-"""
+ **About This App**
+ 
+ Developed by [Aung Ko Min](https://github.com/jonahaung), this app helps commuters check real-time bus arrivals quickly and easily — with just one tap, and without ads or unnecessary clutter.
+ 
+ All transit information comes from publicly available data provided by the Singapore Land Transport Authority (LTA) DataMall. For official updates, please refer to [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en.html).
+ 
+ The developer is not responsible for the accuracy, completeness, or availability of the transit data. Use this app as a guide; actual bus arrival times may vary.
+ """
+	private func viewModelTask() async {
+		await store.refreshData()
+	}
+
+	func requestAppReview() {
+		if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+			AppStore.requestReview(in: scene)
+		}
+	}
 }

@@ -13,14 +13,11 @@ import UI
 internal import _LocationEssentials
 
 struct NearByScene: View {
-	@State private var viewModel: NearbyStopsViewModel
+
+	@State private var viewModel = NearbyStopsViewModel()
 	@AppStorage("nearbyDistance") private var distance: Double = 1000
 	@Environment(LocationService.self) private var locationService
-	@Environment(BusStopStore.self) private var busStopStore
-
-	init() {
-		_viewModel = .init(wrappedValue: .init())
-	}
+	@Environment(BusStore.self) private var store
 
 	var body: some View {
 		List {
@@ -69,7 +66,7 @@ struct NearByScene: View {
 		}
 		.task(id: locationService.location) {
 			if let location = locationService.location {
-				viewModel.set(nearbyStops: await busStopStore
+				viewModel.set(nearbyStops: await store
 					.near(by: location, distance: distance))
 			}
 		}

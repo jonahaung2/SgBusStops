@@ -8,6 +8,7 @@
 import SwiftUI
 import Models
 import UI
+import Pow
 
 struct ArrivalColumn: View {
 	let arrival: BusArrival
@@ -15,71 +16,69 @@ struct ArrivalColumn: View {
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
-			timeView
-				.font(font)
-			metaView
+			switch rank {
+			case 1:
+				if let seconds = arrival.arrivalSeconds() {
+					if seconds <= 60 {
+						Text("Arriving")
+							.foregroundStyle(.green.mix(with: .primary, by: 0.1))
+							.font(.title2.weight(.semibold))
+
+					} else if seconds < -60 {
+						Text("Departed")
+							.foregroundStyle(.red.mix(with: .primary, by: 0.1))
+							.font(.title2.weight(.semibold))
+					} else {
+						Text(
+							timerInterval: Date.now ... countdownEndDate,
+							pauseTime: .distantPast,
+							countsDown: true,
+						)
+						.font(.title2.weight(.bold))
+					}
+				}
+
+			case 2:
+				if let minutes = arrival.arrivalMinutes() {
+					Text("\(minutes)\(Text("m").fontWeight(.regular).fontWidth(.standard))")
+						.font(.headline.weight(.semibold))
+				}
+
+			default:
+				if let minutes = arrival.arrivalMinutes() {
+					Text("\(minutes)\(Text("m").fontWeight(.regular).fontWidth(.standard))")
+						.font(.subheadline.weight(.medium))
+				}
+			}
+
+			HStack(spacing: 4) {
+				loadIcon
+				Text(typeText ?? " ")
+					.font(.footnote.weight(.medium).width(.condensed))
+					.foregroundStyle(.secondary)
+
+				if isWheelchairAccessible {
+					Image(systemName: "wheelchair")
+						.font(.caption2)
+						.foregroundStyle(.yellow.mix(with: .primary, by: 0.15))
+				}
+			}
 		}
 		.lineHeight(.multiple(factor: 1.2))
 	}
 }
 
 private extension ArrivalColumn {
-	@ViewBuilder
-	var timeView: some View {
-		if rank == 1, let endDate = countdownEndDate {
-			Text(
-				timerInterval: Date.now ... endDate,
-				pauseTime: .distantPast,
-				countsDown: true,
-			)
-		} else {
-			arrivalText
-		}
-	}
 
-	var countdownEndDate: Date? {
+	var countdownEndDate: Date {
 		guard let seconds = arrival.arrivalSeconds(), seconds > 0 else {
-			return nil
+			return .now
 		}
 		return Date(timeInterval: Double(seconds), since: .now)
-	}
-
-	@ViewBuilder
-	var arrivalText: some View {
-		if let seconds = arrival.arrivalSeconds(now: .now) {
-			switch seconds {
-			case ..<(-60):
-				Text("Departed").foregroundStyle(.red)
-			case ..<30:
-				Text("Arriving")
-					.fontWidth(.condensed)
-					.foregroundStyle(.green.mix(with: .primary, by: 0.1))
-			case ..<60:
-				Text("\(seconds)\(Text("s").font(.caption2))")
-			default:
-				Text("\(seconds / 60)\(Text("m").font(.caption2))")
-			}
-		} else {
-			Text("N.A").foregroundStyle(.secondary)
-		}
 	}
 }
 
 private extension ArrivalColumn {
-	var metaView: some View {
-		HStack(spacing: 4) {
-			loadIcon
-			Text(typeText ?? "NA")
-				.font(.footnote.weight(.medium).width(.condensed))
-				.foregroundStyle(.secondary)
-
-			if isWheelchairAccessible {
-				Image(systemName: "wheelchair")
-					.font(.caption2)
-					.foregroundStyle(.yellow.mix(with: .primary, by: 0.15))
-			}
-		}
-	}
 
 	@ViewBuilder
 	var loadIcon: some View {

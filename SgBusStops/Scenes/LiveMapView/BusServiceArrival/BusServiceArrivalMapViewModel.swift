@@ -28,17 +28,17 @@ final class BusServiceArrivalMapViewModel {
     }
 
     func task() async {
-        var items = [MapAnnotationItem]()
-        for each in arrival.arrivals() {
-            if let coordinate = each.coordinate {
-                let item = MapAnnotationItem(
-                    id: each.id,
-                    coordinate: coordinate,
-                    title: each.arrivalDisplayString(),
-                )
-                items.append(item)
-            }
-        }
-        update(with: items)
+//        var items = [MapAnnotationItem]()
+//        for each in arrival.arrivals() {
+//            if let coordinate = each.coordinate {
+//                let item = MapAnnotationItem(
+//                    id: each.id,
+//                    coordinate: coordinate,
+//                    title: each.arrivalDisplayString(),
+//                )
+//                items.append(item)
+//            }
+//        }
+//        update(with: items)
     }
 }

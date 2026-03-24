@@ -22,12 +22,14 @@ struct BusStopDetailsScene: View {
 
 	var body: some View {
 		List {
-			if let errorMessage = viewModel.errorMessage, viewModel.arrivalItems.isEmpty {
+			if let errorMessage = viewModel.error {
+
 				Section {
+
 					ContentUnavailableView {
-						Label("Unable to Load Arrivals", systemImage: "exclamationmark.triangle")
+						Label(errorMessage.title, systemImage: errorMessage.imageName)
 					} description: {
-						Text(errorMessage)
+						Text(errorMessage.description)
 					} actions: {
 						Button("Retry") {
 							Task {
@@ -42,7 +44,7 @@ struct BusStopDetailsScene: View {
 				}
 			}
 		}.overlay {
-			if viewModel.arrivalItems.isEmpty {
+			if viewModel.isLoading {
 				ProgressView().controlSize(.mini)
 			}
 		}

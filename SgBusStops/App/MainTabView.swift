@@ -11,7 +11,7 @@ import SwiftUI
 import UI
 
 struct MainTabView: View {
-	
+
     @State private var router = Router()
     private let locationService = LocationService()
     @Environment(\.scenePhase) private var scenePhase
@@ -26,6 +26,9 @@ struct MainTabView: View {
                             .navigationDestination(for: BusStop.self) { busStop in
                                 BusStopDetailsScene(busStop)
                             }
+							.navigationDestination(for: ArrivalItem.self) { arrival in
+								BusServiceRouteScene(arrival: arrival)
+							}
                     }
                     .environment(navRouter)
 					.equatable(by: navRouter.id)
@@ -39,8 +42,10 @@ struct MainTabView: View {
         .tabBarMinimizeBehavior(.onScrollDown)
         .environment(locationService)
 		.environment(\.currentLocation, locationService.location ?? .default)
-        .listSectionSpacing(8)
-        .listSectionMargins(.horizontal, 4)
+        .listSectionSpacing(2)
+        .listSectionMargins(.horizontal, 0)
+		.listRowSpacing(0)
+		.listSectionSeparator(.hidden)
         .task(id: scenePhase) {
             if scenePhase == .active {
                 await locationService.startLocation()
@@ -58,7 +63,7 @@ struct MainTabView: View {
         case .settings:
             SettingsScene()
         case .saved:
-            SavedArrivalsScene()
+            FavouriteArrivalsScene()
         }
     }
 }

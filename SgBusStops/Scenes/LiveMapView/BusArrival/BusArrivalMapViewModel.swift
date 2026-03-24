@@ -32,7 +32,9 @@ final class BusArrivalMapViewModel {
             let item = MapAnnotationItem(
                 id: arrival.id,
                 coordinate: coordinate,
-                title: arrival.arrivalDisplayString(),
+				title: arrival.estimatedArrival?
+					.formatted(date: .omitted, time: .shortened) ?? arrival
+					.arrivalSeconds()?.description ?? "N.A",
             )
             update(with: [item])
         }

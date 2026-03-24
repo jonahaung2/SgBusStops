@@ -20,10 +20,10 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationDefaultAccuracyReduced</key>
-	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Grant location access to get accurate nearby bus stops and live route updates.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>TO DO</string>
+	<string>Grant location access to get accurate nearby bus stops and live route updates.</string>
 	<key>PUBLIC_API_KEY</key>
 	<string>$(PUBLIC_API_KEY)</string>
 	<key>UIApplicationSceneManifest</key>

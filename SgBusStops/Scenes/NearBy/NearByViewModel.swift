@@ -18,11 +18,22 @@ final class NearbyStopsViewModel: ViewModel {
 	func set(nearbyStops: [BusStop]) {
 		clearError()
 		self.nearbyStops = nearbyStops
-		if nearbyStops.isEmpty {
-			let distance = UserDefaults.standard.double(forKey: "nearbyDistance")
-			if distance != 0 {
-				showError(.init("signpost.right.and.left.fill", title: "No bus stops found", description: "We couldn’t find any bus stops within \(Int(distance)) m nearby. You can expand the search radius in Settings to discover more stops"))
-			}
+		if self.nearbyStops.isEmpty {
+			let distance: Double = {
+				let distance = UserDefaults.standard.double(forKey: "nearbyDistance")
+				if distance.isZero {
+					return 1000
+				}
+				return distance
+			}()
+			showError(
+				.init(
+					"signpost.right.and.left.fill",
+					title: "No bus stops found",
+					description:
+						"We couldn’t find any bus stops within \(Int(distance)) m nearby. You can expand the search radius in Settings to discover more stops"
+				)
+			)
 		}
 	}
 }

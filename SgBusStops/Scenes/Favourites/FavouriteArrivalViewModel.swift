@@ -1,5 +1,5 @@
 //
-//  SavedArrivalViewModel.swift
+//  FavouriteArrivalViewModel.swift
 //  SgBusStops
 //
 //  Created by Aung Ko Min on 18/3/26.
@@ -10,28 +10,31 @@ import Services
 import SwiftUI
 
 @Observable
-final class SavedArrivalViewModel: ViewModel {
+final class FavouriteArrivalViewModel: ViewModel {
 
 	var items = [ArrivalRowViewModel]()
+	var favourites = [FavouriteArrival]()
 	private let fetcher = BusStopFetcher()
 }
 
-extension SavedArrivalViewModel {
+extension FavouriteArrivalViewModel {
 
-	@concurrent
 	func task() async {
-		let favourites = await FavouriteArrivalModel.fetchAll()
+		loading(true)
+		let favourites = FavouriteArrivalModel.fetchAll()
+		self.favourites = favourites
 		if favourites.isEmpty {
-			await showError(
+			showError(
 				.init(
 					"star.slash",
 					title: "No Saved Arrivals",
-					description: "You haven’t saved any favorite arrivals. Add one by tapping the star icon at your preferred bus stop."
+					description:
+						"You haven’t saved any favorite arrivals. Add one by tapping the star icon at your preferred bus stop."
 				)
 			)
 			return
 		}
-		await clearError()
+		clearError()
 		do {
 			let items = try await AsyncOrderedStream.mapOrdered(inputs: favourites) { favourite in
 				let arrival = try await self.fetcher
@@ -47,41 +50,41 @@ extension SavedArrivalViewModel {
 				return []
 			}
 			let flattened = items.flatMap(\.self)
-
-			Task { @MainActor in
-				let existing = Dictionary(
-					uniqueKeysWithValues: self.items.map { ($0.id, $0) },
-				)
-				self.items = flattened.map { item in
-					if let model = existing[item.id] {
-						model.update(item: item)
-						return model
-					}
-					return .init(item: item)
+			loading(false)
+			let existing = Dictionary(
+				uniqueKeysWithValues: self.items.map { ($0.id, $0) },
+			)
+			self.items = flattened.map { item in
+				if let model = existing[item.id] {
+					model.update(item: item)
+					return model
 				}
-
+				return .init(item: item)
 			}
+			clearError()
 		} catch {
-			await showError(
-				.init(
-					"star.slash",
-					title: "No Saved Arrivals",
-					description: error.localizedDescription
-				)
+			showError(
+				error,
+				offlineTitle: "Live Arrivals Unavailable",
+				offlineDescription: "You're offline. Your saved bus stops are still available, but live arrival timings need an internet connection.",
+				fallbackTitle: "Unable to Load Arrivals",
+				fallbackImageName: "star.slash"
 			)
 		}
 	}
 
 	func onDelete(_ index: Int) {
 		Task {
-			let item = items[index]
+			let item = favourites[index]
 			do {
 				try await FavouriteArrivalModel
 					.remove(
-						busStopCode: item.item.busStop.busStopCode,
-						busServiceNo: item.item.arrival.serviceNo,
+						.init(
+							busStopCode: item.busStopCode,
+							busServiceNumber: item.busServiceNumber
+						)
 					)
-				items.remove(at: index)
+				favourites.remove(at: index)
 			} catch {
 				showError(
 					.init(
@@ -95,16 +98,10 @@ extension SavedArrivalViewModel {
 	}
 
 	func onMove(from source: IndexSet, to destination: Int) {
-		items.move(fromOffsets: source, toOffset: destination)
-
-		let orderedIDs = items.map {
-			FavouriteArrivalModel.makeID(
-				busStopCode: $0.item.busStop.busStopCode,
-				busServiceNumber: $0.item.arrival.serviceNo,
-			)
-		}
-
 		Task { @MainActor in
+			favourites.move(fromOffsets: source, toOffset: destination)
+			items.move(fromOffsets: source, toOffset: destination)
+			let orderedIDs = favourites.map { $0.id }
 			do {
 				try await FavouriteArrivalModel.reorder(ids: orderedIDs)
 			} catch {

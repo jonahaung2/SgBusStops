@@ -10,7 +10,7 @@ import SwiftUI
 import UI
 
 struct LocationCheckerScene: View {
-	
+
     @Environment(\.openURL) private var openURL
     @State private var controller = LocationAuthorizationController()
 
@@ -28,9 +28,9 @@ struct LocationCheckerScene: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             default:
                 ContentUnavailableView {
-                    Label("Enable Location Access", systemImage: "location.slash")
+                    Label("Enable Location Access", systemImage: "location.fill.viewfinder")
                 } description: {
-					Text("Allow location access to see nearby bus stops and real-time routes around you.")
+					Text("Location access is required to display nearby bus stops and real-time transit information.")
                 } actions: {
                     Button {
                         if controller.shouldOpenSettings {
@@ -41,9 +41,9 @@ struct LocationCheckerScene: View {
                             controller.requestPermission()
                         }
                     } label: {
-                        Text(controller.buttonTitle)
+						Text(controller.buttonTitle).padding(.horizontal)
                     }
-                    .buttonStyle(.borderedProminent)
+					.buttonStyle(.bordered)
                     .buttonSizing(.flexible)
                 }
             }
