@@ -10,9 +10,10 @@ import Foundation
 import Models
 import Services
 
-final class BusStopDetailsViewModel: ViewModel {
+final class BusStopArrivalsViewModel: ViewModel {
 	let busStop: BusStop
 	var arrivalItems = [ArrivalRowViewModel]()
+	var serviceRoutes = [BusServiceRoute]()
 
 	@ObservationIgnored let busArrivalRepository = BusArrivalRepository(
 		networkClient: NetworkClient(),
@@ -22,8 +23,21 @@ final class BusStopDetailsViewModel: ViewModel {
 	}
 
 	func fetchArrivalForBusStop() async {
+		clearError()
 		loading(true)
 		do {
+			let serviceNumbers = try await SwiftDataStore.shared.busRouteStore
+				.serviceNumbers(busStopCode: busStop.busStopCode)
+
+			let routes = try await AsyncOrderedStream
+				.mapOrdered(inputs: serviceNumbers) { number in
+				let routes = try await SwiftDataStore.shared.busRouteStore.routes(serviceNo: number)
+				return await routes.buildServiceRoutes()
+			}
+			serviceRoutes = routes
+				.flatMap{ $0 }
+				.filter { $0.contains(stopCode: busStop.busStopCode )}
+			
 			let arrival = try await busArrivalRepository.fetch(for: busStop.busStopCode)
 			let existing = Dictionary(
 				uniqueKeysWithValues: arrivalItems.map { ($0.id, $0) },
@@ -37,12 +51,6 @@ final class BusStopDetailsViewModel: ViewModel {
 				return .init(item: item)
 			}
 			loading(false)
-			if arrivalItems.isEmpty {
-				showError(.init(description: "Not In Operation"))
-			} else {
-				clearError()
-			}
-
 		} catch {
 			showError(
 				error,
