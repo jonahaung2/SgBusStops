@@ -10,71 +10,71 @@ import Services
 import SwiftUI
 
 @Observable
-@MainActor
-final class ArrivalRowViewModel: Identifiable {
-    var id: String {
-        item.id
-    }
+final class ArrivalRowViewModel: ViewModel, Identifiable {
 
-    var item: ArrivalItem
+	var id: String { arrival.id }
+	var arrival: BusStopArrival
 
-    var isFavourite: Bool = false
-    var isUpdatingFavourite = false
-    var favouriteErrorMessage: String?
+	var isFavourite = false
+	var isUpdatingFavourite = false
 
-    init(item: ArrivalItem) {
-        self.item = item
-        fetchFavourite()
-    }
+	init(item: BusStopArrival) {
+		self.arrival = item
+		super.init()
+		fetchFavourite()
 
-    func update(item: ArrivalItem) {
-        self.item = item
-        fetchFavourite()
-    }
+	}
 
-    func toggleFavourite() {
-        guard !isUpdatingFavourite else {
-            return
-        }
+	func update(item: BusStopArrival) {
+		self.arrival = item
+		fetchFavourite()
+	}
 
-        let serviceNo = item.arrival.serviceNo
-        let shouldSave = !isFavourite
-        isUpdatingFavourite = true
-        favouriteErrorMessage = nil
+	func toggleFavourite() {
+		guard !isUpdatingFavourite else {
+			return
+		}
 
-        Task { @MainActor in
-            defer {
-                isUpdatingFavourite = false
-            }
+		let serviceNo = arrival.arrival.serviceNo
+		let shouldSave = !isFavourite
+		isUpdatingFavourite = true
 
-            do {
-                if shouldSave {
-                    try await FavouriteArrivalModel
-                        .save(
-                            .init(
-                                busStopCode: item.busStop.busStopCode,
-                                busServiceNumber: serviceNo,
-                            ),
-                        )
-                } else {
-                    try await FavouriteArrivalModel
-                        .remove(busStopCode: item.busStop.busStopCode, busServiceNo: serviceNo)
-                }
-                fetchFavourite()
-            } catch {
-                favouriteErrorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
-            }
-        }
-    }
+		Task { @MainActor in
+			defer {
+				isUpdatingFavourite = false
+			}
+
+			do {
+				if shouldSave {
+					try await SwiftDataStore.shared.store
+						.save(
+							FavouriteArrivalModel(
+								busStopCode: arrival.busStopCode,
+								busServiceNumber: serviceNo
+							)
+						)
+				} else {
+					try await SwiftDataStore.shared.store
+						.removeFavourite(
+							busStopCode: arrival.busStopCode,
+							busServiceNo: serviceNo
+						)
+				}
+				fetchFavourite()
+			} catch {
+				showError(error)
+			}
+		}
+	}
 }
 
 extension ArrivalRowViewModel {
-    private func fetchFavourite() {
-        let savedFavourite = FavouriteArrivalModel.fetch(
-            busStopCode: item.busStop.busStopCode,
-            busServiceNo: item.arrival
-                .serviceNo,
-        )
-        isFavourite = savedFavourite != nil
-    }
+	func fetchFavourite() {
+		let savedFavourite = FavouriteArrivalModel.fetch(
+			busStopCode: arrival.busStopCode,
+			busServiceNo: arrival.arrival
+				.serviceNo,
+		)
+		isFavourite = savedFavourite != nil
+	}
 }

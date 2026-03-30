@@ -1,0 +1,2444 @@
+[
+  {
+    "id": 44,
+    "name": "Admiralty",
+    "type": 1,
+    "latitude": 1.440585,
+    "longitude": 103.80098805555555,
+    "symbol": [
+      {
+        "code": "NS10",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "name": "Aljunied",
+    "type": 1,
+    "latitude": 1.3164488888888888,
+    "longitude": 103.8829811111111,
+    "symbol": [
+      {
+        "code": "EW9",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Ang Mo Kio",
+    "type": 1,
+    "latitude": 1.3699330555555556,
+    "longitude": 103.84955805555556,
+    "symbol": [
+      {
+        "code": "NS16",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 119,
+    "name": "Bakau",
+    "type": 2,
+    "latitude": 1.3880927777777778,
+    "longitude": 103.90543916666667,
+    "symbol": [
+      {
+        "code": "SE3",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "name": "Bangkit",
+    "type": 2,
+    "latitude": 1.3800105555555555,
+    "longitude": 103.77265972222222,
+    "symbol": [
+      {
+        "code": "BP9",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 201,
+    "name": "Bartley",
+    "type": 1,
+    "latitude": 1.3428283333333333,
+    "longitude": 103.87975888888889,
+    "symbol": [
+      {
+        "code": "CC12",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 229,
+    "name": "Bayfront",
+    "type": 1,
+    "latitude": 1.281873888888889,
+    "longitude": 103.85907972222222,
+    "symbol": [
+      {
+        "code": "CE1",
+        "color": "#FFA500"
+      },
+      {
+        "code": "DT16",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 430,
+    "name": "Bayshore",
+    "type": 1,
+    "latitude": 1.3131225,
+    "longitude": 103.94230805555556,
+    "symbol": [
+      {
+        "code": "TE29",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 309,
+    "name": "Beauty World",
+    "type": 1,
+    "latitude": 1.3356144444444444,
+    "longitude": 103.78387194444444,
+    "symbol": [
+      {
+        "code": "DT5",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Bedok",
+    "type": 1,
+    "latitude": 1.32398,
+    "longitude": 103.92998444444444,
+    "symbol": [
+      {
+        "code": "EW5",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 327,
+    "name": "Bedok North",
+    "type": 1,
+    "latitude": 1.3349119444444444,
+    "longitude": 103.91761,
+    "symbol": [
+      {
+        "code": "DT29",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 328,
+    "name": "Bedok Reservoir",
+    "type": 1,
+    "latitude": 1.33662,
+    "longitude": 103.93184388888889,
+    "symbol": [
+      {
+        "code": "DT30",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 319,
+    "name": "Bencoolen",
+    "type": 1,
+    "latitude": 1.298365,
+    "longitude": 103.84999,
+    "symbol": [
+      {
+        "code": "DT21",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 321,
+    "name": "Bendemeer",
+    "type": 1,
+    "latitude": 1.313705,
+    "longitude": 103.86288388888889,
+    "symbol": [
+      {
+        "code": "DT23",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Bishan",
+    "type": 1,
+    "latitude": 1.351308611111111,
+    "longitude": 103.84915444444445,
+    "symbol": [
+      {
+        "code": "NS17",
+        "color": "#ff0000"
+      },
+      {
+        "code": "CC15",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 109,
+    "name": "Boon Keng",
+    "type": 1,
+    "latitude": 1.3194322222222221,
+    "longitude": 103.86168305555556,
+    "symbol": [
+      {
+        "code": "NE9",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Boon Lay",
+    "type": 1,
+    "latitude": 1.3386027777777778,
+    "longitude": 103.7060686111111,
+    "symbol": [
+      {
+        "code": "EW27",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 217,
+    "name": "Botanic Gardens",
+    "type": 1,
+    "latitude": 1.3223122222222223,
+    "longitude": 103.81617027777777,
+    "symbol": [
+      {
+        "code": "CC19",
+        "color": "#FFA500"
+      },
+      {
+        "code": "DT9",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Braddell",
+    "type": 1,
+    "latitude": 1.3404716666666667,
+    "longitude": 103.84679777777778,
+    "symbol": [
+      {
+        "code": "NS18",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 215,
+    "name": "Bras Basah",
+    "type": 1,
+    "latitude": 1.2968616666666666,
+    "longitude": 103.8506675,
+    "symbol": [
+      {
+        "code": "CC2",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 407,
+    "name": "Bright Hill",
+    "type": 1,
+    "latitude": 1.3632833333333334,
+    "longitude": 103.83289361111112,
+    "symbol": [
+      {
+        "code": "TE7",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "name": "Buangkok",
+    "type": 1,
+    "latitude": 1.3828777777777779,
+    "longitude": 103.89312166666667,
+    "symbol": [
+      {
+        "code": "NE15",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "Bugis",
+    "type": 1,
+    "latitude": 1.29955,
+    "longitude": 103.856,
+    "symbol": [
+      {
+        "code": "EW12",
+        "color": "#00aa00"
+      },
+      {
+        "code": "DT14",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Bukit Batok",
+    "type": 1,
+    "latitude": 1.3489763888888888,
+    "longitude": 103.74954416666667,
+    "symbol": [
+      {
+        "code": "NS2",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Bukit Gombak",
+    "type": 1,
+    "latitude": 1.3586419444444444,
+    "longitude": 103.751875,
+    "symbol": [
+      {
+        "code": "NS3",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "name": "Bukit Panjang",
+    "type": 1,
+    "latitude": 1.3786605555555556,
+    "longitude": 103.76165722222223,
+    "symbol": [
+      {
+        "code": "BP6",
+        "color": "#808080"
+      },
+      {
+        "code": "DT1",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Buona Vista",
+    "type": 1,
+    "latitude": 1.3064916666666666,
+    "longitude": 103.79065333333334,
+    "symbol": [
+      {
+        "code": "EW21",
+        "color": "#00aa00"
+      },
+      {
+        "code": "CC22",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 216,
+    "name": "Caldecott",
+    "type": 1,
+    "latitude": 1.3372455555555556,
+    "longitude": 103.84016166666666,
+    "symbol": [
+      {
+        "code": "CC17",
+        "color": "#FFA500"
+      },
+      {
+        "code": "TE9",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 73,
+    "name": "Canberra",
+    "type": 1,
+    "latitude": 1.4431366666666667,
+    "longitude": 103.82971166666667,
+    "symbol": [
+      {
+        "code": "NS12",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 307,
+    "name": "Cashew",
+    "type": 1,
+    "latitude": 1.3693697222222223,
+    "longitude": 103.76469444444444,
+    "symbol": [
+      {
+        "code": "DT2",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "name": "Changi Airport",
+    "type": 1,
+    "latitude": 1.3573144444444445,
+    "longitude": 103.98836472222222,
+    "symbol": [
+      {
+        "code": "CG2",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 122,
+    "name": "Cheng Lim",
+    "type": 2,
+    "latitude": 1.3962775,
+    "longitude": 103.89379722222222,
+    "symbol": [
+      {
+        "code": "SW1",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 114,
+    "name": "Chinatown",
+    "type": 1,
+    "latitude": 1.28421,
+    "longitude": 103.845,
+    "symbol": [
+      {
+        "code": "NE4",
+        "color": "#8B008B"
+      },
+      {
+        "code": "DT19",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Chinese Garden",
+    "type": 1,
+    "latitude": 1.3422311111111112,
+    "longitude": 103.73275638888889,
+    "symbol": [
+      {
+        "code": "EW25",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Choa Chu Kang",
+    "type": 1,
+    "latitude": 1.3847241666666668,
+    "longitude": 103.74453583333333,
+    "symbol": [
+      {
+        "code": "NS4",
+        "color": "#ff0000"
+      },
+      {
+        "code": "BP1",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "City Hall",
+    "type": 1,
+    "latitude": 1.292936111111111,
+    "longitude": 103.85258583333334,
+    "symbol": [
+      {
+        "code": "NS25",
+        "color": "#ff0000"
+      },
+      {
+        "code": "EW13",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 113,
+    "name": "Clarke Quay",
+    "type": 1,
+    "latitude": 1.288386111111111,
+    "longitude": 103.84655527777778,
+    "symbol": [
+      {
+        "code": "NE5",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Clementi",
+    "type": 1,
+    "latitude": 1.3152,
+    "longitude": 103.76518277777778,
+    "symbol": [
+      {
+        "code": "EW23",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Commonwealth",
+    "type": 1,
+    "latitude": 1.302508611111111,
+    "longitude": 103.7982261111111,
+    "symbol": [
+      {
+        "code": "EW20",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 117,
+    "name": "Compassvale",
+    "type": 2,
+    "latitude": 1.3944930555555555,
+    "longitude": 103.9004925,
+    "symbol": [
+      {
+        "code": "SE1",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 132,
+    "name": "Coral Edge",
+    "type": 2,
+    "latitude": 1.3939091666666668,
+    "longitude": 103.91258083333334,
+    "symbol": [
+      {
+        "code": "PE3",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 130,
+    "name": "Cove",
+    "type": 2,
+    "latitude": 1.3992819444444444,
+    "longitude": 103.90596194444444,
+    "symbol": [
+      {
+        "code": "PE1",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 209,
+    "name": "Dakota",
+    "type": 1,
+    "latitude": 1.3083827777777777,
+    "longitude": 103.8886625,
+    "symbol": [
+      {
+        "code": "CC8",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 136,
+    "name": "Damai",
+    "type": 2,
+    "latitude": 1.4052347222222221,
+    "longitude": 103.9086036111111,
+    "symbol": [
+      {
+        "code": "PE7",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Dhoby Ghaut",
+    "type": 1,
+    "latitude": 1.2997055555555554,
+    "longitude": 103.84548805555555,
+    "symbol": [
+      {
+        "code": "NS24",
+        "color": "#ff0000"
+      },
+      {
+        "code": "NE6",
+        "color": "#8B008B"
+      },
+      {
+        "code": "CC1",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "name": "Dover",
+    "type": 1,
+    "latitude": 1.3114080555555556,
+    "longitude": 103.7786336111111,
+    "symbol": [
+      {
+        "code": "EW22",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 303,
+    "name": "Downtown",
+    "type": 1,
+    "latitude": 1.2792,
+    "longitude": 103.852,
+    "symbol": [
+      {
+        "code": "DT17",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 214,
+    "name": "Esplanade",
+    "type": 1,
+    "latitude": 1.2933216666666667,
+    "longitude": 103.85550416666666,
+    "symbol": [
+      {
+        "code": "CC3",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "name": "Eunos",
+    "type": 1,
+    "latitude": 1.3197555555555556,
+    "longitude": 103.90310555555556,
+    "symbol": [
+      {
+        "code": "EW7",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "name": "Expo",
+    "type": 1,
+    "latitude": 1.3351569444444444,
+    "longitude": 103.96260805555555,
+    "symbol": [
+      {
+        "code": "CG1",
+        "color": "#00aa00"
+      },
+      {
+        "code": "DT35",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "name": "Fajar",
+    "type": 2,
+    "latitude": 1.3845291666666666,
+    "longitude": 103.77083666666667,
+    "symbol": [
+      {
+        "code": "BP10",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 123,
+    "name": "Farmway",
+    "type": 2,
+    "latitude": 1.3971702777777777,
+    "longitude": 103.88930472222222,
+    "symbol": [
+      {
+        "code": "SW2",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 110,
+    "name": "Farrer Park",
+    "type": 1,
+    "latitude": 1.3123597222222223,
+    "longitude": 103.85417722222222,
+    "symbol": [
+      {
+        "code": "NE8",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 218,
+    "name": "Farrer Road",
+    "type": 1,
+    "latitude": 1.3175105555555555,
+    "longitude": 103.8075861111111,
+    "symbol": [
+      {
+        "code": "CC20",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 126,
+    "name": "Fernvale",
+    "type": 2,
+    "latitude": 1.3918858333333333,
+    "longitude": 103.87630861111111,
+    "symbol": [
+      {
+        "code": "SW5",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 318,
+    "name": "Fort Canning",
+    "type": 1,
+    "latitude": 1.2927338888888888,
+    "longitude": 103.84452388888889,
+    "symbol": [
+      {
+        "code": "DT20",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 422,
+    "name": "Gardens By the Bay",
+    "type": 1,
+    "latitude": 1.2784872222222223,
+    "longitude": 103.86745472222222,
+    "symbol": [
+      {
+        "code": "TE22",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 322,
+    "name": "Geylang Bahru",
+    "type": 1,
+    "latitude": 1.321611111111111,
+    "longitude": 103.8719938888889,
+    "symbol": [
+      {
+        "code": "DT24",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 415,
+    "name": "Great World",
+    "type": 1,
+    "latitude": 1.2939483333333333,
+    "longitude": 103.83372083333333,
+    "symbol": [
+      {
+        "code": "TE15",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Gul Circle",
+    "type": 1,
+    "latitude": 1.3198069444444445,
+    "longitude": 103.66075,
+    "symbol": [
+      {
+        "code": "EW30",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 116,
+    "name": "HarbourFront",
+    "type": 1,
+    "latitude": 1.2654727777777777,
+    "longitude": 103.82144305555556,
+    "symbol": [
+      {
+        "code": "NE1",
+        "color": "#8B008B"
+      },
+      {
+        "code": "CC29",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 416,
+    "name": "Havelock",
+    "type": 1,
+    "latitude": 1.2885052777777777,
+    "longitude": 103.83358583333333,
+    "symbol": [
+      {
+        "code": "TE16",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 223,
+    "name": "Haw Par Villa",
+    "type": 1,
+    "latitude": 1.2825422222222223,
+    "longitude": 103.78181055555555,
+    "symbol": [
+      {
+        "code": "CC25",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 308,
+    "name": "Hillview",
+    "type": 1,
+    "latitude": 1.3624155555555555,
+    "longitude": 103.76744111111111,
+    "symbol": [
+      {
+        "code": "DT3",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 219,
+    "name": "Holland Village",
+    "type": 1,
+    "latitude": 1.3118347222222222,
+    "longitude": 103.79619194444444,
+    "symbol": [
+      {
+        "code": "CC21",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "name": "Hougang",
+    "type": 1,
+    "latitude": 1.3712922222222221,
+    "longitude": 103.89238055555556,
+    "symbol": [
+      {
+        "code": "NE14",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 320,
+    "name": "Jalan Besar",
+    "type": 1,
+    "latitude": 1.3055330555555555,
+    "longitude": 103.85541305555556,
+    "symbol": [
+      {
+        "code": "DT22",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "name": "Jelapang",
+    "type": 2,
+    "latitude": 1.3867030555555555,
+    "longitude": 103.76450333333334,
+    "symbol": [
+      {
+        "code": "BP12",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "name": "Joo Koon",
+    "type": 1,
+    "latitude": 1.3277172222222222,
+    "longitude": 103.67837527777777,
+    "symbol": [
+      {
+        "code": "EW29",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Jurong East",
+    "type": 1,
+    "latitude": 1.3329833333333334,
+    "longitude": 103.74229055555556,
+    "symbol": [
+      {
+        "code": "NS1",
+        "color": "#ff0000"
+      },
+      {
+        "code": "EW24",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 134,
+    "name": "Kadaloor",
+    "type": 2,
+    "latitude": 1.3995847222222222,
+    "longitude": 103.91648666666667,
+    "symbol": [
+      {
+        "code": "PE5",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 326,
+    "name": "Kaki Bukit",
+    "type": 1,
+    "latitude": 1.335013888888889,
+    "longitude": 103.90828888888889,
+    "symbol": [
+      {
+        "code": "DT28",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "name": "Kallang",
+    "type": 1,
+    "latitude": 1.3115016666666666,
+    "longitude": 103.87138861111112,
+    "symbol": [
+      {
+        "code": "EW10",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 120,
+    "name": "Kangkar",
+    "type": 2,
+    "latitude": 1.3839788888888889,
+    "longitude": 103.90217388888888,
+    "symbol": [
+      {
+        "code": "SE4",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 425,
+    "name": "Katong Park",
+    "type": 1,
+    "latitude": 1.2978313888888888,
+    "longitude": 103.88617888888889,
+    "symbol": [
+      {
+        "code": "TE24",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "name": "Keat Hong",
+    "type": 2,
+    "latitude": 1.3786027777777778,
+    "longitude": 103.74905555555556,
+    "symbol": [
+      {
+        "code": "BP3",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Kembangan",
+    "type": 1,
+    "latitude": 1.3210366666666666,
+    "longitude": 103.91295805555555,
+    "symbol": [
+      {
+        "code": "EW6",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 222,
+    "name": "Kent Ridge",
+    "type": 1,
+    "latitude": 1.2934625,
+    "longitude": 103.78463138888888,
+    "symbol": [
+      {
+        "code": "CC24",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Khatib",
+    "type": 1,
+    "latitude": 1.4175275,
+    "longitude": 103.8330375,
+    "symbol": [
+      {
+        "code": "NS14",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 310,
+    "name": "King Albert Park",
+    "type": 1,
+    "latitude": 1.3412230555555555,
+    "longitude": 103.77579416666667,
+    "symbol": [
+      {
+        "code": "DT6",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 105,
+    "name": "Kovan",
+    "type": 1,
+    "latitude": 1.3601791666666667,
+    "longitude": 103.88506472222222,
+    "symbol": [
+      {
+        "code": "NE13",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "name": "Kranji",
+    "type": 1,
+    "latitude": 1.4251777777777779,
+    "longitude": 103.76216527777778,
+    "symbol": [
+      {
+        "code": "NS7",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 124,
+    "name": "Kupang",
+    "type": 2,
+    "latitude": 1.3982127777777777,
+    "longitude": 103.88125611111111,
+    "symbol": [
+      {
+        "code": "SW3",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 225,
+    "name": "Labrador Park",
+    "type": 1,
+    "latitude": 1.2723327777777778,
+    "longitude": 103.80293972222222,
+    "symbol": [
+      {
+        "code": "CC27",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Lakeside",
+    "type": 1,
+    "latitude": 1.3442591666666666,
+    "longitude": 103.72094916666667,
+    "symbol": [
+      {
+        "code": "EW26",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Lavender",
+    "type": 1,
+    "latitude": 1.3073569444444444,
+    "longitude": 103.86282916666667,
+    "symbol": [
+      {
+        "code": "EW11",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 127,
+    "name": "Layar",
+    "type": 2,
+    "latitude": 1.3920797222222223,
+    "longitude": 103.88002972222222,
+    "symbol": [
+      {
+        "code": "SW6",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 405,
+    "name": "Lentor",
+    "type": 1,
+    "latitude": 1.3855066666666667,
+    "longitude": 103.83574388888889,
+    "symbol": [
+      {
+        "code": "TE5",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 111,
+    "name": "Little India",
+    "type": 1,
+    "latitude": 1.3071552777777777,
+    "longitude": 103.84860833333333,
+    "symbol": [
+      {
+        "code": "NE7",
+        "color": "#8B008B"
+      },
+      {
+        "code": "DT12",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 203,
+    "name": "Lorong Chuan",
+    "type": 1,
+    "latitude": 1.3516122222222222,
+    "longitude": 103.86415194444444,
+    "symbol": [
+      {
+        "code": "CC14",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 207,
+    "name": "MacPherson",
+    "type": 1,
+    "latitude": 1.326326111111111,
+    "longitude": 103.88957111111111,
+    "symbol": [
+      {
+        "code": "CC10",
+        "color": "#FFA500"
+      },
+      {
+        "code": "DT26",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Marina Bay",
+    "type": 1,
+    "latitude": 1.2761505555555555,
+    "longitude": 103.85509388888889,
+    "symbol": [
+      {
+        "code": "NS27",
+        "color": "#ff0000"
+      },
+      {
+        "code": "CE2",
+        "color": "#FFA500"
+      },
+      {
+        "code": "TE20",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "name": "Marina South Pier",
+    "type": 1,
+    "latitude": 1.2713219444444444,
+    "longitude": 103.86271777777777,
+    "symbol": [
+      {
+        "code": "NS28",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 427,
+    "name": "Marine Parade",
+    "type": 1,
+    "latitude": 1.3026116666666667,
+    "longitude": 103.90498305555556,
+    "symbol": [
+      {
+        "code": "TE26",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 428,
+    "name": "Marine Terrace",
+    "type": 1,
+    "latitude": 1.306665,
+    "longitude": 103.91510666666667,
+    "symbol": [
+      {
+        "code": "TE27",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "name": "Marsiling",
+    "type": 1,
+    "latitude": 1.4325977777777779,
+    "longitude": 103.77400416666667,
+    "symbol": [
+      {
+        "code": "NS8",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 205,
+    "name": "Marymount",
+    "type": 1,
+    "latitude": 1.3487072222222223,
+    "longitude": 103.83942305555556,
+    "symbol": [
+      {
+        "code": "CC16",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 323,
+    "name": "Mattar",
+    "type": 1,
+    "latitude": 1.3269280555555556,
+    "longitude": 103.8831511111111,
+    "symbol": [
+      {
+        "code": "DT25",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 418,
+    "name": "Maxwell",
+    "type": 1,
+    "latitude": 1.2805333333333333,
+    "longitude": 103.84388361111111,
+    "symbol": [
+      {
+        "code": "TE18",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 406,
+    "name": "Mayflower",
+    "type": 1,
+    "latitude": 1.3714633333333333,
+    "longitude": 103.83656777777777,
+    "symbol": [
+      {
+        "code": "TE6",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 131,
+    "name": "Meridian",
+    "type": 2,
+    "latitude": 1.3969119444444444,
+    "longitude": 103.90895027777778,
+    "symbol": [
+      {
+        "code": "PE2",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 210,
+    "name": "Mountbatten",
+    "type": 1,
+    "latitude": 1.3062019444444444,
+    "longitude": 103.88252805555555,
+    "symbol": [
+      {
+        "code": "CC7",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 412,
+    "name": "Napier",
+    "type": 1,
+    "latitude": 1.3067822222222223,
+    "longitude": 103.81895666666667,
+    "symbol": [
+      {
+        "code": "TE12",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Newton",
+    "type": 1,
+    "latitude": 1.3136072222222221,
+    "longitude": 103.83781111111111,
+    "symbol": [
+      {
+        "code": "NS21",
+        "color": "#ff0000"
+      },
+      {
+        "code": "DT11",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 141,
+    "name": "Nibong",
+    "type": 2,
+    "latitude": 1.4118705555555555,
+    "longitude": 103.90031388888889,
+    "symbol": [
+      {
+        "code": "PW5",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 212,
+    "name": "Nicoll Highway",
+    "type": 1,
+    "latitude": 1.2997669444444444,
+    "longitude": 103.86363694444445,
+    "symbol": [
+      {
+        "code": "CC5",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Novena",
+    "type": 1,
+    "latitude": 1.3204408333333333,
+    "longitude": 103.84382555555555,
+    "symbol": [
+      {
+        "code": "NS20",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 135,
+    "name": "Oasis",
+    "type": 2,
+    "latitude": 1.4022866666666667,
+    "longitude": 103.91272722222222,
+    "symbol": [
+      {
+        "code": "PE6",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 221,
+    "name": "one-north",
+    "type": 1,
+    "latitude": 1.29976,
+    "longitude": 103.7874575,
+    "symbol": [
+      {
+        "code": "CC23",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Orchard",
+    "type": 1,
+    "latitude": 1.3030441666666666,
+    "longitude": 103.831375,
+    "symbol": [
+      {
+        "code": "NS22",
+        "color": "#ff0000"
+      },
+      {
+        "code": "TE14",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 413,
+    "name": "Orchard Boulevard",
+    "type": 1,
+    "latitude": 1.3024222222222221,
+    "longitude": 103.82386861111111,
+    "symbol": [
+      {
+        "code": "TE13",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Outram Park",
+    "type": 1,
+    "latitude": 1.2813297222222222,
+    "longitude": 103.8391375,
+    "symbol": [
+      {
+        "code": "EW16",
+        "color": "#00aa00"
+      },
+      {
+        "code": "NE3",
+        "color": "#8B008B"
+      },
+      {
+        "code": "TE17",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 224,
+    "name": "Pasir Panjang",
+    "type": 1,
+    "latitude": 1.276213611111111,
+    "longitude": 103.79135027777778,
+    "symbol": [
+      {
+        "code": "CC26",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Pasir Ris",
+    "type": 1,
+    "latitude": 1.3730416666666667,
+    "longitude": 103.949285,
+    "symbol": [
+      {
+        "code": "EW1",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Paya Lebar",
+    "type": 1,
+    "latitude": 1.3174302777777778,
+    "longitude": 103.89217888888889,
+    "symbol": [
+      {
+        "code": "EW8",
+        "color": "#00aa00"
+      },
+      {
+        "code": "CC9",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "name": "Pending",
+    "type": 2,
+    "latitude": 1.3761377777777777,
+    "longitude": 103.77127916666667,
+    "symbol": [
+      {
+        "code": "BP8",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "name": "Petir",
+    "type": 2,
+    "latitude": 1.3777502777777777,
+    "longitude": 103.76666888888889,
+    "symbol": [
+      {
+        "code": "BP7",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "name": "Phoenix",
+    "type": 2,
+    "latitude": 1.3786188888888888,
+    "longitude": 103.75803416666666,
+    "symbol": [
+      {
+        "code": "BP5",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "name": "Pioneer",
+    "type": 1,
+    "latitude": 1.3375869444444444,
+    "longitude": 103.6973213888889,
+    "symbol": [
+      {
+        "code": "EW28",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 108,
+    "name": "Potong Pasir",
+    "type": 1,
+    "latitude": 1.3313794444444444,
+    "longitude": 103.86905555555556,
+    "symbol": [
+      {
+        "code": "NE10",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 213,
+    "name": "Promenade",
+    "type": 1,
+    "latitude": 1.2932180555555555,
+    "longitude": 103.86099916666667,
+    "symbol": [
+      {
+        "code": "CC4",
+        "color": "#FFA500"
+      },
+      {
+        "code": "DT15",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 101,
+    "name": "Punggol",
+    "type": 1,
+    "latitude": 1.404558888888889,
+    "longitude": 103.90209055555556,
+    "symbol": [
+      {
+        "code": "NE17",
+        "color": "#8B008B"
+      },
+      {
+        "code": "PTC",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 139,
+    "name": "Punggol Point",
+    "type": 2,
+    "latitude": 1.4168486111111112,
+    "longitude": 103.90665083333333,
+    "symbol": [
+      {
+        "code": "PW3",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Queenstown",
+    "type": 1,
+    "latitude": 1.2945366666666667,
+    "longitude": 103.806105,
+    "symbol": [
+      {
+        "code": "EW19",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Raffles Place",
+    "type": 1,
+    "latitude": 1.2841255555555555,
+    "longitude": 103.85146166666667,
+    "symbol": [
+      {
+        "code": "NS26",
+        "color": "#ff0000"
+      },
+      {
+        "code": "EW14",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 121,
+    "name": "Ranggung",
+    "type": 2,
+    "latitude": 1.384233611111111,
+    "longitude": 103.89719472222222,
+    "symbol": [
+      {
+        "code": "SE5",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Redhill",
+    "type": 1,
+    "latitude": 1.289638611111111,
+    "longitude": 103.81675944444444,
+    "symbol": [
+      {
+        "code": "EW18",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 129,
+    "name": "Renjong",
+    "type": 2,
+    "latitude": 1.3867238888888889,
+    "longitude": 103.89053944444444,
+    "symbol": [
+      {
+        "code": "SW8",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 133,
+    "name": "Riviera",
+    "type": 2,
+    "latitude": 1.3945244444444445,
+    "longitude": 103.91616611111111,
+    "symbol": [
+      {
+        "code": "PE4",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 317,
+    "name": "Rochor",
+    "type": 1,
+    "latitude": 1.303916388888889,
+    "longitude": 103.85242166666667,
+    "symbol": [
+      {
+        "code": "DT13",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 118,
+    "name": "Rumbia",
+    "type": 2,
+    "latitude": 1.3914686111111112,
+    "longitude": 103.90597361111111,
+    "symbol": [
+      {
+        "code": "SE2",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 137,
+    "name": "Sam Kee",
+    "type": 2,
+    "latitude": 1.4096127777777778,
+    "longitude": 103.90483166666667,
+    "symbol": [
+      {
+        "code": "PW1",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 140,
+    "name": "Samudera",
+    "type": 2,
+    "latitude": 1.4159016666666666,
+    "longitude": 103.90215638888888,
+    "symbol": [
+      {
+        "code": "PW4",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "name": "Segar",
+    "type": 2,
+    "latitude": 1.3877722222222222,
+    "longitude": 103.76959833333333,
+    "symbol": [
+      {
+        "code": "BP11",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "name": "Sembawang",
+    "type": 1,
+    "latitude": 1.4490508333333334,
+    "longitude": 103.82004611111111,
+    "symbol": [
+      {
+        "code": "NS11",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "name": "Sengkang",
+    "type": 1,
+    "latitude": 1.3916947222222222,
+    "longitude": 103.89548472222222,
+    "symbol": [
+      {
+        "code": "NE16",
+        "color": "#8B008B"
+      },
+      {
+        "code": "STC",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "name": "Senja",
+    "type": 2,
+    "latitude": 1.3826922222222222,
+    "longitude": 103.76236722222222,
+    "symbol": [
+      {
+        "code": "BP13",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 106,
+    "name": "Serangoon",
+    "type": 1,
+    "latitude": 1.3505952777777779,
+    "longitude": 103.87236805555555,
+    "symbol": [
+      {
+        "code": "NE12",
+        "color": "#8B008B"
+      },
+      {
+        "code": "CC13",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 419,
+    "name": "Shenton Way",
+    "type": 1,
+    "latitude": 1.2777166666666666,
+    "longitude": 103.8503675,
+    "symbol": [
+      {
+        "code": "TE19",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 429,
+    "name": "Siglap",
+    "type": 1,
+    "latitude": 1.310008611111111,
+    "longitude": 103.93002583333333,
+    "symbol": [
+      {
+        "code": "TE28",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Simei",
+    "type": 1,
+    "latitude": 1.3432027777777777,
+    "longitude": 103.95337166666667,
+    "symbol": [
+      {
+        "code": "EW3",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 311,
+    "name": "Sixth Avenue",
+    "type": 1,
+    "latitude": 1.3307422222222223,
+    "longitude": 103.79739472222222,
+    "symbol": [
+      {
+        "code": "DT7",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Somerset",
+    "type": 1,
+    "latitude": 1.30026,
+    "longitude": 103.83907527777778,
+    "symbol": [
+      {
+        "code": "NS23",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 143,
+    "name": "Soo Teck",
+    "type": 2,
+    "latitude": 1.4050886111111112,
+    "longitude": 103.89720972222223,
+    "symbol": [
+      {
+        "code": "PW7",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "name": "South View",
+    "type": 2,
+    "latitude": 1.3802933333333334,
+    "longitude": 103.7452938888889,
+    "symbol": [
+      {
+        "code": "BP2",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 404,
+    "name": "Springleaf",
+    "type": 1,
+    "latitude": 1.3975811111111112,
+    "longitude": 103.81785694444444,
+    "symbol": [
+      {
+        "code": "TE4",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 211,
+    "name": "Stadium",
+    "type": 1,
+    "latitude": 1.3028405555555556,
+    "longitude": 103.87535027777778,
+    "symbol": [
+      {
+        "code": "CC6",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 314,
+    "name": "Stevens",
+    "type": 1,
+    "latitude": 1.3193344444444444,
+    "longitude": 103.82556694444445,
+    "symbol": [
+      {
+        "code": "DT10",
+        "color": "#0067B2"
+      },
+      {
+        "code": "TE11",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 142,
+    "name": "Sumang",
+    "type": 2,
+    "latitude": 1.4084525,
+    "longitude": 103.89855833333333,
+    "symbol": [
+      {
+        "code": "PW6",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 206,
+    "name": "Tai Seng",
+    "type": 1,
+    "latitude": 1.3354333333333333,
+    "longitude": 103.888195,
+    "symbol": [
+      {
+        "code": "CC11",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "name": "Tampines",
+    "type": 1,
+    "latitude": 1.3552619444444445,
+    "longitude": 103.94302305555556,
+    "symbol": [
+      {
+        "code": "EW2",
+        "color": "#00aa00"
+      },
+      {
+        "code": "DT32",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 331,
+    "name": "Tampines East",
+    "type": 1,
+    "latitude": 1.3561080555555556,
+    "longitude": 103.95478388888888,
+    "symbol": [
+      {
+        "code": "DT33",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 329,
+    "name": "Tampines West",
+    "type": 1,
+    "latitude": 1.3455388888888888,
+    "longitude": 103.93847805555555,
+    "symbol": [
+      {
+        "code": "DT31",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 312,
+    "name": "Tan Kah Kee",
+    "type": 1,
+    "latitude": 1.32591,
+    "longitude": 103.80727805555556,
+    "symbol": [
+      {
+        "code": "DT8",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Tanah Merah",
+    "type": 1,
+    "latitude": 1.3271872222222223,
+    "longitude": 103.94634638888888,
+    "symbol": [
+      {
+        "code": "EW4",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 426,
+    "name": "Tanjong Katong",
+    "type": 1,
+    "latitude": 1.2993191666666666,
+    "longitude": 103.8973686111111,
+    "symbol": [
+      {
+        "code": "TE25",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Tanjong Pagar",
+    "type": 1,
+    "latitude": 1.2765169444444444,
+    "longitude": 103.84585472222223,
+    "symbol": [
+      {
+        "code": "EW15",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 424,
+    "name": "Tanjong Rhu",
+    "type": 1,
+    "latitude": 1.297265,
+    "longitude": 103.87345333333333,
+    "symbol": [
+      {
+        "code": "TE23",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "name": "Teck Whye",
+    "type": 2,
+    "latitude": 1.3766508333333334,
+    "longitude": 103.75370083333334,
+    "symbol": [
+      {
+        "code": "BP4",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 304,
+    "name": "Telok Ayer",
+    "type": 1,
+    "latitude": 1.28228,
+    "longitude": 103.848,
+    "symbol": [
+      {
+        "code": "DT18",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 226,
+    "name": "Telok Blangah",
+    "type": 1,
+    "latitude": 1.2707533333333334,
+    "longitude": 103.80974861111112,
+    "symbol": [
+      {
+        "code": "CC28",
+        "color": "#FFA500"
+      }
+    ]
+  },
+  {
+    "id": 125,
+    "name": "Thanggam",
+    "type": 2,
+    "latitude": 1.3973180555555555,
+    "longitude": 103.87563527777777,
+    "symbol": [
+      {
+        "code": "SW4",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Tiong Bahru",
+    "type": 1,
+    "latitude": 1.286198888888889,
+    "longitude": 103.82702388888889,
+    "symbol": [
+      {
+        "code": "EW17",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Toa Payoh",
+    "type": 1,
+    "latitude": 1.332678611111111,
+    "longitude": 103.84742083333333,
+    "symbol": [
+      {
+        "code": "NS19",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 128,
+    "name": "Tongkang",
+    "type": 2,
+    "latitude": 1.3893480555555555,
+    "longitude": 103.88584416666667,
+    "symbol": [
+      {
+        "code": "SW7",
+        "color": "#808080"
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "name": "Tuas Crescent",
+    "type": 1,
+    "latitude": 1.3213169444444444,
+    "longitude": 103.64884305555556,
+    "symbol": [
+      {
+        "code": "EW31",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "name": "Tuas Link",
+    "type": 1,
+    "latitude": 1.3402961111111111,
+    "longitude": 103.63679194444444,
+    "symbol": [
+      {
+        "code": "EW33",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 71,
+    "name": "Tuas West Road",
+    "type": 1,
+    "latitude": 1.3298630555555555,
+    "longitude": 103.63981805555555,
+    "symbol": [
+      {
+        "code": "EW32",
+        "color": "#00aa00"
+      }
+    ]
+  },
+  {
+    "id": 325,
+    "name": "Ubi",
+    "type": 1,
+    "latitude": 1.3299980555555555,
+    "longitude": 103.89921111111111,
+    "symbol": [
+      {
+        "code": "DT27",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 332,
+    "name": "Upper Changi",
+    "type": 1,
+    "latitude": 1.3414161111111111,
+    "longitude": 103.96154694444445,
+    "symbol": [
+      {
+        "code": "DT34",
+        "color": "#0067B2"
+      }
+    ]
+  },
+  {
+    "id": 408,
+    "name": "Upper Thomson",
+    "type": 1,
+    "latitude": 1.354416388888889,
+    "longitude": 103.8328986111111,
+    "symbol": [
+      {
+        "code": "TE8",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "name": "Woodlands",
+    "type": 1,
+    "latitude": 1.4360575,
+    "longitude": 103.78793888888889,
+    "symbol": [
+      {
+        "code": "NS9",
+        "color": "#ff0000"
+      },
+      {
+        "code": "TE2",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 401,
+    "name": "Woodlands North",
+    "type": 1,
+    "latitude": 1.4482925,
+    "longitude": 103.78569277777778,
+    "symbol": [
+      {
+        "code": "TE1",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 403,
+    "name": "Woodlands South",
+    "type": 1,
+    "latitude": 1.427396111111111,
+    "longitude": 103.79326416666666,
+    "symbol": [
+      {
+        "code": "TE3",
+        "color": "#9D5B25"
+      }
+    ]
+  },
+  {
+    "id": 107,
+    "name": "Woodleigh",
+    "type": 1,
+    "latitude": 1.33919,
+    "longitude": 103.87081833333333,
+    "symbol": [
+      {
+        "code": "NE11",
+        "color": "#8B008B"
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "name": "Yew Tee",
+    "type": 1,
+    "latitude": 1.397535,
+    "longitude": 103.747405,
+    "symbol": [
+      {
+        "code": "NS5",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Yio Chu Kang",
+    "type": 1,
+    "latitude": 1.3817638888888888,
+    "longitude": 103.84494194444444,
+    "symbol": [
+      {
+        "code": "NS15",
+        "color": "#ff0000"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Yishun",
+    "type": 1,
+    "latitude": 1.4294155555555557,
+    "longitude": 103.8350025,
+    "symbol": [
+      {
+        "code": "NS13",
+        "color": "#ff0000"
+      }
+    ]
+  }
+]

@@ -21,9 +21,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Grant location access to get accurate nearby bus stops and live route updates.</string>
+	<string>Location access helps show nearby bus stops. You can choose to enable it or continue without it.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Grant location access to get accurate nearby bus stops and live route updates.</string>
+	<string>Location access helps show nearby bus stops. You can choose to enable it or continue without it.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>PUBLIC_API_KEY</key>
 	<string>$(PUBLIC_API_KEY)</string>
 	<key>UIApplicationSceneManifest</key>

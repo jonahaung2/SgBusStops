@@ -8,6 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		472926DB2F4706D200B5E2F4 /* Services in Frameworks */ = {isa = PBXBuildFile; productRef = 472926DA2F4706D200B5E2F4 /* Services */; };
+		478884602F78464C00E3D76A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 478884412F7845A700E3D76A /* WidgetKit.framework */; };
+		478884612F78464C00E3D76A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 478884432F7845A700E3D76A /* SwiftUI.framework */; };
+		478884722F78464D00E3D76A /* SgBusArrivalWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4788845F2F78464C00E3D76A /* SgBusArrivalWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		478884772F7846A300E3D76A /* BusArrivalAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478884392F78455600E3D76A /* BusArrivalAttributes.swift */; };
+		478884782F7846A300E3D76A /* BusArrivalAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478884392F78455600E3D76A /* BusArrivalAttributes.swift */; };
+		478884792F7846A900E3D76A /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788843A2F78456000E3D76A /* LiveActivityManager.swift */; };
+		4788847A2F7846A900E3D76A /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788843A2F78456000E3D76A /* LiveActivityManager.swift */; };
+		47C6C6A92F78E21D00781355 /* ArrivalActivityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6A82F78E21D00781355 /* ArrivalActivityBadge.swift */; };
+		47C6C6AA2F78E21D00781355 /* ArrivalActivityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6A82F78E21D00781355 /* ArrivalActivityBadge.swift */; };
+		47C6C6AC2F78E23200781355 /* LiveActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6AB2F78E23200781355 /* LiveActivityModel.swift */; };
+		47C6C6AD2F78E23200781355 /* LiveActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6AB2F78E23200781355 /* LiveActivityModel.swift */; };
+		47C6C6AF2F78E28700781355 /* BusNumberText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6AE2F78E28700781355 /* BusNumberText.swift */; };
+		47C6C6B02F78E28700781355 /* BusNumberText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6AE2F78E28700781355 /* BusNumberText.swift */; };
+		47C6C6B22F79585700781355 /* PreciseRepeatingTaskModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6B12F79585700781355 /* PreciseRepeatingTaskModifier.swift */; };
+		47C6C6B32F79585700781355 /* PreciseRepeatingTaskModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6B12F79585700781355 /* PreciseRepeatingTaskModifier.swift */; };
+		47C6C6B52F79589000781355 /* PreciseRepeater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6B42F79589000781355 /* PreciseRepeater.swift */; };
+		47C6C6B62F79589000781355 /* PreciseRepeater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6B42F79589000781355 /* PreciseRepeater.swift */; };
+		47C6C6B82F7958CA00781355 /* AppLifecycleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6B72F7958CA00781355 /* AppLifecycleHandler.swift */; };
+		47C6C6B92F7958CA00781355 /* AppLifecycleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6B72F7958CA00781355 /* AppLifecycleHandler.swift */; };
+		47C6C6BB2F795E8700781355 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6BA2F795E8400781355 /* Date++.swift */; };
+		47C6C6BC2F795E8700781355 /* Date++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6C6BA2F795E8400781355 /* Date++.swift */; };
+		47EBFD062F7667B90096A936 /* SgMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 47EBFD052F7667B90096A936 /* SgMaps */; };
 		47EF4A252F58BFA00028A2A5 /* SgMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 47EF4A242F58BFA00028A2A5 /* SgMaps */; };
 		47EF4A282F58C0D10028A2A5 /* SgMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 47EF4A272F58C0D10028A2A5 /* SgMaps */; };
 		47EF4A2B2F58C1250028A2A5 /* Services in Frameworks */ = {isa = PBXBuildFile; productRef = 47EF4A2A2F58C1250028A2A5 /* Services */; };
@@ -28,9 +50,27 @@
 			remoteGlobalIDString = 47808E842F46201400DD7139;
 			remoteInfo = SgBusStops;
 		};
+		478884702F78464D00E3D76A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47808E7D2F46201400DD7139 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4788845E2F78464C00E3D76A;
+			remoteInfo = SgBusArrivalWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4788845A2F7845A800E3D76A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				478884722F78464D00E3D76A /* SgBusArrivalWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		479E26322F6BAF5E00E6B886 /* Embed ExtensionKit Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -47,6 +87,22 @@
 		47808E852F46201400DD7139 /* SgBusStops.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SgBusStops.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47808E922F46201600DD7139 /* SgBusStopsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SgBusStopsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		47808E9C2F46201600DD7139 /* SgBusStopsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SgBusStopsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		478884392F78455600E3D76A /* BusArrivalAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalAttributes.swift; sourceTree = "<group>"; };
+		4788843A2F78456000E3D76A /* LiveActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
+		478884412F7845A700E3D76A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		478884432F7845A700E3D76A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		4788845F2F78464C00E3D76A /* SgBusArrivalWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SgBusArrivalWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		47C6C6A82F78E21D00781355 /* ArrivalActivityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrivalActivityBadge.swift; sourceTree = "<group>"; };
+		47C6C6AB2F78E23200781355 /* LiveActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityModel.swift; sourceTree = "<group>"; };
+		47C6C6AE2F78E28700781355 /* BusNumberText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusNumberText.swift; sourceTree = "<group>"; };
+		47C6C6B12F79585700781355 /* PreciseRepeatingTaskModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreciseRepeatingTaskModifier.swift; sourceTree = "<group>"; };
+		47C6C6B42F79589000781355 /* PreciseRepeater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreciseRepeater.swift; sourceTree = "<group>"; };
+		47C6C6B72F7958CA00781355 /* AppLifecycleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleHandler.swift; sourceTree = "<group>"; };
+		47C6C6BA2F795E8400781355 /* Date++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++.swift"; sourceTree = "<group>"; };
+		47EBFB222F76659E0096A936 /* Client */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Client; sourceTree = "<group>"; };
+		47EBFB232F76659E0096A936 /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Models; sourceTree = "<group>"; };
+		47EBFB242F76659E0096A936 /* Services */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Services; sourceTree = "<group>"; };
+		47EBFB252F76659E0096A936 /* UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = UI; sourceTree = "<group>"; };
 		A1B2C4012F47010100DD7139 /* Config/App.Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/App.Debug.xcconfig; sourceTree = "<group>"; };
 		A1B2C4022F47010100DD7139 /* Config/App.Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/App.Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +114,13 @@
 				Resources/Info.plist,
 			);
 			target = 47808E842F46201400DD7139 /* SgBusStops */;
+		};
+		478884762F78464D00E3D76A /* Exceptions for "SgBusArrivalWidget" folder in "SgBusArrivalWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4788845E2F78464C00E3D76A /* SgBusArrivalWidgetExtension */;
 		};
 		47BCA1DD2F46CA730082BF21 /* Exceptions for "SgBusStops" folder in "SgBusStopsTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -96,6 +159,14 @@
 			path = SgBusStopsUITests;
 			sourceTree = "<group>";
 		};
+		478884622F78464C00E3D76A /* SgBusArrivalWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				478884762F78464D00E3D76A /* Exceptions for "SgBusArrivalWidget" folder in "SgBusArrivalWidgetExtension" target */,
+			);
+			path = SgBusArrivalWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47EBFD062F7667B90096A936 /* SgMaps in Frameworks */,
 				47EF4A2B2F58C1250028A2A5 /* Services in Frameworks */,
 				472926DB2F4706D200B5E2F4 /* Services in Frameworks */,
 				47EF4A252F58BFA00028A2A5 /* SgMaps in Frameworks */,
@@ -124,6 +196,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4788845C2F78464C00E3D76A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				478884612F78464C00E3D76A /* SwiftUI.framework in Frameworks */,
+				478884602F78464C00E3D76A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -139,9 +220,13 @@
 		47808E7C2F46201400DD7139 = {
 			isa = PBXGroup;
 			children = (
+				478884382F78452300E3D76A /* Shared */,
+				47EBFB262F76659E0096A936 /* Packages */,
 				47808E872F46201400DD7139 /* SgBusStops */,
 				47808E952F46201600DD7139 /* SgBusStopsTests */,
 				47808E9F2F46201600DD7139 /* SgBusStopsUITests */,
+				478884622F78464C00E3D76A /* SgBusArrivalWidget */,
+				478884402F7845A700E3D76A /* Frameworks */,
 				47808E862F46201400DD7139 /* Products */,
 				4748E7202F46342E00AEC6AC /* Recovered References */,
 			);
@@ -153,8 +238,45 @@
 				47808E852F46201400DD7139 /* SgBusStops.app */,
 				47808E922F46201600DD7139 /* SgBusStopsTests.xctest */,
 				47808E9C2F46201600DD7139 /* SgBusStopsUITests.xctest */,
+				4788845F2F78464C00E3D76A /* SgBusArrivalWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		478884382F78452300E3D76A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				47C6C6BA2F795E8400781355 /* Date++.swift */,
+				47C6C6AE2F78E28700781355 /* BusNumberText.swift */,
+				478884392F78455600E3D76A /* BusArrivalAttributes.swift */,
+				4788843A2F78456000E3D76A /* LiveActivityManager.swift */,
+				47C6C6AB2F78E23200781355 /* LiveActivityModel.swift */,
+				47C6C6B42F79589000781355 /* PreciseRepeater.swift */,
+				47C6C6B72F7958CA00781355 /* AppLifecycleHandler.swift */,
+				47C6C6A82F78E21D00781355 /* ArrivalActivityBadge.swift */,
+				47C6C6B12F79585700781355 /* PreciseRepeatingTaskModifier.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		478884402F7845A700E3D76A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				478884412F7845A700E3D76A /* WidgetKit.framework */,
+				478884432F7845A700E3D76A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		47EBFB262F76659E0096A936 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				47EBFB222F76659E0096A936 /* Client */,
+				47EBFB232F76659E0096A936 /* Models */,
+				47EBFB242F76659E0096A936 /* Services */,
+				47EBFB252F76659E0096A936 /* UI */,
+			);
+			path = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,10 +290,12 @@
 				47808E822F46201400DD7139 /* Frameworks */,
 				47808E832F46201400DD7139 /* Resources */,
 				479E26322F6BAF5E00E6B886 /* Embed ExtensionKit Extensions */,
+				4788845A2F7845A800E3D76A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				478884712F78464D00E3D76A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				47808E872F46201400DD7139 /* SgBusStops */,
@@ -182,6 +306,7 @@
 				47EF4A242F58BFA00028A2A5 /* SgMaps */,
 				47EF4A272F58C0D10028A2A5 /* SgMaps */,
 				47EF4A2A2F58C1250028A2A5 /* Services */,
+				47EBFD052F7667B90096A936 /* SgMaps */,
 			);
 			productName = SgBusStops;
 			productReference = 47808E852F46201400DD7139 /* SgBusStops.app */;
@@ -233,6 +358,28 @@
 			productReference = 47808E9C2F46201600DD7139 /* SgBusStopsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		4788845E2F78464C00E3D76A /* SgBusArrivalWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 478884732F78464D00E3D76A /* Build configuration list for PBXNativeTarget "SgBusArrivalWidgetExtension" */;
+			buildPhases = (
+				4788845B2F78464C00E3D76A /* Sources */,
+				4788845C2F78464C00E3D76A /* Frameworks */,
+				4788845D2F78464C00E3D76A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				478884622F78464C00E3D76A /* SgBusArrivalWidget */,
+			);
+			name = SgBusArrivalWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = SgBusArrivalWidgetExtension;
+			productReference = 4788845F2F78464C00E3D76A /* SgBusArrivalWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -254,6 +401,9 @@
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = 47808E842F46201400DD7139;
 					};
+					4788845E2F78464C00E3D76A = {
+						CreatedOnToolsVersion = 26.3;
+					};
 				};
 			};
 			buildConfigurationList = 47808E802F46201400DD7139 /* Build configuration list for PBXProject "SgBusStops" */;
@@ -266,8 +416,7 @@
 			mainGroup = 47808E7C2F46201400DD7139;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				47EF4A262F58C0D10028A2A5 /* XCLocalSwiftPackageReference "Packages/SgMaps/SgMaps" */,
-				47EF4A292F58C1250028A2A5 /* XCLocalSwiftPackageReference "Packages/Services" */,
+				47EBFD042F7667B90096A936 /* XCLocalSwiftPackageReference "Packages/SgMaps" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 47808E862F46201400DD7139 /* Products */;
@@ -277,6 +426,7 @@
 				47808E842F46201400DD7139 /* SgBusStops */,
 				47808E912F46201600DD7139 /* SgBusStopsTests */,
 				47808E9B2F46201600DD7139 /* SgBusStopsUITests */,
+				4788845E2F78464C00E3D76A /* SgBusArrivalWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -303,6 +453,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4788845D2F78464C00E3D76A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -310,6 +467,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				478884792F7846A900E3D76A /* LiveActivityManager.swift in Sources */,
+				47C6C6B22F79585700781355 /* PreciseRepeatingTaskModifier.swift in Sources */,
+				47C6C6BC2F795E8700781355 /* Date++.swift in Sources */,
+				47C6C6AA2F78E21D00781355 /* ArrivalActivityBadge.swift in Sources */,
+				47C6C6B02F78E28700781355 /* BusNumberText.swift in Sources */,
+				47C6C6AD2F78E23200781355 /* LiveActivityModel.swift in Sources */,
+				47C6C6B52F79589000781355 /* PreciseRepeater.swift in Sources */,
+				47C6C6B82F7958CA00781355 /* AppLifecycleHandler.swift in Sources */,
+				478884772F7846A300E3D76A /* BusArrivalAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +493,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4788845B2F78464C00E3D76A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4788847A2F7846A900E3D76A /* LiveActivityManager.swift in Sources */,
+				47C6C6A92F78E21D00781355 /* ArrivalActivityBadge.swift in Sources */,
+				47C6C6B92F7958CA00781355 /* AppLifecycleHandler.swift in Sources */,
+				47C6C6B32F79585700781355 /* PreciseRepeatingTaskModifier.swift in Sources */,
+				47C6C6AF2F78E28700781355 /* BusNumberText.swift in Sources */,
+				47C6C6B62F79589000781355 /* PreciseRepeater.swift in Sources */,
+				47C6C6BB2F795E8700781355 /* Date++.swift in Sources */,
+				47C6C6AC2F78E23200781355 /* LiveActivityModel.swift in Sources */,
+				478884782F7846A300E3D76A /* BusArrivalAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -339,6 +521,11 @@
 			isa = PBXTargetDependency;
 			target = 47808E842F46201400DD7139 /* SgBusStops */;
 			targetProxy = 47808E9D2F46201600DD7139 /* PBXContainerItemProxy */;
+		};
+		478884712F78464D00E3D76A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4788845E2F78464C00E3D76A /* SgBusArrivalWidgetExtension */;
+			targetProxy = 478884702F78464D00E3D76A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -485,11 +672,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-Stops";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -525,11 +713,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-Stops";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -555,7 +744,7 @@
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-StopsTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -577,7 +766,7 @@
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-StopsTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -597,7 +786,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HJ9L53D9PB;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-StopsUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -627,6 +816,68 @@
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = SgBusStops;
+			};
+			name = Release;
+		};
+		478884742F78464D00E3D76A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HJ9L53D9PB;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SgBusArrivalWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SgBusArrivalWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-Stops.SgBusArrivalWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		478884752F78464D00E3D76A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HJ9L53D9PB;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SgBusArrivalWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SgBusArrivalWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aungkomin.SG-Bus-Stops.SgBusArrivalWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -669,16 +920,21 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		478884732F78464D00E3D76A /* Build configuration list for PBXNativeTarget "SgBusArrivalWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				478884742F78464D00E3D76A /* Debug */,
+				478884752F78464D00E3D76A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		47EF4A262F58C0D10028A2A5 /* XCLocalSwiftPackageReference "Packages/SgMaps/SgMaps" */ = {
+		47EBFD042F7667B90096A936 /* XCLocalSwiftPackageReference "Packages/SgMaps" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/SgMaps/SgMaps;
-		};
-		47EF4A292F58C1250028A2A5 /* XCLocalSwiftPackageReference "Packages/Services" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/Services;
+			relativePath = Packages/SgMaps;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -686,6 +942,10 @@
 		472926DA2F4706D200B5E2F4 /* Services */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Services;
+		};
+		47EBFD052F7667B90096A936 /* SgMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SgMaps;
 		};
 		47EF4A242F58BFA00028A2A5 /* SgMaps */ = {
 			isa = XCSwiftPackageProductDependency;
