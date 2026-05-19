@@ -1,12 +1,10 @@
-//
 //  SgAreaParser.swift
 //
-//
-//  Created by Aung Ko Min on 31/7/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
 import Foundation
+import CoreLocation
 
 enum SgAreaParser {
     typealias StringAny = [String: Any]
@@ -14,24 +12,22 @@ enum SgAreaParser {
     static func load() -> [SgArea] {
         guard
             let url = Bundle
-            .module
-            .url(
-                forResource: SgMaps.SgArea.Resources.file_name,
-                withExtension: SgMaps.SgArea.Resources.file_ext,
-            )
-        else {
+                .module
+                .url(
+                    forResource: SgMaps.SgArea.Resources.file_name,
+                    withExtension: SgMaps.SgArea.Resources.file_ext
+                ) else {
             return []
         }
         do {
             let data = try Data(contentsOf: url)
             let json = try JSONSerialization.jsonObject(
                 with: data,
-                options: .mutableLeaves,
+                options: .mutableLeaves
             )
             guard
                 let dic = json as? StringAny,
-                let features = dic["features"] as? [StringAny]
-            else {
+                let features = dic["features"] as? [StringAny] else {
                 return []
             }
             return features.compactMap { polygons($0) }
@@ -49,8 +45,7 @@ private extension SgAreaParser {
             let properties = dic["properties"] as? StringAny,
             let name = properties["name"] as? String,
             let geometryDict = dic["geometry"] as? StringAny,
-            let geoType = geometryDict["type"] as? String
-        else {
+            let geoType = geometryDict["type"] as? String else {
             return nil
         }
         switch geoType {
@@ -59,17 +54,17 @@ private extension SgAreaParser {
                 name: name,
                 geometry: .polygon(
                     .init(
-                        verticies: polygon(geometryDict),
-                    ),
-                ),
+                        verticies: polygon(geometryDict)
+                    )
+                )
             )
         case "MultiPolygon":
             return SgArea(
                 name: name,
                 geometry: .multiPolygon(
                     multiPolygon(geometryDict)
-                        .map { .init(verticies: $0) },
-                ),
+                        .map { .init(verticies: $0) }
+                )
             )
         default:
             return nil

@@ -1,6 +1,11 @@
+//  Boing.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 #if os(iOS) && EMG_PREVIEWS
-import SnapshotPreferences
+    import SnapshotPreferences
 #endif
 
 public extension AnyTransition.MovingParts {
@@ -15,18 +20,18 @@ public extension AnyTransition.MovingParts {
     /// deformation of the view.
     static func boing(edge: Edge) -> AnyTransition {
         .modifier(
-            active:   Scaled(Boing(edge, animatableData: 0)),
+            active: Scaled(Boing(edge, animatableData: 0)),
             identity: Scaled(Boing(edge, animatableData: 1))
         )
     }
 }
 
-internal struct Boing: DebugProgressableAnimation, GeometryEffect {
+struct Boing: DebugProgressableAnimation, GeometryEffect {
     var edge: Edge
 
     var animatableData: CGFloat = 0
 
-    internal init(_ edge: Edge, animatableData: CGFloat = 0) {
+    init(_ edge: Edge, animatableData: CGFloat = 0) {
         self.animatableData = animatableData
         self.edge = edge
     }
@@ -76,19 +81,17 @@ internal struct Boing: DebugProgressableAnimation, GeometryEffect {
             let deltaY = deltaP - 5
 
             let newMainAxisSize = rubberClamp(mainAxisSize * 0.75, mainAxisSize - deltaY / 3, mainAxisSize * 1)
-            let newCrossAxisSize  = area / newMainAxisSize
+            let newCrossAxisSize = area / newMainAxisSize
 
-            let translation: CGAffineTransform
-
-            switch edge {
+            let translation: CGAffineTransform = switch edge {
             case .top:
-                translation = CGAffineTransformMakeTranslation(size.width / 2, size.height)
+                CGAffineTransformMakeTranslation(size.width / 2, size.height)
             case .leading:
-                translation = CGAffineTransformMakeTranslation(size.width, size.height / 2)
+                CGAffineTransformMakeTranslation(size.width, size.height / 2)
             case .bottom:
-                translation = CGAffineTransformMakeTranslation(size.width / 2, 0)
+                CGAffineTransformMakeTranslation(size.width / 2, 0)
             case .trailing:
-                translation = CGAffineTransformMakeTranslation(0, size.height / 2)
+                CGAffineTransformMakeTranslation(0, size.height / 2)
             }
 
             t = translation.concatenating(t)
@@ -107,43 +110,45 @@ internal struct Boing: DebugProgressableAnimation, GeometryEffect {
 }
 
 #if os(iOS) && DEBUG
-struct Boing_Preview: PreviewableAnimation, PreviewProvider {
-  static var animation: Scaled<Boing> {
-    Scaled(Boing(.top, animatableData: 0))
-  }
-}
-
-@available(iOS 15.0, *)
-struct Bounce_Previews: PreviewProvider {
-    struct Item: Identifiable {
-        var color: Color
-
-        let id: UUID = UUID()
-
-        init() {
-            color = [Color.red, .orange, .yellow, .green, .indigo, .teal].randomElement()!
+    struct Boing_Preview: PreviewableAnimation, PreviewProvider {
+        static var animation: Scaled<Boing> {
+            Scaled(Boing(.top, animatableData: 0))
         }
     }
 
-    struct Preview: View {
-        @State
-        var items: [Item] = [Item()]
+    @available(iOS 15.0, *)
+    struct Bounce_Previews: PreviewProvider {
+        struct Item: Identifiable {
+            var color: Color
 
-        @State
-        var damping: Double = 0.5
+            let id: UUID = .init()
 
-        @State
-        var edge: Edge = .top
+            init() {
+                color = [Color.red, .orange, .yellow, .green, .indigo, .teal].randomElement()!
+            }
+        }
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+        struct Preview: View {
+            @State
+            private var items: [Item] = [Item()]
+
+            @State
+            private var damping: Double = 0.5
+
+            @State
+            private var edge: Edge = .top
+
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Boing")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Boing")
+                                .bold()
 
-                        Text("myView.transition(**.movingParts.boing**)\n  .animation(.interactiveSpring(\n    dampingFraction: \(damping.formatted(.number.precision(.fractionLength(2))))\n  )\n)")
-                    }
+                            Text(
+                                "myView.transition(**.movingParts.boing**)\n  .animation(.interactiveSpring(\n    dampingFraction: \(damping.formatted(.number.precision(.fractionLength(2))))\n  )\n)"
+                            )
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -152,161 +157,161 @@ struct Bounce_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Slider(value: $damping, in: 0.2 ... 0.8)
+                        Slider(value: $damping, in: 0.2 ... 0.8)
 
-                    Stepper("Count") {
-                        withAnimation {
-                            var item = Item()
-                            item.color = [Color.red, .orange, .yellow, .green, .indigo, .teal].shuffled().first { color in
-                                !items.contains { $0.color == color }
-                            } ?? .blue
+                        Stepper("Count") {
+                            withAnimation {
+                                var item = Item()
+                                item.color = [Color.red, .orange, .yellow, .green, .indigo, .teal].shuffled().first { color in
+                                    !items.contains { $0.color == color }
+                                } ?? .blue
 
-                            items.append(item)
-                        }
-                    } onDecrement: {
-                        if !items.isEmpty {
-                            items.removeLast()
-                        }
-                    }
-
-                    if #available(iOS 16.0, *) {
-                        LabeledContent("Edge") {
-                            Picker("Edge", selection: $edge) {
-                                Group {
-                                    Label("Leading",  systemImage: "arrow.forward").tag(Edge.leading)
-                                    Label("Trailing", systemImage: "arrow.backward").tag(Edge.trailing)
-                                    Label("Top",      systemImage: "arrow.down").tag(Edge.top)
-                                    Label("Bottom",   systemImage: "arrow.up").tag(Edge.bottom)
-                                }
+                                items.append(item)
+                            }
+                        } onDecrement: {
+                            if !items.isEmpty {
+                                items.removeLast()
                             }
                         }
-                        .pickerStyle(.menu)
+
+                        if #available(iOS 16.0, *) {
+                            LabeledContent("Edge") {
+                                Picker("Edge", selection: $edge) {
+                                    Group {
+                                        Label("Leading", systemImage: "arrow.forward").tag(Edge.leading)
+                                        Label("Trailing", systemImage: "arrow.backward").tag(Edge.trailing)
+                                        Label("Top", systemImage: "arrow.down").tag(Edge.top)
+                                        Label("Bottom", systemImage: "arrow.up").tag(Edge.bottom)
+                                    }
+                                }
+                            }
+                            .pickerStyle(.menu)
+                        }
+
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
+
+                        LazyVGrid(columns: columns) {
+                            ForEach(items) { item in
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(item.color)
+                                    .overlay {
+                                        Text("Jell-O\nWorld")
+                                            .blendMode(.difference)
+                                            .offset(x: 2, y: 2)
+                                    }
+                                    .compositingGroup()
+                                    .overlay {
+                                        Text("Jell-O\nWorld")
+                                    }
+                                    .font(.system(.headline, design: .rounded).weight(.black))
+                                    .multilineTextAlignment(.center)
+                                    .transition(
+                                        .movingParts.boing(edge: edge)
+                                            .animation(.spring(dampingFraction: damping))
+                                            .combined(with: .opacity.animation(.easeOut(duration: 0.01)))
+                                    )
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .id(item.id)
+                            }
+                        }
+
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                }
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
+            }
+            .environment(\.colorScheme, .dark)
+            #if os(iOS) && EMG_PREVIEWS
+                .emergeSnapshotPrecision(0)
+            #endif
+        }
+    }
+
+    @available(iOS 15.0, *)
+    struct Boing_2_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var isVisible: Bool = false
+
+            @State
+            private var isRightToLeft: Bool = true
+
+            var body: some View {
+                VStack {
+                    Toggle("Visible", isOn: $isVisible.animation())
+
+                    Toggle("Right To Left", isOn: $isRightToLeft)
+
+                    if #available(iOS 16.0, *) {
+                        LabeledContent("Reference") {
+                            Image(systemName: "arrow.forward.circle")
+                                .imageScale(.large)
+                        }
+                    } else {
+                        HStack {
+                            Text("Reference")
+                            Spacer()
+                            Image(systemName: "arrow.forward.circle")
+                                .imageScale(.large)
+                        }
                     }
 
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
+                    Spacer()
 
-                    LazyVGrid(columns: columns) {
-                        ForEach(items) { item in
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(item.color)
-                                .overlay {
-                                    Text("Jell-O\nWorld")
-                                        .blendMode(.difference)
-                                        .offset(x: 2, y: 2)
-                                }
-                                .compositingGroup()
-                                .overlay {
-                                    Text("Jell-O\nWorld")
-                                }
-                                .font(.system(.headline, design: .rounded).weight(.black))
-                                .multilineTextAlignment(.center)
-                                .transition(
-                                    .movingParts.boing(edge: edge)
-                                        .animation(.spring(dampingFraction: damping))
-                                        .combined(with: .opacity.animation(.easeOut(duration: 0.01)))
-                                )
-                                .aspectRatio(1, contentMode: .fit)
-                                .id(item.id)
+                    let overshoot = Animation.movingParts.overshoot(duration: 0.3)
+                    let mediumSpring = Animation.interactiveSpring(dampingFraction: 0.5)
+                    let looseSpring = Animation.interpolatingSpring(stiffness: 100, damping: 8)
+
+                    Group {
+                        if isVisible {
+                            Color.blue
+                                .frame(width: 120, height: 120)
+                                .transition(.movingParts.boing(edge: .leading).animation(overshoot))
+
+                            Color.blue
+                                .frame(width: 120, height: 120)
+                                .transition(.movingParts.boing(edge: .leading).animation(mediumSpring))
+
+                            Color.blue
+                                .frame(width: 120, height: 120)
+                                .transition(.movingParts.boing(edge: .trailing).animation(looseSpring))
+
+                            Color.blue
+                                .frame(width: 120, height: 120)
+                                .transition(.movingParts.move(edge: .leading).animation(looseSpring))
                         }
                     }
 
                     Spacer()
                 }
-                .padding(.horizontal)
-            }
-        }
-    }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-        .environment(\.colorScheme, .dark)
-        #if os(iOS) && EMG_PREVIEWS
-          .emergeSnapshotPrecision(0)
-        #endif
-    }
-}
-
-@available(iOS 15.0, *)
-struct Boing_2_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var isVisible: Bool = false
-
-        @State
-        var isRightToLeft: Bool = true
-
-        var body: some View {
-            VStack {
-                Toggle("Visible", isOn: $isVisible.animation())
-
-                Toggle("Right To Left", isOn: $isRightToLeft)
-
-                if #available(iOS 16.0, *) {
-                    LabeledContent("Reference") {
-                        Image(systemName: "arrow.forward.circle")
-                            .imageScale(.large)
-                    }
-                } else {
-                    HStack {
-                        Text("Reference")
-                        Spacer()
-                        Image(systemName: "arrow.forward.circle")
-                            .imageScale(.large)
-                    }
+                .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
+                .padding()
+                .background {
+                    Color.white.ignoresSafeArea()
                 }
-
-                Spacer()
-
-                let overshoot = Animation.movingParts.overshoot(duration: 0.3)
-                let mediumSpring = Animation.interactiveSpring(dampingFraction: 0.5)
-                let looseSpring = Animation.interpolatingSpring(stiffness: 100, damping: 8)
-
-                Group {
-                    if isVisible {
-                        Color.blue
-                            .frame(width: 120, height: 120)
-                            .transition(.movingParts.boing(edge: .leading).animation(overshoot))
-
-                        Color.blue
-                            .frame(width: 120, height: 120)
-                            .transition(.movingParts.boing(edge: .leading).animation(mediumSpring))
-
-                        Color.blue
-                            .frame(width: 120, height: 120)
-                            .transition(.movingParts.boing(edge: .trailing).animation(looseSpring))
-
-                        Color.blue
-                            .frame(width: 120, height: 120)
-                            .transition(.movingParts.move(edge: .leading).animation(looseSpring))
-                    }
-                }
-
-                Spacer()
-            }
-            .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
-            .padding()
-            .background {
-                Color.white.ignoresSafeArea()
             }
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            Preview()
+        static var previews: some View {
+            NavigationView {
+                Preview()
+            }
+            #if os(iOS) && EMG_PREVIEWS
+            .emergeSnapshotPrecision(0)
+            #endif
         }
-        #if os(iOS) && EMG_PREVIEWS
-          .emergeSnapshotPrecision(0)
-        #endif
     }
-}
 #endif
 
 private extension CGAffineTransform {

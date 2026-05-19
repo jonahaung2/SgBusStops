@@ -1,3 +1,8 @@
+//  PulseEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyChangeEffect {
@@ -20,7 +25,7 @@ public extension AnyChangeEffect {
     ///   - layer: The `ParticleLayer` on which to render the effect. Defaults to `local`.
     static func pulse(shape: some InsettableShape, style: some ShapeStyle = .tint, drawingMode: PulseDrawingMode = .fill, count: Int = 1, layer: ParticleLayer = .local) -> AnyChangeEffect {
         let clampedCount = max(1, count)
-        let cooldown: Double = Double(clampedCount - 1) * 0.2
+        let cooldown = Double(clampedCount - 1) * 0.2
         switch drawingMode {
         case .stroke:
             return .animation({ change in
@@ -99,12 +104,12 @@ private struct PulseStrokeModifier<EffectShape: InsettableShape, EffectShapeStyl
 
     var change: Int
 
-    var animatableData = EmptyAnimatableData()
+    var animatableData: EmptyAnimatableData = .init()
 
     @StateObject
-    private var timer: ItemTimer = ItemTimer()
+    private var timer: ItemTimer = .init()
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .background {
                 GeometryReader { proxy in
@@ -146,12 +151,12 @@ private struct PulseFillModifier<EffectShape: InsettableShape, EffectShapeStyle:
 
     var change: Int
 
-    var animatableData = EmptyAnimatableData()
+    var animatableData: EmptyAnimatableData = .init()
 
     @StateObject
-    private var timer: ItemTimer = ItemTimer()
+    private var timer: ItemTimer = .init()
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .background {
                 GeometryReader { proxy in
@@ -181,7 +186,8 @@ private struct PulseFillModifier<EffectShape: InsettableShape, EffectShapeStyle:
 }
 
 private extension AnyTransition.MovingParts {
-    static func pulseStroke(shape: some InsettableShape, style: some ShapeStyle, lineWidth: CGFloat, layer: ParticleLayer, insetAmount: CGFloat, count: Int, onCompletion: @escaping () -> Void) -> AnyTransition {
+    static func pulseStroke(shape: some InsettableShape, style: some ShapeStyle, lineWidth: CGFloat, layer: ParticleLayer, insetAmount: CGFloat, count: Int,
+                            onCompletion: @escaping () -> Void) -> AnyTransition {
         .modifier(
             active: PulseStrokeAnimationModifier(
                 animatableData: 0.0,
@@ -304,7 +310,6 @@ private struct PulseFillAnimationModifier<EffectShape: InsettableShape, EffectSh
     }
 }
 
-
 private extension CGFloat {
     func beat(intensity: CGFloat = 2.0, frequency: CGFloat = 2.0) -> CGFloat {
         let v = atan(sin(self * .pi * frequency) * intensity)
@@ -313,126 +318,126 @@ private extension CGFloat {
 }
 
 #if os(iOS) && DEBUG
-struct PulseEffect_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        private var pingCount = 0
+    struct PulseEffect_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var pingCount = 0
 
-        @State
-        private var pulseCount = 0
+            @State
+            private var pulseCount = 0
 
-        @State
-        private var isPressingPulse = false
+            @State
+            private var isPressingPulse = false
 
-        @State
-        private var hearbeatCount = 0
+            @State
+            private var hearbeatCount = 0
 
-        @State
-        private var isPressingHeartbeat = false
+            @State
+            private var isPressingHeartbeat = false
 
-        var body: some View {
-            VStack(spacing: 8) {
-                Spacer()
+            var body: some View {
+                VStack(spacing: 8) {
+                    Spacer()
 
-                Label("Ping (New)", systemImage: "antenna.radiowaves.left.and.right")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .changeEffect(.pulse(shape: RoundedRectangle(cornerRadius: 16, style: .continuous), count: 3), value: pingCount)
-                    .tint(.green)
-                    .onTapGesture {
-                        pingCount += 1
-                    }
-
-                Spacer()
-
-                VStack(spacing: 32) {
-                    let scale = isPressingPulse ? 0.95 : 1.0
-                    Label("Pulse", systemImage: "waveform.path.ecg")
-                        .foregroundStyle(.white)
+                    Label("Ping (New)", systemImage: "antenna.radiowaves.left.and.right")
+                        .foregroundColor(.white)
                         .padding()
-                        .background(.mint, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .brightness(isPressingPulse ? -0.15 : 0)
-                        .scaleEffect(x: scale, y: scale)
-                        .animation(.spring(response: isPressingPulse ? 0.1 : 0.4, dampingFraction: isPressingPulse ? 1 : 0.5), value: isPressingPulse)
-                        .changeEffect(.shine(duration: 0.5), value: pulseCount)
-                        .changeEffect(.pulse(shape: RoundedRectangle(cornerRadius: 16, style: .continuous), drawingMode: .stroke, count: 3, layer: .named("root")).delay(0.1), value: pulseCount)
-                        .tint(.mint)
-                        .font(.system(.title, design: .rounded).bold())
+                        .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .changeEffect(.pulse(shape: RoundedRectangle(cornerRadius: 16, style: .continuous), count: 3), value: pingCount)
+                        .tint(.green)
+                        .onTapGesture {
+                            pingCount += 1
+                        }
+
+                    Spacer()
+
+                    VStack(spacing: 32) {
+                        let scale = isPressingPulse ? 0.95 : 1.0
+                        Label("Pulse", systemImage: "waveform.path.ecg")
+                            .foregroundStyle(.white)
+                            .padding()
+                            .background(.mint, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .brightness(isPressingPulse ? -0.15 : 0)
+                            .scaleEffect(x: scale, y: scale)
+                            .animation(.spring(response: isPressingPulse ? 0.1 : 0.4, dampingFraction: isPressingPulse ? 1 : 0.5), value: isPressingPulse)
+                            .changeEffect(.shine(duration: 0.5), value: pulseCount)
+                            .changeEffect(.pulse(shape: RoundedRectangle(cornerRadius: 16, style: .continuous), drawingMode: .stroke, count: 3, layer: .named("root")).delay(0.1), value: pulseCount)
+                            .tint(.mint)
+                            .font(.system(.title, design: .rounded).bold())
+                    }
+                    ._onButtonGesture(pressing: { pressing in
+                        isPressingPulse = pressing
+                    }, perform: {
+                        pulseCount += 1
+                    })
+                    .padding()
+                    .clipped()
+
+                    Spacer()
+
+                    Group {
+                        VStack(spacing: 32) {
+                            let scale = isPressingHeartbeat ? 0.95 : 1.0
+                            Label("Update", systemImage: "heart.circle")
+                                .foregroundStyle(.red, .red.opacity(0.5))
+                                .brightness(isPressingHeartbeat ? -0.15 : 0)
+                                .scaleEffect(x: scale, y: scale)
+                                .animation(.spring(response: isPressingHeartbeat ? 0.1 : 0.4, dampingFraction: isPressingHeartbeat ? 1 : 0.5), value: isPressingHeartbeat)
+                                .changeEffect(.shine(duration: 0.5), value: hearbeatCount)
+                                .changeEffect(.pulse(shape: Circle().inset(by: 6.5), style: .red, drawingMode: .stroke, count: 50).delay(0.1), value: hearbeatCount)
+                                .font(.system(size: 72, design: .rounded))
+                        }
+                        ._onButtonGesture(pressing: { pressing in
+                            isPressingHeartbeat = pressing
+                        }, perform: {
+                            hearbeatCount += 1
+                        })
+                        .labelStyle(.iconOnly)
+
+                        VStack(spacing: 32) {
+                            let scale = isPressingHeartbeat ? 0.95 : 1.0
+                            Label("Update", systemImage: "heart.circle")
+                                .foregroundStyle(.red, .red.opacity(0.5))
+                                .brightness(isPressingHeartbeat ? -0.15 : 0)
+                                .scaleEffect(x: scale, y: scale)
+                                .animation(.spring(response: isPressingHeartbeat ? 0.1 : 0.4, dampingFraction: isPressingHeartbeat ? 1 : 0.5), value: isPressingHeartbeat)
+                                .changeEffect(.shine(duration: 0.5), value: hearbeatCount)
+                                .changeEffect(.pulse(shape: Circle().inset(by: 6.5), style: .red, drawingMode: .stroke).delay(0.1), value: hearbeatCount)
+                        }
+                        ._onButtonGesture(pressing: { pressing in
+                            isPressingHeartbeat = pressing
+                        }, perform: {
+                            hearbeatCount += 1
+                        })
+                        .labelStyle(.iconOnly)
+                    }
+
+                    Spacer()
+
+                    VStack {
+                        Stepper(value: $pingCount) {
+                            Text("Pings ") + Text("(\(pingCount.formatted()))").foregroundColor(.secondary)
+                        }
+                        Stepper(value: $pulseCount) {
+                            Text("Pulses ") + Text("(\(pulseCount.formatted()))").foregroundColor(.secondary)
+                        }
+                        Stepper(value: $hearbeatCount) {
+                            Text("Heartbeats ") + Text("(\(hearbeatCount.formatted()))").foregroundColor(.secondary)
+                        }
+                    }
                 }
-                ._onButtonGesture(pressing: { pressing in
-                    isPressingPulse = pressing
-                }, perform: {
-                    pulseCount += 1
-                })
                 .padding()
-                .clipped()
-
-                Spacer()
-
-                Group {
-                    VStack(spacing: 32) {
-                        let scale = isPressingHeartbeat ? 0.95 : 1.0
-                        Label("Update", systemImage: "heart.circle")
-                            .foregroundStyle(.red, .red.opacity(0.5))
-                            .brightness(isPressingHeartbeat ? -0.15 : 0)
-                            .scaleEffect(x: scale, y: scale)
-                            .animation(.spring(response: isPressingHeartbeat ? 0.1 : 0.4, dampingFraction: isPressingHeartbeat ? 1 : 0.5), value: isPressingHeartbeat)
-                            .changeEffect(.shine(duration: 0.5), value: hearbeatCount)
-                            .changeEffect(.pulse(shape: Circle().inset(by: 6.5), style: .red, drawingMode: .stroke, count: 50).delay(0.1), value: hearbeatCount)
-                            .font(.system(size: 72, design: .rounded))
-                    }
-                    ._onButtonGesture(pressing: { pressing in
-                        isPressingHeartbeat = pressing
-                    }, perform: {
-                        hearbeatCount += 1
-                    })
-                    .labelStyle(.iconOnly)
-
-                    VStack(spacing: 32) {
-                        let scale = isPressingHeartbeat ? 0.95 : 1.0
-                        Label("Update", systemImage: "heart.circle")
-                            .foregroundStyle(.red, .red.opacity(0.5))
-                            .brightness(isPressingHeartbeat ? -0.15 : 0)
-                            .scaleEffect(x: scale, y: scale)
-                            .animation(.spring(response: isPressingHeartbeat ? 0.1 : 0.4, dampingFraction: isPressingHeartbeat ? 1 : 0.5), value: isPressingHeartbeat)
-                            .changeEffect(.shine(duration: 0.5), value: hearbeatCount)
-                            .changeEffect(.pulse(shape: Circle().inset(by: 6.5), style: .red, drawingMode: .stroke).delay(0.1), value: hearbeatCount)
-                    }
-                    ._onButtonGesture(pressing: { pressing in
-                        isPressingHeartbeat = pressing
-                    }, perform: {
-                        hearbeatCount += 1
-                    })
-                    .labelStyle(.iconOnly)
-                }
-
-                Spacer()
-
-                VStack {
-                    Stepper(value: $pingCount) {
-                        Text("Pings ") + Text("(\(pingCount.formatted()))").foregroundColor(.secondary)
-                    }
-                    Stepper(value: $pulseCount) {
-                        Text("Pulses ") + Text("(\(pulseCount.formatted()))").foregroundColor(.secondary)
-                    }
-                    Stepper(value: $hearbeatCount) {
-                        Text("Heartbeats ") + Text("(\(hearbeatCount.formatted()))").foregroundColor(.secondary)
-                    }
-                }
+                .particleLayer(name: "root")
             }
-            .padding()
-            .particleLayer(name: "root")
+        }
+
+        static var previews: some View {
+            Preview()
+                .preferredColorScheme(.dark)
+                .previewDisplayName("Dark Color Scheme")
+            Preview()
+                .preferredColorScheme(.light)
+                .previewDisplayName("Light Color Scheme")
         }
     }
-
-    static var previews: some View {
-        Preview()
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Dark Color Scheme")
-        Preview()
-            .preferredColorScheme(.light)
-            .previewDisplayName("Light Color Scheme")
-    }
-}
 #endif

@@ -1,12 +1,10 @@
-//
 //  BusArrivalAttributes.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 29/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-import ActivityKit
 import Foundation
+import ActivityKit
 
 nonisolated struct BusArrivalAttributes: ActivityAttributes, Sendable {
     nonisolated struct ContentState: Codable, Hashable, Sendable {

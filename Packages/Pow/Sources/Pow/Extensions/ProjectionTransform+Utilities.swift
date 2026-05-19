@@ -1,7 +1,12 @@
+//  ProjectionTransform+Utilities.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import simd
 import SwiftUI
 
-internal extension ProjectionTransform {
+extension ProjectionTransform {
     init(_ m: simd_double4x4) {
         let d = CATransform3D(
             m11: m[0][0], m12: m[0][1], m13: m[0][2], m14: m[0][3],

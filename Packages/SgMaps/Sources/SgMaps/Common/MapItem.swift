@@ -1,12 +1,10 @@
-//
 //  MapItem.swift
 //
-//
-//  Created by Aung Ko Min on 4/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
 import Foundation
+import CoreLocation
 
 public struct MapItem: Identifiable, Hashable, Sendable {
     public let id: String

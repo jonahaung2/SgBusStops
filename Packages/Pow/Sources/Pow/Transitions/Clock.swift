@@ -1,6 +1,11 @@
+//  Clock.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 #if os(iOS) && EMG_PREVIEWS
-import SnapshotPreferences
+    import SnapshotPreferences
 #endif
 
 public extension AnyTransition.MovingParts {
@@ -15,13 +20,13 @@ public extension AnyTransition.MovingParts {
     /// - Parameter blurRadius: The radius of the blur applied to the mask.
     static func clock(origin: UnitPoint = .center, blurRadius: CGFloat) -> AnyTransition {
         .modifier(
-            active:   Clock(origin: origin, blurRadius: blurRadius, progress: 0),
+            active: Clock(origin: origin, blurRadius: blurRadius, progress: 0),
             identity: Clock(origin: origin, blurRadius: blurRadius, progress: 1)
         )
     }
 }
 
-internal struct Clock: ViewModifier, DebugProgressableAnimation, AnimatableModifier {
+struct Clock: ViewModifier, DebugProgressableAnimation, AnimatableModifier {
 
     var origin: UnitPoint
 
@@ -29,12 +34,12 @@ internal struct Clock: ViewModifier, DebugProgressableAnimation, AnimatableModif
 
     init(origin: UnitPoint, blurRadius: CGFloat, progress: CGFloat) {
         self.origin = origin
-        self.animatableData = AnimatableData(progress, blurRadius)
+        animatableData = AnimatableData(progress, blurRadius)
     }
 
     var progress: CGFloat {
-      get { animatableData.first }
-      set { animatableData.first = newValue }
+        get { animatableData.first }
+        set { animatableData.first = newValue }
     }
 
     var blurRadius: CGFloat {
@@ -86,90 +91,90 @@ internal struct Clock: ViewModifier, DebugProgressableAnimation, AnimatableModif
 }
 
 #if os(iOS) && DEBUG
-struct Clock_Preview: PreviewableAnimation, PreviewProvider {
-  static var animation: Clock {
-    Clock(origin: .center, blurRadius: 0, progress: 0)
-  }
-}
-
-struct Clock_Previews: PreviewProvider {
-    struct Item: Identifiable {
-        var color: Color
-
-        let id: UUID = UUID()
-
-        init() {
-            color = [Color.red, .orange, .yellow, .green, .purple, .mint].randomElement()!
+    struct Clock_Preview: PreviewableAnimation, PreviewProvider {
+        static var animation: Clock {
+            Clock(origin: .center, blurRadius: 0, progress: 0)
         }
     }
 
-    struct Preview: View {
-        @State
-        var items: [Item] = [Item()]
+    struct Clock_Previews: PreviewProvider {
+        struct Item: Identifiable {
+            var color: Color
 
-        enum ShapeType: String, Hashable, Identifiable, CaseIterable {
-            case rectangle = "Rectangle"
-            case roundedRectangle = "Rounded Rectangle"
-            case capsule = "Capsule"
-            case circle = "Circle"
+            let id: UUID = .init()
 
-            var name: String {
-                return rawValue
+            init() {
+                color = [Color.red, .orange, .yellow, .green, .purple, .mint].randomElement()!
             }
+        }
 
-            var id: Self {
-                return self
-            }
+        struct Preview: View {
+            @State
+            private var items: [Item] = [Item()]
 
-            var symbolName: String {
-                switch self {
-                case .rectangle:
-                    return "rectangle.fill"
-                case .roundedRectangle:
-                    return "rectangle.roundedtop.fill"
-                case .capsule:
-                    return "capsule.fill"
-                case .circle:
-                    return "circle.fill"
+            enum ShapeType: String, Hashable, Identifiable, CaseIterable {
+                case rectangle = "Rectangle"
+                case roundedRectangle = "Rounded Rectangle"
+                case capsule = "Capsule"
+                case circle = "Circle"
+
+                var name: String {
+                    rawValue
+                }
+
+                var id: Self {
+                    self
+                }
+
+                var symbolName: String {
+                    switch self {
+                    case .rectangle:
+                        "rectangle.fill"
+                    case .roundedRectangle:
+                        "rectangle.roundedtop.fill"
+                    case .capsule:
+                        "capsule.fill"
+                    case .circle:
+                        "circle.fill"
+                    }
                 }
             }
-        }
 
-        @State
-        var selectedShape: ShapeType = .roundedRectangle
+            @State
+            private var selectedShape: ShapeType = .roundedRectangle
 
-        @ViewBuilder
-        func filledShape(color: Color) -> some View {
-            switch selectedShape {
-            case .rectangle:
-                Rectangle().fill(color)
-            case .roundedRectangle:
-                RoundedRectangle(cornerRadius: 8, style: .continuous).fill(color)
-            case .capsule:
-                Capsule().fill(color)
-            case .circle:
-                Circle().fill(color)
+            @ViewBuilder
+            func filledShape(color: Color) -> some View {
+                switch selectedShape {
+                case .rectangle:
+                    Rectangle().fill(color)
+                case .roundedRectangle:
+                    RoundedRectangle(cornerRadius: 8, style: .continuous).fill(color)
+                case .capsule:
+                    Capsule().fill(color)
+                case .circle:
+                    Circle().fill(color)
+                }
             }
-        }
 
-        @State
-        var originX: CGFloat = 0.5
+            @State
+            private var originX: CGFloat = 0.5
 
-        @State
-        var originY: CGFloat = 0.5
+            @State
+            private var originY: CGFloat = 0.5
 
-        @State
-        var blurRadius: CGFloat = 0
+            @State
+            private var blurRadius: CGFloat = 0
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Clock Wipe")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Clock Wipe")
+                                .bold()
 
-                        Text("myView.transition(**.movingParts.clock**)")
-                    }
+                            Text("myView.transition(**.movingParts.clock**)")
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -178,69 +183,69 @@ struct Clock_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper("Count") {
-                        withAnimation {
-                            items.append(Item())
-                        }
-                    } onDecrement: {
-                        withAnimation {
-                            if !items.isEmpty {
-                                items.removeLast()
+                        Stepper("Count") {
+                            withAnimation {
+                                items.append(Item())
                             }
-                        }
-                    }
-
-                    if #available(iOS 16.0, *) {
-                        LabeledContent("Shape") {
-                            Picker("Shape", selection: $selectedShape) {
-                                ForEach(ShapeType.allCases) { shapeType in
-                                    Label(shapeType.name,  systemImage: shapeType.symbolName).tag(shapeType)
+                        } onDecrement: {
+                            withAnimation {
+                                if !items.isEmpty {
+                                    items.removeLast()
                                 }
                             }
                         }
-                        .pickerStyle(.menu)
 
-                        LabeledContent("Origin") {
-                            Text(originX, format: .number.precision(.fractionLength(2))) +
-                            Text("×") +
-                            Text(originY, format: .number.precision(.fractionLength(2)))
+                        if #available(iOS 16.0, *) {
+                            LabeledContent("Shape") {
+                                Picker("Shape", selection: $selectedShape) {
+                                    ForEach(ShapeType.allCases) { shapeType in
+                                        Label(shapeType.name, systemImage: shapeType.symbolName).tag(shapeType)
+                                    }
+                                }
+                            }
+                            .pickerStyle(.menu)
+
+                            LabeledContent("Origin") {
+                                Text(originX, format: .number.precision(.fractionLength(2))) +
+                                    Text("×") +
+                                    Text(originY, format: .number.precision(.fractionLength(2)))
+                            }
+                            Slider(value: $originX, in: -0.5 ... 1.5)
+                            Slider(value: $originY, in: -0.5 ... 1.5)
                         }
-                        Slider(value: $originX, in: -0.5...1.5)
-                        Slider(value: $originY, in: -0.5...1.5)
-                    }
 
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
 
-                    LazyVGrid(columns: columns) {
-                        ForEach(items) { item in
-                            filledShape(color: item.color)
-                                .transition(.movingParts.clock(origin: .init(x: originX, y: originY), blurRadius: 10))
-                                .aspectRatio(1/1.4, contentMode: .fit)
-                                .id(item.id)
+                        LazyVGrid(columns: columns) {
+                            ForEach(items) { item in
+                                filledShape(color: item.color)
+                                    .transition(.movingParts.clock(origin: .init(x: originX, y: originY), blurRadius: 10))
+                                    .aspectRatio(1 / 1.4, contentMode: .fit)
+                                    .id(item.id)
+                            }
                         }
-                    }
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
             }
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
+            }
+            .environment(\.colorScheme, .dark)
+            #if os(iOS) && EMG_PREVIEWS
+                .emergeSnapshotPrecision(0)
+            #endif
         }
-        .environment(\.colorScheme, .dark)
-        #if os(iOS) && EMG_PREVIEWS
-          .emergeSnapshotPrecision(0)
-        #endif
     }
-}
 #endif
 
 private extension CGRect {
@@ -248,19 +253,19 @@ private extension CGRect {
         if point.x <= minX {
             if point.y <= minY {
                 // topLeft
-                return (
+                (
                     start: point.angle(to: topRight),
                     end: point.angle(to: bottomLeft)
                 )
             } else if point.y >= maxY {
                 // bottomLeft
-                return (
+                (
                     start: point.angle(to: topLeft),
                     end: point.angle(to: bottomRight)
                 )
             } else {
                 // left
-                return (
+                (
                     start: point.angle(to: topLeft),
                     end: point.angle(to: bottomLeft)
                 )
@@ -268,19 +273,19 @@ private extension CGRect {
         } else if point.x >= maxX {
             if point.y <= 0.0 {
                 // topRight
-                return (
+                (
                     start: point.angle(to: bottomRight),
                     end: point.angle(to: topLeft)
                 )
             } else if point.y >= maxY {
                 // bottomRight
-                return (
+                (
                     start: point.angle(to: bottomLeft),
                     end: point.angle(to: topRight)
                 )
             } else {
                 // right
-                return (
+                (
                     start: point.angle(to: bottomRight),
                     end: point.angle(to: topRight)
                 )
@@ -288,19 +293,19 @@ private extension CGRect {
         } else {
             if point.y <= minY {
                 // top
-                return (
+                (
                     start: point.angle(to: topRight),
                     end: point.angle(to: topLeft)
                 )
             } else if point.y >= maxY {
                 // bottom
-                return (
+                (
                     start: point.angle(to: bottomLeft),
                     end: point.angle(to: bottomRight)
                 )
             } else {
                 // center
-                return (
+                (
                     start: .degrees(0) - .degrees(90),
                     end: .degrees(360) - .degrees(90)
                 )

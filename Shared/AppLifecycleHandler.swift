@@ -1,10 +1,7 @@
-//
 //  AppLifecycleHandler.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 29/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
-
 
 //
 //  AppLifecycleHandler.swift
@@ -27,7 +24,8 @@ public struct AppLifecycleHandler: ViewModifier {
                 switch newValue {
                 case .active:
                     onActive()
-                case .background, .inactive:
+                case .background,
+                     .inactive:
                     onBackground()
                 @unknown default:
                     break
@@ -39,7 +37,7 @@ public struct AppLifecycleHandler: ViewModifier {
 public extension View {
     func onAppLifecycle(
         active: @escaping () -> Void,
-        background: @escaping () -> Void,
+        background: @escaping () -> Void
     ) -> some View {
         modifier(AppLifecycleHandler(onActive: active, onBackground: background))
     }

@@ -1,15 +1,12 @@
-//
 //  CancelBag.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 28/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
-
 
 import Combine
 
 public final class CancelBag: @unchecked Sendable {
-    fileprivate(set) var subscriptions = Set<AnyCancellable>()
+    fileprivate(set) var subscriptions: Set<AnyCancellable> = []
     public init(subscriptions: Set<AnyCancellable> = Set<AnyCancellable>()) {
         self.subscriptions = subscriptions
     }

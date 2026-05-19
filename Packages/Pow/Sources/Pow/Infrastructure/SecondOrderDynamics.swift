@@ -1,6 +1,11 @@
+//  SecondOrderDynamics.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
-internal struct SecondOrderDynamics<V: VectorArithmetic> {
+struct SecondOrderDynamics<V: VectorArithmetic> {
     var k1: Double
 
     var k2: Double
@@ -18,12 +23,12 @@ internal struct SecondOrderDynamics<V: VectorArithmetic> {
     ///   - zeta: The damping coefficient.
     ///   - r: The initial response of the system.
     init(f: Double = 1, zeta: Double = 0.5, r: Double = 2, x0: V = .zero) {
-        self.k1 = zeta / (.pi * f)
-        self.k2 = 1 / pow(2 * .pi * f, 2)
-        self.k3 = (r * zeta) / (2 * .pi * f)
+        k1 = zeta / (.pi * f)
+        k2 = 1 / pow(2 * .pi * f, 2)
+        k3 = (r * zeta) / (2 * .pi * f)
 
-        self.previousTarget = x0
-        self.value = x0
+        previousTarget = x0
+        value = x0
     }
 
     mutating func update(target: V, timestep: TimeInterval) -> V {
@@ -32,7 +37,7 @@ internal struct SecondOrderDynamics<V: VectorArithmetic> {
 
         let stableK2 = max(k2, 1.1 * (timestep * timestep / 4 + timestep * k1 / 2))
 
-        value    = value + velocity * timestep
+        value = value + velocity * timestep
         velocity = velocity + ((target + (xd * k3) - value - (velocity * k1)) / stableK2) * timestep
 
         return value

@@ -1,12 +1,10 @@
-//
 //  SgBusStopsTests.swift
-//  SgBusStopsTests
 //
-//  Created by Aung Ko Min on 19/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-@testable import SgBusStops
 import Testing
+@testable import SgBusStops
 
 struct SgBusStopsTests {
     @Test func example() {

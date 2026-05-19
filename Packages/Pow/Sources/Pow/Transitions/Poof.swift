@@ -1,3 +1,8 @@
+//  Poof.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyTransition.MovingParts {
@@ -19,7 +24,7 @@ public extension AnyTransition.MovingParts {
 struct Poof: ViewModifier, ProgressableAnimation, AnimatableModifier {
     var animatableData: CGFloat = 0
 
-    internal init(animatableData: CGFloat) {
+    init(animatableData: CGFloat) {
         self.animatableData = animatableData
     }
 
@@ -51,40 +56,40 @@ struct Poof: ViewModifier, ProgressableAnimation, AnimatableModifier {
 }
 
 #if os(iOS) && DEBUG
-struct Proof_Preview: PreviewableAnimation, PreviewProvider {
-  static var animation: Poof {
-    Poof(animatableData: 0)
-  }
+    struct Proof_Preview: PreviewableAnimation, PreviewProvider {
+        static var animation: Poof {
+            Poof(animatableData: 0)
+        }
 
-  static var content: any View {
-    ZStack {
-        RoundedRectangle(cornerRadius: 32, style: .continuous)
-            .fill(Color.accentColor)
+        static var content: any View {
+            ZStack {
+                RoundedRectangle(cornerRadius: 32, style: .continuous)
+                    .fill(Color.accentColor)
 
-        Text("Hello\nWorld!")
-            .foregroundColor(.white)
-            .multilineTextAlignment(.center)
-            .font(.system(.title, design: .rounded))
+                Text("Hello\nWorld!")
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .font(.system(.title, design: .rounded))
+            }
+            .frame(width: 300, height: 150)
+        }
     }
-    .frame(width: 300, height: 150)
-  }
-}
 
-@available(iOS 15.0, *)
-struct Poof_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var indices: [UUID] = [UUID()]
+    @available(iOS 15.0, *)
+    struct Poof_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var indices: [UUID] = [UUID()]
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Poof")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Poof")
+                                .bold()
 
-                        Text("myView.transition(.movingParts.poof)")
-                    }
+                            Text("myView.transition(.movingParts.poof)")
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -93,57 +98,57 @@ struct Poof_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper {
-                        Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
-                    } onIncrement: {
-                        withAnimation {
-                            indices.append(UUID())
-                        }
-                    } onDecrement: {
-                        if !indices.isEmpty {
-                            let _ = withAnimation {
-                                indices.removeLast()
+                        Stepper {
+                            Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
+                        } onIncrement: {
+                            withAnimation {
+                                indices.append(UUID())
+                            }
+                        } onDecrement: {
+                            if !indices.isEmpty {
+                                let _ = withAnimation {
+                                    indices.removeLast()
+                                }
                             }
                         }
-                    }
 
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
 
-                    LazyVGrid(columns: columns) {
-                        ForEach(indices, id: \.self) { uuid in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 32, style: .continuous)
-                                    .fill(Color.accentColor)
+                        LazyVGrid(columns: columns) {
+                            ForEach(indices, id: \.self) { uuid in
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 32, style: .continuous)
+                                        .fill(Color.accentColor)
 
-                                Text("Hello\nWorld!")
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(.title, design: .rounded))
+                                    Text("Hello\nWorld!")
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(.title, design: .rounded))
 
+                                }
+                                .transition(
+                                    .movingParts.poof
+                                )
+                                .aspectRatio(2, contentMode: .fit)
+                                .id(uuid)
                             }
-                            .transition(
-                                .movingParts.poof
-                            )
-                            .aspectRatio(2, contentMode: .fit)
-                            .id(uuid)
                         }
-                    }
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
             }
         }
     }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-    }
-}
 #endif

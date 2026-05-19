@@ -1,12 +1,10 @@
-//
 //  MKPlacemark++.swift
-//  SgMaps
 //
-//  Created by Aung Ko Min on 25/9/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import Contacts
 import MapKit
+import Contacts
 
 extension MKPlacemark {
     var formattedAddress: String? {

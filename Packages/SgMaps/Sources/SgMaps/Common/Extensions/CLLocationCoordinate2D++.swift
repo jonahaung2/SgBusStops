@@ -1,12 +1,10 @@
-//
 //  CLLocationCoordinate2D++.swift
 //
-//
-//  Created by Aung Ko Min on 5/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
 import Foundation
+import CoreLocation
 
 public extension CLLocationCoordinate2D {
     var location: CLLocation {

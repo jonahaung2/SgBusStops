@@ -1,3 +1,8 @@
+//  CGRect+Utilities.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 extension CGRect {

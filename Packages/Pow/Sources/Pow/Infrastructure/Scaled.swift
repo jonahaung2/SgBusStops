@@ -1,8 +1,12 @@
+//  Scaled.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
-
 /// Scales the domain of a View Modifier to avoid snapping when animating with a spring animation.
-internal struct Scaled<V: ViewModifier & Animatable>: ViewModifier, Animatable {
+struct Scaled<V: ViewModifier & Animatable>: ViewModifier, Animatable {
     var animatableData: V.AnimatableData {
         get {
             var v = base.animatableData
@@ -27,4 +31,4 @@ internal struct Scaled<V: ViewModifier & Animatable>: ViewModifier, Animatable {
     }
 }
 
-extension Scaled: ProgressableAnimation where V.AnimatableData == CGFloat { }
+extension Scaled: ProgressableAnimation where V.AnimatableData == CGFloat {}

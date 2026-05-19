@@ -1,6 +1,11 @@
+//  AnyContinuousEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
-internal struct AnyContinuousEffect {
+struct AnyContinuousEffect {
     private var _viewModifier: (Bool) -> AnyContinuousViewModifier
 
     static func modifier(_ modifier: @escaping (Bool) -> some ViewModifier & Continuous) -> Self {
@@ -14,11 +19,11 @@ internal struct AnyContinuousEffect {
     }
 }
 
-internal struct AnyContinuousViewModifier: ViewModifier {
+struct AnyContinuousViewModifier: ViewModifier {
     private var _body: (AnyView) -> AnyView
 
-    init<Modifier: ViewModifier & Continuous>(_ modifier: Modifier) {
-        self._body = { content in
+    init(_ modifier: some ViewModifier & Continuous) {
+        _body = { content in
             AnyView(content.modifier(modifier))
         }
     }
@@ -28,12 +33,12 @@ internal struct AnyContinuousViewModifier: ViewModifier {
     }
 }
 
-internal extension ViewModifier where Self: Continuous {
+extension ViewModifier where Self: Continuous {
     func eraseToAnyContinuousViewModifier() -> AnyContinuousViewModifier {
         AnyContinuousViewModifier(self)
     }
 }
 
-internal protocol Continuous {
+protocol Continuous {
     var isActive: Bool { get }
 }

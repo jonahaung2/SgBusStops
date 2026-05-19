@@ -1,8 +1,6 @@
-//
 //  Interpolation.swift
-//  HomeForYou
 //
-//  Created by Aung Ko Min on 15/7/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
 import Foundation

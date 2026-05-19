@@ -1,12 +1,10 @@
-//
 //  SgArea.swift
 //
-//
-//  Created by Aung Ko Min on 31/7/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
 import Foundation
+import CoreLocation
 
 public struct SgArea: Conformable {
     public var rawValue: String {

@@ -1,3 +1,8 @@
+//  WhileEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 import Combine
 
@@ -12,10 +17,10 @@ public extension View {
     @ViewBuilder
     func conditionalEffect(_ effect: AnyConditionalEffect, condition: Bool) -> some View {
         switch effect.guts {
-        case .continuous(let effect):
+        case let .continuous(effect):
             modifier(ContinuousEffectModifier(effect: effect, isActive: condition))
                 .environment(\.isConditionalEffect, true)
-        case .repeating(let effect, let interval):
+        case let .repeating(effect, interval):
             modifier(RepeatingChangeEffectModifier(effect: effect, interval: interval, isActive: condition))
                 .environment(\.isConditionalEffect, true)
         }
@@ -23,18 +28,18 @@ public extension View {
 }
 
 public struct AnyConditionalEffect {
-    internal enum Guts {
+    enum Guts {
         case continuous(AnyContinuousEffect)
         case repeating(AnyChangeEffect, TimeInterval)
     }
 
-    internal var guts: Guts
+    var guts: Guts
 
     private init(guts: Guts) {
         self.guts = guts
     }
 
-    internal static func continuous(_ effect: AnyContinuousEffect) -> AnyConditionalEffect {
+    static func continuous(_ effect: AnyContinuousEffect) -> AnyConditionalEffect {
         AnyConditionalEffect(guts: .continuous(effect))
     }
 
@@ -68,9 +73,6 @@ private struct ContinuousEffectModifier: ViewModifier {
 
     @State
     private var changeCount: Int = 0
-
-    @State
-    private var startDate: Date = .distantPast
 
     func body(content: Content) -> some View {
         content
@@ -119,14 +121,14 @@ private struct RepeatingChangeEffectModifier: ViewModifier {
     var interval: TimeInterval
 
     @StateObject
-    private var timer = RepeatingTimer()
+    private var timer: RepeatingTimer = .init()
 
     private var isEnabled: Bool
 
     init(effect: AnyChangeEffect, interval: TimeInterval, isActive: Bool) {
         self.effect = effect
         self.interval = clamp(1 / 15, interval, .infinity)
-        self.isEnabled = isActive && interval > 0
+        isEnabled = isActive && interval > 0
     }
 
     func body(content: Content) -> some View {
@@ -152,7 +154,7 @@ private struct RepeatingChangeEffectModifier: ViewModifier {
     }
 }
 
-internal extension EnvironmentValues {
+extension EnvironmentValues {
     private struct IsConditionalEffectKey: EnvironmentKey {
         static var defaultValue: Bool = false
     }
@@ -164,93 +166,83 @@ internal extension EnvironmentValues {
 }
 
 #if os(iOS) && DEBUG
-struct WhileEffectPreview_Previews: PreviewProvider {
-    private struct Preview: View {
-        @State
-        private var isEnabled: Bool = false
+    struct WhileEffectPreview_Previews: PreviewProvider {
+        private struct Preview: View {
+            @State
+            private var isEnabled: Bool = false
 
-        var body: some View {
-            GroupBox("iOS 15") {
-                VStack {
-                    Toggle("Enabled", isOn: $isEnabled)
+            var body: some View {
+                GroupBox("iOS 15") {
+                    VStack {
+                        Toggle("Enabled", isOn: $isEnabled)
 
-                    Button {
-
-                    } label: {
-                        Label("Answer", systemImage: "phone.fill")
+                        Button {} label: {
+                            Label("Answer", systemImage: "phone.fill")
+                        }
+                        .tint(.green)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .conditionalEffect(.repeat(.shake(rate: .fast), every: 1), condition: isEnabled)
                     }
-                    .tint(.green)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .conditionalEffect(.repeat(.shake(rate: .fast), every: 1), condition: isEnabled)
                 }
+                .padding()
             }
-            .padding()
         }
-    }
 
-    @available(iOS 16.0, *)
-    private struct Preview16: View {
-        @State
-        private var isEnabled: Bool = false
+        @available(iOS 16.0, *)
+        private struct Preview16: View {
+            @State
+            private var isEnabled: Bool = false
 
-        var body: some View {
-            GroupBox("iOS 16") {
-                VStack {
-                    Toggle("Enabled", isOn: $isEnabled)
+            var body: some View {
+                GroupBox("iOS 16") {
+                    VStack {
+                        Toggle("Enabled", isOn: $isEnabled)
 
-                    Button {
+                        Button {} label: {
+                            Label("Answer", systemImage: "phone.fill")
+                        }
+                        .tint(.green)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .conditionalEffect(.repeat(.wiggle(rate: .fast), every: .seconds(1.5)), condition: isEnabled)
 
-                    } label: {
-                        Label("Answer", systemImage: "phone.fill")
+                        Button {} label: {
+                            Label("Alert", systemImage: "light.beacon.max.fill")
+                        }
+                        .tint(.red)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .conditionalEffect(.repeat(.glow(color: .red, radius: 50), every: .seconds(1)), condition: isEnabled)
+
+                        Button {} label: {
+                            Label("Press", systemImage: "hand.raised.fingers.spread.fill")
+                        }
+                        .tint(.blue)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .conditionalEffect(.pushDown, condition: isEnabled)
+
+                        Button {} label: {
+                            Label("Burn", systemImage: "opticaldisc")
+                        }
+                        .tint(.gray)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .conditionalEffect(.smoke, condition: isEnabled)
                     }
-                    .tint(.green)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .conditionalEffect(.repeat(.wiggle(rate: .fast), every: .seconds(1.5)), condition: isEnabled)
-
-                    Button {
-
-                    } label: {
-                        Label("Alert", systemImage: "light.beacon.max.fill")
-                    }
-                    .tint(.red)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .conditionalEffect(.repeat(.glow(color: .red, radius: 50), every: .seconds(1)), condition: isEnabled)
-
-                    Button {
-
-                    } label: {
-                        Label("Press", systemImage: "hand.raised.fingers.spread.fill")
-                    }
-                    .tint(.blue)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .conditionalEffect(.pushDown, condition: isEnabled)
-
-                    Button {
-
-                    } label: {
-                        Label("Burn", systemImage: "opticaldisc")
-                    }
-                    .tint(.gray)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .conditionalEffect(.smoke, condition: isEnabled)
                 }
+                .padding()
             }
-            .padding()
         }
-    }
 
-    static var previews: some View {
-        if #available(iOS 16.0, *) {
-            Preview16()
-                .preferredColorScheme(.dark)
-        } else {
-            Preview()
+        static var previews: some View {
+            if #available(iOS 16.0, *) {
+                Preview16()
+                    .preferredColorScheme(.dark)
+            } else {
+                Preview()
+            }
         }
     }
-}
 #endif

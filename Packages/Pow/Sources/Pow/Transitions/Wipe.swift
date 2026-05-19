@@ -1,3 +1,8 @@
+//  Wipe.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyTransition.MovingParts {
@@ -8,21 +13,19 @@ public extension AnyTransition.MovingParts {
     ///   - edge: The edge at which the sweep starts or ends.
     ///   - blurRadius: The radius of the blur applied to the mask.
     static func wipe(edge: Edge, blurRadius: CGFloat = 0) -> AnyTransition {
-        let angle: Angle
-
-        switch edge {
+        let angle: Angle = switch edge {
         case .top:
-            angle = .degrees(90)
+            .degrees(90)
         case .leading:
-            angle = .degrees(0)
+            .degrees(0)
         case .bottom:
-            angle = .degrees(270)
+            .degrees(270)
         case .trailing:
-            angle = .degrees(180)
+            .degrees(180)
         }
 
         return .modifier(
-            active:   Wipe(angle: angle, blurRadius: blurRadius, progress: 0),
+            active: Wipe(angle: angle, blurRadius: blurRadius, progress: 0),
             identity: Wipe(angle: angle, blurRadius: blurRadius, progress: 1)
         )
     }
@@ -49,7 +52,7 @@ public extension AnyTransition.MovingParts {
     ///   - blurRadius: The radius of the blur applied to the mask.
     static func wipe(angle: Angle, blurRadius: CGFloat = 0) -> AnyTransition {
         .modifier(
-            active:   Wipe(angle: angle, blurRadius: blurRadius, progress: 0),
+            active: Wipe(angle: angle, blurRadius: blurRadius, progress: 0),
             identity: Wipe(angle: angle, blurRadius: blurRadius, progress: 1)
         )
     }
@@ -60,9 +63,9 @@ private struct Wipe: ViewModifier, Animatable, AnimatableModifier {
 
     var animatableData: AnimatablePair<CGFloat, CGFloat>
 
-    internal init(angle: Angle, blurRadius: CGFloat = 0, progress: CGFloat) {
+    init(angle: Angle, blurRadius: CGFloat = 0, progress: CGFloat) {
         self.angle = angle
-        self.animatableData = AnimatableData(progress, clamp(0, blurRadius, 30))
+        animatableData = AnimatableData(progress, clamp(0, blurRadius, 30))
     }
 
     var progress: CGFloat {
@@ -108,80 +111,80 @@ private struct Wipe: ViewModifier, Animatable, AnimatableModifier {
 }
 
 #if os(iOS) && DEBUG
-@available(iOS 15.0, *)
-struct Wipe_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var indices: [UUID] = [UUID()]
+    @available(iOS 15.0, *)
+    struct Wipe_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var indices: [UUID] = [UUID()]
 
-        enum DirectionType: String, Hashable, Identifiable, CaseIterable {
-            case edge = "Edge"
-            case angle = "Angle"
+            enum DirectionType: String, Hashable, Identifiable, CaseIterable {
+                case edge = "Edge"
+                case angle = "Angle"
 
-            var name: String {
-                return rawValue
-            }
-
-            var id: Self {
-                return self
-            }
-        }
-
-        @State
-        var directionType: DirectionType = .edge
-
-        @State
-        var edge: Edge = .leading
-
-        @State
-        var angle: Angle = .degrees(0)
-
-        @State
-        var blurRadius: CGFloat = 0
-
-        @State
-        var isRightToLeft: Bool = false
-
-        func makeTransition() -> AnyTransition {
-            switch directionType {
-            case .edge:
-                return .movingParts.wipe(edge: edge, blurRadius: blurRadius)
-            case .angle:
-                return .movingParts.wipe(angle: angle, blurRadius: blurRadius)
-            }
-        }
-
-        var resolvedAngle: Angle {
-            switch directionType {
-            case .edge:
-                switch edge {
-                case .top:
-                    return .degrees(90)
-                case .leading:
-                    return .degrees(0)
-                case .bottom:
-                    return .degrees(270)
-                case .trailing:
-                    return .degrees(180)
+                var name: String {
+                    rawValue
                 }
-            case .angle:
-                return angle
+
+                var id: Self {
+                    self
+                }
             }
-        }
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Wipe")
-                            .bold()
+            @State
+            private var directionType: DirectionType = .edge
 
-                        Text("""
-                        myView.transition(
-                            .movingParts.wipe(edge: .leading)
-                        )
-                        """)
+            @State
+            private var edge: Edge = .leading
+
+            @State
+            private var angle: Angle = .degrees(0)
+
+            @State
+            private var blurRadius: CGFloat = 0
+
+            @State
+            private var isRightToLeft: Bool = false
+
+            func makeTransition() -> AnyTransition {
+                switch directionType {
+                case .edge:
+                    .movingParts.wipe(edge: edge, blurRadius: blurRadius)
+                case .angle:
+                    .movingParts.wipe(angle: angle, blurRadius: blurRadius)
+                }
+            }
+
+            var resolvedAngle: Angle {
+                switch directionType {
+                case .edge:
+                    switch edge {
+                    case .top:
+                        .degrees(90)
+                    case .leading:
+                        .degrees(0)
+                    case .bottom:
+                        .degrees(270)
+                    case .trailing:
+                        .degrees(180)
                     }
+                case .angle:
+                    angle
+                }
+            }
+
+            var body: some View {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Wipe")
+                                .bold()
+
+                            Text("""
+                            myView.transition(
+                                .movingParts.wipe(edge: .leading)
+                            )
+                            """)
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -190,97 +193,97 @@ struct Wipe_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper {
-                        Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
-                    } onIncrement: {
-                        withAnimation {
-                            indices.append(UUID())
-                        }
-                    } onDecrement: {
-                        if !indices.isEmpty {
-                            let _ = withAnimation {
-                                indices.removeLast()
+                        Stepper {
+                            Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
+                        } onIncrement: {
+                            withAnimation {
+                                indices.append(UUID())
                             }
-                        }
-                    }
-
-                    Toggle("Right To Left", isOn: $isRightToLeft)
-
-                    if #available(iOS 16.0, *) {
-                        Picker("Type", selection: $directionType) {
-                            ForEach(DirectionType.allCases) { type in
-                                Text(type.name).tag(type)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-
-                        switch directionType {
-                        case .edge:
-                            LabeledContent("Edge") {
-                                Picker("Edge", selection: $edge) {
-                                    Group {
-                                        Text("Leading").tag(Edge.leading)
-                                        Text("Trailing").tag(Edge.trailing)
-                                        Text("Top").tag(Edge.top)
-                                        Text("Bottom").tag(Edge.bottom)
-                                    }
+                        } onDecrement: {
+                            if !indices.isEmpty {
+                                let _ = withAnimation {
+                                    indices.removeLast()
                                 }
                             }
-                            .pickerStyle(.menu)
-                            .frame(height: 44)
-                        case .angle:
-                            LabeledContent("Angle") {
-                                AngleControl(angle: $angle)
+                        }
+
+                        Toggle("Right To Left", isOn: $isRightToLeft)
+
+                        if #available(iOS 16.0, *) {
+                            Picker("Type", selection: $directionType) {
+                                ForEach(DirectionType.allCases) { type in
+                                    Text(type.name).tag(type)
+                                }
                             }
-                            .frame(height: 44)
-                        }
+                            .pickerStyle(.segmented)
 
-                        LabeledContent("Reference") {
-                            Image(systemName: "arrow.forward.circle")
-                                .imageScale(.large)
-                                .rotationEffect(resolvedAngle)
-                                .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
-                        }
-                    }
-
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
-
-                    LazyVGrid(columns: columns) {
-                        ForEach(indices, id: \.self) { uuid in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(Color.accentColor)
-
-                                Text("Hello\nWorld!")
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(.title, design: .rounded))
-
+                            switch directionType {
+                            case .edge:
+                                LabeledContent("Edge") {
+                                    Picker("Edge", selection: $edge) {
+                                        Group {
+                                            Text("Leading").tag(Edge.leading)
+                                            Text("Trailing").tag(Edge.trailing)
+                                            Text("Top").tag(Edge.top)
+                                            Text("Bottom").tag(Edge.bottom)
+                                        }
+                                    }
+                                }
+                                .pickerStyle(.menu)
+                                .frame(height: 44)
+                            case .angle:
+                                LabeledContent("Angle") {
+                                    AngleControl(angle: $angle)
+                                }
+                                .frame(height: 44)
                             }
-                            .transition(
-                                makeTransition().animation(.easeInOut)
-                            )
-                            .aspectRatio(1.5, contentMode: .fit)
-                            .id(uuid)
-                        }
-                    }
-                    .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
 
-                    Spacer()
+                            LabeledContent("Reference") {
+                                Image(systemName: "arrow.forward.circle")
+                                    .imageScale(.large)
+                                    .rotationEffect(resolvedAngle)
+                                    .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
+                            }
+                        }
+
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
+
+                        LazyVGrid(columns: columns) {
+                            ForEach(indices, id: \.self) { uuid in
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Color.accentColor)
+
+                                    Text("Hello\nWorld!")
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(.title, design: .rounded))
+
+                                }
+                                .transition(
+                                    makeTransition().animation(.easeInOut)
+                                )
+                                .aspectRatio(1.5, contentMode: .fit)
+                                .id(uuid)
+                            }
+                        }
+                        .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
+
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
             }
         }
     }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-    }
-}
 #endif

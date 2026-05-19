@@ -1,11 +1,16 @@
+//  SeededRandomNumberGenerator.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import Foundation
 
-final class SeededRandomNumberGenerator : RandomNumberGenerator {
+final class SeededRandomNumberGenerator: RandomNumberGenerator {
     private struct PCGRand32 {
-        static let _multiplier: UInt64 = 0x5851f42d4c957f2d
+        static let _multiplier: UInt64 = 0x5851_F42D_4C95_7F2D
 
-        var state: UInt64     = 0x853c49e6748fea9b
-        var increment: UInt64 = 0xda3e39cb94b95bdb
+        var state: UInt64 = 0x853C_49E6_748F_EA9B
+        var increment: UInt64 = 0xDA3E_39CB_94B9_5BDB
 
         mutating func seed(initializer: UInt64, sequence: UInt64) {
             state = 0
@@ -35,7 +40,7 @@ final class SeededRandomNumberGenerator : RandomNumberGenerator {
 
     private var b: PCGRand32
 
-    convenience init<H: Hashable>(seed value: H) {
+    convenience init(seed value: some Hashable) {
         self.init(seed: UInt64(truncatingIfNeeded: value.hashValue))
     }
 
@@ -47,7 +52,7 @@ final class SeededRandomNumberGenerator : RandomNumberGenerator {
         b.seed(initializer: seed, sequence: 123)
     }
 
-    public func next() -> UInt64 {
-        return UInt64(a.next()) << 32 | UInt64(b.next())
+    func next() -> UInt64 {
+        UInt64(a.next()) << 32 | UInt64(b.next())
     }
 }

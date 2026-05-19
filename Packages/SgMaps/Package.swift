@@ -4,26 +4,26 @@
 import PackageDescription
 
 let package = Package(
-	name: "SgMaps",
-	platforms: [
-		.iOS(.v26)
-	],
-	products: [
-		.library(
-			name: "SgMaps",
-			targets: ["SgMaps"],
-		)
-	],
-	targets: [
-		.target(
-			name: "SgMaps",
-			resources: [
-				.process("Resources/")
-			],
-		),
-		.testTarget(
-			name: "SgMapsTests",
-			dependencies: ["SgMaps"],
-		)
-	],
+    name: "SgMaps",
+    platforms: [
+        .iOS(.v26)
+    ],
+    products: [
+        .library(
+            name: "SgMaps",
+            targets: ["SgMaps"]
+        )
+    ],
+    targets: [
+        .target(
+            name: "SgMaps",
+            resources: [
+                .process("Resources/")
+            ]
+        ),
+        .testTarget(
+            name: "SgMapsTests",
+            dependencies: ["SgMaps"]
+        )
+    ]
 )

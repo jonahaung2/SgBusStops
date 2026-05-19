@@ -1,8 +1,6 @@
-//
 //  MapAnnotationItem.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 23/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import CoreLocation
@@ -15,7 +13,7 @@ public struct MapAnnotationItem: Identifiable, Sendable, Hashable {
     public init(
         id: String,
         coordinate: CLLocationCoordinate2D,
-        title: String,
+        title: String
     ) {
         self.id = id
         self.coordinate = coordinate

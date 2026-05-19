@@ -1,12 +1,10 @@
-//
 //  MRTService.swift
 //
-//
-//  Created by Aung Ko Min on 4/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
 import Foundation
+import CoreLocation
 
 public struct MRTService: Hashable, Identifiable {
     public var id: String {

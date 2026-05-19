@@ -1,3 +1,8 @@
+//  SgBusArrivalWidget.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 //
 //  SgBusArrivalWidget.swift
 //  SgBusArrivalWidget
@@ -16,7 +21,7 @@
 //    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
 //        SimpleEntry(date: Date(), configuration: configuration)
 //    }
-//    
+//
 //    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
 //        var entries: [SimpleEntry] = []
 //
@@ -71,7 +76,7 @@
 //        intent.favoriteEmoji = "😀"
 //        return intent
 //    }
-//    
+//
 //    fileprivate static var starEyes: ConfigurationAppIntent {
 //        let intent = ConfigurationAppIntent()
 //        intent.favoriteEmoji = "🤩"

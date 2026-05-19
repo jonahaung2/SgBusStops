@@ -1,12 +1,10 @@
-//
 //  SgAddress.swift
-//  SgMaps
 //
-//  Created by Aung Ko Min on 24/9/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import Foundation
 import MapKit
+import Foundation
 
 protocol Conformable: Equatable, Sendable, Hashable {}
 //
@@ -92,5 +90,6 @@ protocol Conformable: Equatable, Sendable, Hashable {}
 // }
 //
 // public extension SgAddress {
-//    static let empty: SgAddress = .init(address: .init(text: "", postal: ""), geoInfo: .init(location: .init(latitude: CLLocationCoordinate2D.singapore.latitude, longitude: CLLocationCoordinate2D.singapore.longitude)), area: .init(name: "", geometry: .multiPolygon([])), nearestMRT: .init(mrt: "", distance: 0))
+//    static let empty: SgAddress = .init(address: .init(text: "", postal: ""), geoInfo: .init(location: .init(latitude: CLLocationCoordinate2D.singapore.latitude, longitude:
+//    CLLocationCoordinate2D.singapore.longitude)), area: .init(name: "", geometry: .multiPolygon([])), nearestMRT: .init(mrt: "", distance: 0))
 // }

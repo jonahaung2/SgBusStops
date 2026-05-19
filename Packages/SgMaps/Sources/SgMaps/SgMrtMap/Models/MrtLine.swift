@@ -1,13 +1,11 @@
-//
 //  MrtLine.swift
 //
-//
-//  Created by Aung Ko Min on 1/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
-import Foundation
 import SwiftUI
+import Foundation
+import CoreLocation
 
 public enum MRTLine: String, Codable, Identifiable, CaseIterable, Hashable, Sendable {
     public var id: String {

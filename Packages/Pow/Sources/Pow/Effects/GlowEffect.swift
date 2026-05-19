@@ -1,3 +1,8 @@
+//  GlowEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyChangeEffect {
@@ -42,7 +47,7 @@ public extension AnyConditionalEffect {
     }
 }
 
-internal struct GlowModifier: ViewModifier, Animatable {
+struct GlowModifier: ViewModifier, Animatable {
     var animatableData: CGFloat
 
     var color: Color
@@ -52,7 +57,7 @@ internal struct GlowModifier: ViewModifier, Animatable {
     let ramp = cubicBezier(x1: 0.3, y1: 0.0, x2: 0.7, y2: 1)
 
     init(glow: CGFloat, color: Color, radius: CGFloat) {
-        self.animatableData = glow
+        animatableData = glow
         self.color = color
         self.radius = radius
     }
@@ -79,27 +84,21 @@ internal struct GlowModifier: ViewModifier, Animatable {
                     .allowsHitTesting(false)
             }
             .compositingGroup()
-            .shadow(color: color.opacity(shadowOpacity /  1.2), radius: amount * radius / 4.0, x: 0, y: 0)
-            .shadow(color: color.opacity(shadowOpacity /  4.0), radius: amount * radius / 2.0, x: 0, y: 0)
-            .shadow(color: color.opacity(shadowOpacity /  8.0), radius: amount * radius,       x: 0, y: 0)
+            .shadow(color: color.opacity(shadowOpacity / 1.2), radius: amount * radius / 4.0, x: 0, y: 0)
+            .shadow(color: color.opacity(shadowOpacity / 4.0), radius: amount * radius / 2.0, x: 0, y: 0)
+            .shadow(color: color.opacity(shadowOpacity / 8.0), radius: amount * radius, x: 0, y: 0)
             .shadow(color: color.opacity(shadowOpacity / 16.0), radius: amount * radius * 2.0, x: 0, y: 0)
             .brightness(ramp(abs(amount)) * 0.25)
             .animation(nil, value: amount)
     }
 }
 
-internal struct ContinuousGlowModifier: ViewModifier, Continuous {
+struct ContinuousGlowModifier: ViewModifier, Continuous {
     var color: Color
 
     var radius: CGFloat
 
     var isActive: Bool
-
-    init(color: Color, radius: CGFloat, isActive: Bool) {
-        self.color = color
-        self.radius = radius
-        self.isActive = isActive
-    }
 
     func body(content: Content) -> some View {
         content
@@ -110,12 +109,12 @@ internal struct ContinuousGlowModifier: ViewModifier, Continuous {
     }
 }
 
-internal struct PulseGlowModifier: ViewModifier, Simulative {
+struct PulseGlowModifier: ViewModifier, Simulative {
     var impulseCount: Int
 
     var initialVelocity: CGFloat = 0
 
-    let spring = Spring(zeta: 0.75, stiffness: 15, mass: 1)
+    let spring: Spring = .init(zeta: 0.75, stiffness: 15, mass: 1)
 
     var color: Color
 
@@ -134,7 +133,7 @@ internal struct PulseGlowModifier: ViewModifier, Simulative {
         targetGlow == glow && abs(glowVelocity) <= 0.02
     }
 
-    internal func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         TimelineView(.animation(paused: isSimulationPaused)) { context in
             content
                 .modifier(GlowModifier(glow: glow, color: color, radius: radius))
@@ -185,133 +184,128 @@ internal struct PulseGlowModifier: ViewModifier, Simulative {
 }
 
 #if os(iOS) && DEBUG
-struct GlowChangeEffect_Previews: PreviewProvider {
-    struct Cart: View {
-        @State
-        var itemCount: Int = 1
+    struct GlowChangeEffect_Previews: PreviewProvider {
+        struct Cart: View {
+            @State
+            private var itemCount: Int = 1
 
-        var total: Double {
-            9.99 * Double(itemCount)
-        }
+            var total: Double {
+                9.99 * Double(itemCount)
+            }
 
-        var body: some View {
-            List {
-                HStack(alignment: .center, spacing: 16) {
-                    AsyncImage(url: URL(string: "https://movingparts.io/frontpage/checkout-smooth-blend@3x.png")) { phase in
-                        if let image = phase.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                        }
-                    }
-                    .background(Color(white: 0.9))
-                    .frame(width: 72, height: 72)
-                    .changeEffect(.shine(angle: .degrees(180), duration: 0.5), value: itemCount, isEnabled: itemCount > 0)
-
-                    HStack(alignment: .firstTextBaseline) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Seasonal Blend, Spring Here")
-                                .font(.body.weight(.medium))
-                                .lineSpacing(-10)
-
-                            Text("500g")
-                                .font(.callout)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
-
-                        VStack(alignment: .trailing) {
-                            Text("\(itemCount.formatted())× ").foregroundColor(.secondary) +
-                            Text(9.99.formatted(.currency(code: "EUR")))
-                            Stepper(value: $itemCount, in: 0...1000) {
-                                Text("Quantity ") + Text(itemCount.formatted()).foregroundColor(.secondary)
+            var body: some View {
+                List {
+                    HStack(alignment: .center, spacing: 16) {
+                        AsyncImage(url: URL(string: "https://movingparts.io/frontpage/checkout-smooth-blend@3x.png")) { phase in
+                            if let image = phase.image {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
                             }
-                            .labelsHidden()
+                        }
+                        .background(Color(white: 0.9))
+                        .frame(width: 72, height: 72)
+                        .changeEffect(.shine(angle: .degrees(180), duration: 0.5), value: itemCount, isEnabled: itemCount > 0)
+
+                        HStack(alignment: .firstTextBaseline) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Seasonal Blend, Spring Here")
+                                    .font(.body.weight(.medium))
+                                    .lineSpacing(-10)
+
+                                Text("500g")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+
+                            VStack(alignment: .trailing) {
+                                Text("\(itemCount.formatted())× ").foregroundColor(.secondary) +
+                                    Text(9.99.formatted(.currency(code: "EUR")))
+                                Stepper(value: $itemCount, in: 0 ... 1000) {
+                                    Text("Quantity ") + Text(itemCount.formatted()).foregroundColor(.secondary)
+                                }
+                                .labelsHidden()
+                                .font(.callout)
+                            }
                             .font(.callout)
                         }
-                        .font(.callout)
                     }
                 }
-            }
-            .listStyle(.plain)
-            .navigationTitle("Cart")
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                VStack {
-                    if #available(iOS 16.0, *) {
-                        LabeledContent("Subtotal", value: total, format: .currency(code: "USD"))
-                        LabeledContent("Shipping", value: 0, format: .currency(code: "USD"))
-                        LabeledContent("Total") {
-                            Text(total, format: .currency(code: "USD"))
-                                .foregroundStyle(.primary)
-                                .changeEffect(.glow(color: .accentColor, radius: 32), value: itemCount)
+                .listStyle(.plain)
+                .navigationTitle("Cart")
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    VStack {
+                        if #available(iOS 16.0, *) {
+                            LabeledContent("Subtotal", value: total, format: .currency(code: "USD"))
+                            LabeledContent("Shipping", value: 0, format: .currency(code: "USD"))
+                            LabeledContent("Total") {
+                                Text(total, format: .currency(code: "USD"))
+                                    .foregroundStyle(.primary)
+                                    .changeEffect(.glow(color: .accentColor, radius: 32), value: itemCount)
+                            }
+                            .tint(.red)
+                            .bold()
                         }
-                        .tint(.red)
-                        .bold()
-                    }
 
-                    Divider().hidden()
+                        Divider().hidden()
 
-                    Button {
-                    } label: {
-                        Label("Checkout", systemImage: "cart")
-                            .frame(maxWidth: .infinity)
+                        Button {} label: {
+                            Label("Checkout", systemImage: "cart")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .disabled(itemCount == 0)
+                        .animation(.default, value: itemCount == 0)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .disabled(itemCount == 0)
-                    .animation(.default, value: itemCount == 0)
+                    .monospacedDigit()
+                    .padding()
+                    .background(.regularMaterial)
                 }
-                .monospacedDigit()
+            }
+        }
+
+        struct Preview: View {
+            @State
+            private var isOn = false
+
+            var body: some View {
+                VStack {
+                    Spacer()
+
+                    Button("Continue") {}
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+                        .conditionalEffect(.repeat(.glow(color: .blue, radius: 50), every: 1.5), condition: isOn)
+
+                    Button("Continue") {}
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.large)
+                        .conditionalEffect(.glow(color: .blue, radius: 50), condition: isOn)
+
+                    Spacer()
+
+                    Toggle("Enabled", isOn: $isOn)
+                }
                 .padding()
-                .background(.regularMaterial)
             }
         }
-    }
 
-    struct Preview: View {
-        @State
-        var isOn = false
-
-        var body: some View {
-            VStack {
-                Spacer()
-
-                Button("Continue") {
-
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-                .conditionalEffect(.repeat(.glow(color: .blue, radius: 50), every: 1.5), condition: isOn)
-
-                Button("Continue") {
-
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-                .conditionalEffect(.glow(color: .blue, radius: 50), condition: isOn)
-
-                Spacer()
-
-                Toggle("Enabled", isOn: $isOn)
+        static var previews: some View {
+            NavigationView {
+                Cart()
             }
-            .padding()
-        }
-    }
-
-    static var previews: some View {
-        NavigationView {
-            Cart()
-        }
-        .preferredColorScheme(.dark)
-        .environment(\.dynamicTypeSize, .xxLarge)
-        .previewDisplayName("Change Effect")
-
-        Preview()
             .preferredColorScheme(.dark)
             .environment(\.dynamicTypeSize, .xxLarge)
-            .previewDisplayName("Conditional Effect")
+            .previewDisplayName("Change Effect")
+
+            Preview()
+                .preferredColorScheme(.dark)
+                .environment(\.dynamicTypeSize, .xxLarge)
+                .previewDisplayName("Conditional Effect")
+        }
     }
-}
 #endif

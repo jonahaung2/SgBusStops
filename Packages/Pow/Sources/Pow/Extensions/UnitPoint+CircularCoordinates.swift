@@ -1,6 +1,11 @@
+//  UnitPoint+CircularCoordinates.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
-internal extension UnitPoint {
+extension UnitPoint {
     /// Creates a `UnitPoint` from a point on the Unit Circle.
     ///
     /// > Note: The Unit Circle has a radius of 1 and is centered around
@@ -17,8 +22,8 @@ internal extension UnitPoint {
         let v_2: Double = pow(v, 2)
         let sq2: Double = sqrt(2.0)
 
-        let x: Double = 0.5 * sqrt(abs(2.0 + u_2 - v_2 + 2.0 * u * sq2)) - 0.5 * sqrt(abs(2.0 + u_2 - v_2 - 2.0 * u * sq2))
-        let y: Double = 0.5 * sqrt(abs(2.0 - u_2 + v_2 + 2.0 * v * sq2)) - 0.5 * sqrt(abs(2.0 - u_2 + v_2 - 2.0 * v * sq2))
+        let x = 0.5 * sqrt(abs(2.0 + u_2 - v_2 + 2.0 * u * sq2)) - 0.5 * sqrt(abs(2.0 + u_2 - v_2 - 2.0 * u * sq2))
+        let y = 0.5 * sqrt(abs(2.0 - u_2 + v_2 + 2.0 * v * sq2)) - 0.5 * sqrt(abs(2.0 - u_2 + v_2 - 2.0 * v * sq2))
 
         self.init(x: (1 + x) / 2, y: (1 + y) / 2)
     }

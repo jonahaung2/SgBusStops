@@ -1,10 +1,15 @@
+//  AnyViewModifier.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
-internal struct AnyViewModifier: ViewModifier {
+struct AnyViewModifier: ViewModifier {
     private var _body: (Content) -> AnyView
 
-    init<Modifier: ViewModifier>(_ modifier: Modifier) {
-        self._body = { content in
+    init(_ modifier: some ViewModifier) {
+        _body = { content in
             AnyView(content.modifier(modifier))
         }
     }
@@ -14,7 +19,7 @@ internal struct AnyViewModifier: ViewModifier {
     }
 }
 
-internal extension ViewModifier {
+extension ViewModifier {
     func eraseToAnyViewModifier() -> AnyViewModifier {
         AnyViewModifier(self)
     }

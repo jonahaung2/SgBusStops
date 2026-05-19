@@ -1,13 +1,11 @@
-//
 //  RotatingBusMarker.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 23/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-import CoreLocation
-import SwiftUI
 import UI
+import SwiftUI
+import CoreLocation
 
 struct RotatingBusMarker: View {
     let title: String

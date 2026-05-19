@@ -1,3 +1,8 @@
+//  RisingParticleEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyChangeEffect {
@@ -27,7 +32,7 @@ public extension AnyChangeEffect {
     }
 }
 
-internal struct RisingParticleSimulation<ParticlesView: View>: ViewModifier, Simulative {
+struct RisingParticleSimulation<ParticlesView: View>: ViewModifier, Simulative {
     var origin: UnitPoint
 
     var particles: ParticlesView
@@ -36,7 +41,7 @@ internal struct RisingParticleSimulation<ParticlesView: View>: ViewModifier, Sim
 
     var initialVelocity: CGFloat = 0.0
 
-    private let spring = Spring(zeta: 1, stiffness: 30)
+    private let spring: Spring = .init(zeta: 1, stiffness: 30)
 
     private struct Item: Identifiable {
         let id: UUID
@@ -56,7 +61,7 @@ internal struct RisingParticleSimulation<ParticlesView: View>: ViewModifier, Sim
         items.isEmpty
     }
 
-    internal init(origin: UnitPoint, particles: ParticlesView, impulseCount: Int = 0, layer: ParticleLayer) {
+    init(origin: UnitPoint, particles: ParticlesView, impulseCount: Int = 0, layer: ParticleLayer) {
         self.origin = origin
         self.particles = particles
         self.impulseCount = impulseCount
@@ -76,7 +81,7 @@ internal struct RisingParticleSimulation<ParticlesView: View>: ViewModifier, Sim
             let insets = EdgeInsets(top: 80, leading: 40, bottom: 20, trailing: 40)
 
             Canvas { context, size in
-                var symbols: [GraphicsContext.ResolvedSymbol] = []
+                var symbols = [GraphicsContext.ResolvedSymbol]()
 
                 var i = 0
                 var nextSymbol: GraphicsContext.ResolvedSymbol? = context.resolveSymbol(id: i)
@@ -169,7 +174,7 @@ internal struct RisingParticleSimulation<ParticlesView: View>: ViewModifier, Sim
 
             items[index] = item
 
-            if abs(item.progress - target) < 0.04 && item.velocity < 0.04 {
+            if abs(item.progress - target) < 0.04, item.velocity < 0.04 {
                 items.remove(at: index)
             }
         }
@@ -180,7 +185,7 @@ private struct RelativeOffsetModifier: GeometryEffect {
     var anchor: UnitPoint
 
     func effectValue(size: CGSize) -> ProjectionTransform {
-        let x = size.width  * (-0.5 + anchor.x)
+        let x = size.width * (-0.5 + anchor.x)
         let y = size.height * (-0.5 + anchor.y)
 
         return ProjectionTransform(
@@ -190,125 +195,124 @@ private struct RelativeOffsetModifier: GeometryEffect {
 }
 
 #if os(iOS) && DEBUG
-struct RisingParticleEffect_Previews: PreviewProvider {
-    struct ButtonPreview: View {
-        @State
-        var claps = 28
+    struct RisingParticleEffect_Previews: PreviewProvider {
+        struct ButtonPreview: View {
+            @State
+            private var claps = 28
 
-        @State
-        var stars = 18
+            @State
+            private var stars = 18
 
-        @State
-        var likes = 61
+            @State
+            private var likes = 61
 
-        var body: some View {
-            HStack {
-                Button {
-                    claps += 1
-                } label: {
-                    HStack {
-                        Image(systemName: "hands.clap.fill")
-                        Text(claps.formatted())
-                    }
-                }
-                .changeEffect(.rise(origin: UnitPoint(x: 0.7, y: 0.5)) {
-                    Group {
-                        Text("+1")
-                        Image(systemName: "hands.clap")
-                        Image(systemName: "sparkle")
-                        Image(systemName: "hand.thumbsup")
-                    }
-                    .font(.caption.bold())
-                    .foregroundStyle(.tint)
-                .tint(.blue)
-                }, value: claps)
-
-                Button {
-                    stars += 1
-                } label: {
-                    HStack {
-                        Image(systemName: "star.fill")
-                        Text("\(stars, format: .number)")
-                    }
-                }
-                .changeEffect(.rise(origin: UnitPoint(x: 0.7, y: 0.5)) {
-                    Text("\(1, format: .number.sign(strategy: .always()))")
-                        .font(.caption)
-                        .bold()
-                        .foregroundStyle(.tint)
-                }, value: stars)
-                .tint(.yellow)
-                .environment(\.layoutDirection, .rightToLeft)
-                .environment(\.locale, .init(identifier: "ar_EG"))
-
-                Button {
-                    likes += 1
-                } label: {
-                    HStack {
-                        Image(systemName: "heart.fill")
-                        Text(likes.formatted())
-                    }
-                }
-                .changeEffect(.rise(origin: UnitPoint(x: 0.3, y: 0.5)) {
-                    Image(systemName: "heart.fill")
-                        .foregroundStyle(.tint)
-                }, value: likes)
-                .clipped()
-                .tint(.red)
-            }
-            .particleLayer(name: "root")
-            .buttonStyle(.bordered)
-            .monospacedDigit()
-            .padding()
-        }
-    }
-
-    struct ListPreview: View {
-        @State
-        var claps: [Int: Int] = [:]
-
-        var body: some View {
-            NavigationView {
-                List {
-                    ForEach(0 ..< 30) { i in
+            var body: some View {
+                HStack {
+                    Button {
+                        claps += 1
+                    } label: {
                         HStack {
-                            Text("Cell #\(i)")
-                            Spacer()
-
-                            Button {
-                                claps[i, default: 0] += 1
-                            } label: {
-                                Label(claps[i, default: 0].formatted(), systemImage: "heart.fill")
-                            }
-                            .monospacedDigit()
-                            .controlSize(.small)
-                            .buttonBorderShape(.capsule)
-                            .changeEffect(.rise(layer: .named("root")) {
-                                Image(systemName: "heart.fill").foregroundStyle(.tint)
-                            }, value: claps[i, default: 0])
-                            .tint(.red)
+                            Image(systemName: "hands.clap.fill")
+                            Text(claps.formatted())
                         }
                     }
+                    .changeEffect(.rise(origin: UnitPoint(x: 0.7, y: 0.5)) {
+                        Group {
+                            Text("+1")
+                            Image(systemName: "hands.clap")
+                            Image(systemName: "sparkle")
+                            Image(systemName: "hand.thumbsup")
+                        }
+                        .font(.caption.bold())
+                        .foregroundStyle(.tint)
+                        .tint(.blue)
+                    }, value: claps)
+
+                    Button {
+                        stars += 1
+                    } label: {
+                        HStack {
+                            Image(systemName: "star.fill")
+                            Text("\(stars, format: .number)")
+                        }
+                    }
+                    .changeEffect(.rise(origin: UnitPoint(x: 0.7, y: 0.5)) {
+                        Text("\(1, format: .number.sign(strategy: .always()))")
+                            .font(.caption)
+                            .bold()
+                            .foregroundStyle(.tint)
+                    }, value: stars)
+                    .tint(.yellow)
+                    .environment(\.layoutDirection, .rightToLeft)
+                    .environment(\.locale, .init(identifier: "ar_EG"))
+
+                    Button {
+                        likes += 1
+                    } label: {
+                        HStack {
+                            Image(systemName: "heart.fill")
+                            Text(likes.formatted())
+                        }
+                    }
+                    .changeEffect(.rise(origin: UnitPoint(x: 0.3, y: 0.5)) {
+                        Image(systemName: "heart.fill")
+                            .foregroundStyle(.tint)
+                    }, value: likes)
+                    .clipped()
+                    .tint(.red)
                 }
-                .labelStyle(.titleOnly)
-                .buttonStyle(.borderedProminent)
-                .navigationTitle("Cells")
+                .particleLayer(name: "root")
+                .buttonStyle(.bordered)
+                .monospacedDigit()
+                .padding()
             }
-            .particleLayer(name: "root")
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            ButtonPreview()
+        struct ListPreview: View {
+            @State
+            private var claps: [Int: Int] = [:]
+
+            var body: some View {
+                NavigationView {
+                    List {
+                        ForEach(0 ..< 30) { i in
+                            HStack {
+                                Text("Cell #\(i)")
+                                Spacer()
+
+                                Button {
+                                    claps[i, default: 0] += 1
+                                } label: {
+                                    Label(claps[i, default: 0].formatted(), systemImage: "heart.fill")
+                                }
+                                .monospacedDigit()
+                                .controlSize(.small)
+                                .buttonBorderShape(.capsule)
+                                .changeEffect(.rise(layer: .named("root")) {
+                                    Image(systemName: "heart.fill").foregroundStyle(.tint)
+                                }, value: claps[i, default: 0])
+                                .tint(.red)
+                            }
+                        }
+                    }
+                    .labelStyle(.titleOnly)
+                    .buttonStyle(.borderedProminent)
+                    .navigationTitle("Cells")
+                }
+                .particleLayer(name: "root")
+            }
         }
-        .environment(\.colorScheme, .dark)
-        .previewDisplayName("Buttons")
 
-
-        ListPreview()
+        static var previews: some View {
+            NavigationView {
+                ButtonPreview()
+            }
             .environment(\.colorScheme, .dark)
-            .previewDisplayName("Escaping List")
+            .previewDisplayName("Buttons")
+
+            ListPreview()
+                .environment(\.colorScheme, .dark)
+                .previewDisplayName("Escaping List")
+        }
     }
-}
 #endif

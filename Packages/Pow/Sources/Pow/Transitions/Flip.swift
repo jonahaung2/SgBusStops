@@ -1,5 +1,10 @@
-import SwiftUI
+//  Flip.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import simd
+import SwiftUI
 
 public extension AnyTransition.MovingParts {
     /// A transition that inserts by rotating the view towards the viewer, and
@@ -10,7 +15,7 @@ public extension AnyTransition.MovingParts {
     ///         eventually settling.
     static var flip: AnyTransition {
         .modifier(
-            active:   Transform3DEffect(rotation: simd_quatd(angle: Angle(degrees: 90).radians, axis: [1, 0, 0]), perspective: 1 / 6).shaded,
+            active: Transform3DEffect(rotation: simd_quatd(angle: Angle(degrees: 90).radians, axis: [1, 0, 0]), perspective: 1 / 6).shaded,
             identity: Transform3DEffect(perspective: 1 / 6).shaded
         )
     }
@@ -66,25 +71,25 @@ public extension AnyTransition.MovingParts {
 }
 
 #if os(iOS) && DEBUG
-@available(iOS 15.0, *)
-struct Flip_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var indices: [UUID] = [UUID()]
+    @available(iOS 15.0, *)
+    struct Flip_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var indices: [UUID] = [UUID()]
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Flip")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Flip")
+                                .bold()
 
-                        Text("""
-                        myView.transition(
-                            .transition(.flip)
-                        )
-                        """)
-                    }
+                            Text("""
+                            myView.transition(
+                                .transition(.flip)
+                            )
+                            """)
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -93,62 +98,62 @@ struct Flip_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper {
-                        Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
-                    } onIncrement: {
-                        let animation = Animation.interpolatingSpring(
-                            mass: 1,
-                            stiffness: 10,
-                            damping: 10,
-                            initialVelocity: 10
-                        )
+                        Stepper {
+                            Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
+                        } onIncrement: {
+                            let animation = Animation.interpolatingSpring(
+                                mass: 1,
+                                stiffness: 10,
+                                damping: 10,
+                                initialVelocity: 10
+                            )
 
-                        withAnimation(animation) {
-                            indices.append(UUID())
-                        }
-                    } onDecrement: {
-                        if !indices.isEmpty {
-                            let _ = withAnimation(.easeInOut) {
-                                indices.removeLast()
+                            withAnimation(animation) {
+                                indices.append(UUID())
+                            }
+                        } onDecrement: {
+                            if !indices.isEmpty {
+                                let _ = withAnimation(.easeInOut) {
+                                    indices.removeLast()
+                                }
                             }
                         }
-                    }
 
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
 
-                    LazyVGrid(columns: columns) {
-                        ForEach(indices, id: \.self) { uuid in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 32, style: .continuous)
-                                    .fill(Color.accentColor)
+                        LazyVGrid(columns: columns) {
+                            ForEach(indices, id: \.self) { uuid in
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 32, style: .continuous)
+                                        .fill(Color.accentColor)
 
-                                Text("Hello\nWorld!")
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(.title, design: .rounded))
+                                    Text("Hello\nWorld!")
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(.title, design: .rounded))
 
+                                }
+                                .transition(.movingParts.flip)
+                                .aspectRatio(1, contentMode: .fit)
+                                .id(uuid)
                             }
-                            .transition(.movingParts.flip)
-                            .aspectRatio(1, contentMode: .fit)
-                            .id(uuid)
                         }
-                    }
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
             }
         }
     }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-    }
-}
 #endif

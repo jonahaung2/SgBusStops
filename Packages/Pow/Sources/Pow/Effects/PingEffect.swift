@@ -1,3 +1,8 @@
+//  PingEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyChangeEffect {

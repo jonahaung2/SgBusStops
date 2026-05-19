@@ -1,8 +1,6 @@
-//
 //  BusNumberText.swift
-//  UI
 //
-//  Created by Aung Ko Min on 20/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import SwiftUI
@@ -19,6 +17,6 @@ public struct BusNumberText: View {
     public var body: some View {
         Text(text)
             .font(.custom("Impact", size: UIFont.preferredFont(forTextStyle: textStyle).pointSize))
-			.foregroundStyle(Color.indigo.mix(with: .primary, by: 0.3).gradient)
+            .foregroundStyle(Color.indigo.mix(with: .primary, by: 0.3).gradient)
     }
 }

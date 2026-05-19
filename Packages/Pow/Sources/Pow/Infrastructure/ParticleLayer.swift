@@ -1,3 +1,8 @@
+//  ParticleLayer.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension View {
@@ -7,40 +12,37 @@ public extension View {
     ///
     /// For example, certain `List` styles may clip their rows. Use `particleLayer(_:)` to render particles on top of the entire `List` or even its enclosing `NavigationStack`.
     func particleLayer(name: AnyHashable) -> some View {
-        self
-            .transformEnvironment(\.particleLayerNames) {
-                $0.insert(name)
-            }
-            .overlayPreferenceValue(ParticleLayerPreferenceKey.self) { p in
-                GeometryReader { proxy in
-                    let keys: [UUID] = {
-                        return p
-                            .filter { $0.1.name == name }
-                            .keys
-                            .sorted { a, b in a.uuidString < b.uuidString }
-                    }()
+        transformEnvironment(\.particleLayerNames) {
+            $0.insert(name)
+        }
+        .overlayPreferenceValue(ParticleLayerPreferenceKey.self) { p in
+            GeometryReader { proxy in
+                let keys: [UUID] = p
+                    .filter { $0.1.name == name }
+                    .keys
+                    .sorted { a, b in a.uuidString < b.uuidString }
 
-                    ZStack {
-                        ForEach(keys, id: \.self) { key in
-                            let layer = p[key]!
-                            let b = proxy[layer.bounds]
+                ZStack {
+                    ForEach(keys, id: \.self) { key in
+                        let layer = p[key]!
+                        let b = proxy[layer.bounds]
 
-                            layer.erasedContent
-                                .frame(width: b.width, height: b.height)
-                                .position(b.center)
-                        }
+                        layer.erasedContent
+                            .frame(width: b.width, height: b.height)
+                            .position(b.center)
                     }
                 }
             }
-            .transformPreference(ParticleLayerPreferenceKey.self) {
-                $0 = $0.filter { $0.1.name != name }
-            }
+        }
+        .transformPreference(ParticleLayerPreferenceKey.self) {
+            $0 = $0.filter { $0.1.name != name }
+        }
     }
 }
 
 /// A context in which particle effects draw their particles.
 public struct ParticleLayer: Hashable {
-    internal enum Guts: Hashable {
+    enum Guts: Hashable {
         case local
         case named(AnyHashable)
     }
@@ -49,8 +51,8 @@ public struct ParticleLayer: Hashable {
 
     var name: AnyHashable? {
         switch guts {
-        case .named(let name): return name
-        case .local: return nil
+        case let .named(name): name
+        case .local: nil
         }
     }
 
@@ -65,7 +67,7 @@ public struct ParticleLayer: Hashable {
     }
 }
 
-internal struct ParticleLayerContents {
+struct ParticleLayerContents {
     var name: AnyHashable
 
     var content: any View
@@ -77,7 +79,7 @@ internal struct ParticleLayerContents {
     }
 }
 
-internal struct ParticleLayerPreferenceKey: PreferenceKey {
+struct ParticleLayerPreferenceKey: PreferenceKey {
     static var defaultValue: [UUID: ParticleLayerContents] = [:]
 
     static func reduce(value: inout [UUID: ParticleLayerContents], nextValue: () -> [UUID: ParticleLayerContents]) {
@@ -85,7 +87,7 @@ internal struct ParticleLayerPreferenceKey: PreferenceKey {
     }
 }
 
-internal extension EnvironmentValues {
+extension EnvironmentValues {
     struct ParticleLayerNames: EnvironmentKey {
         static var defaultValue: Set<AnyHashable> = []
     }
@@ -96,7 +98,7 @@ internal extension EnvironmentValues {
     }
 }
 
-internal extension View {
+extension View {
     func particleLayerBackground(alignment: Alignment = .center, layer: ParticleLayer = .local, isEnabled: Bool = true, @ViewBuilder particle: () -> some View) -> some View {
         modifier(ParticleLayerBackgroundModifier(alignment: alignment, layer: layer, isEnabled: isEnabled, particle: particle))
     }
@@ -116,7 +118,7 @@ private struct ParticleLayerBackgroundModifier<Particle: View>: ViewModifier {
     var isEnabled: Bool
 
     @State
-    private var layerID = UUID()
+    private var layerID: UUID = .init()
 
     @Environment(\.self)
     private var wholeEnvironment
@@ -132,13 +134,11 @@ private struct ParticleLayerBackgroundModifier<Particle: View>: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let hasParticleLayer: Bool = {
-            if let name = layer.name, particleLayerNames.contains(name) {
-                return true
-            } else {
-                return false
-            }
-        }()
+        let hasParticleLayer = if let name = layer.name, particleLayerNames.contains(name) {
+            true
+        } else {
+            false
+        }
 
         content
             .background(alignment: alignment) {
@@ -148,7 +148,7 @@ private struct ParticleLayerBackgroundModifier<Particle: View>: ViewModifier {
             }
             .anchorPreference(key: ParticleLayerPreferenceKey.self, value: .bounds) { bounds in
                 if let name = layer.name, hasParticleLayer, isEnabled {
-                    return [
+                    [
                         layerID: ParticleLayerContents(
                             name: name,
                             content: particle.environment(\.self, wholeEnvironment),
@@ -156,7 +156,7 @@ private struct ParticleLayerBackgroundModifier<Particle: View>: ViewModifier {
                         )
                     ]
                 } else {
-                    return [:]
+                    [:]
                 }
             }
     }
@@ -172,7 +172,7 @@ private struct ParticleLayerOverlayModifier<Particle: View>: ViewModifier {
     var isEnabled: Bool
 
     @State
-    private var layerID = UUID()
+    private var layerID: UUID = .init()
 
     @Environment(\.self)
     private var wholeEnvironment
@@ -188,13 +188,11 @@ private struct ParticleLayerOverlayModifier<Particle: View>: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let hasParticleLayer: Bool = {
-            if let name = layer.name, particleLayerNames.contains(name) {
-                return true
-            } else {
-                return false
-            }
-        }()
+        let hasParticleLayer = if let name = layer.name, particleLayerNames.contains(name) {
+            true
+        } else {
+            false
+        }
 
         content
             .overlay(alignment: alignment) {
@@ -204,7 +202,7 @@ private struct ParticleLayerOverlayModifier<Particle: View>: ViewModifier {
             }
             .anchorPreference(key: ParticleLayerPreferenceKey.self, value: .bounds) { bounds in
                 if let name = layer.name, hasParticleLayer, isEnabled {
-                    return [
+                    [
                         layerID: ParticleLayerContents(
                             name: name,
                             content: particle.environment(\.self, wholeEnvironment),
@@ -212,7 +210,7 @@ private struct ParticleLayerOverlayModifier<Particle: View>: ViewModifier {
                         )
                     ]
                 } else {
-                    return [:]
+                    [:]
                 }
             }
     }

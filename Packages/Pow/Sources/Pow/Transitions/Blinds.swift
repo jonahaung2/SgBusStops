@@ -1,3 +1,8 @@
+//  Blinds.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyTransition.MovingParts {
@@ -24,13 +29,13 @@ public extension AnyTransition.MovingParts {
         let clampedHeight = clamp(5, slatWidth, .greatestFiniteMagnitude)
 
         return .modifier(
-            active:   Blinds(slatWidth: clampedHeight, style: style, isStaggered: isStaggered, animatableData: 0),
+            active: Blinds(slatWidth: clampedHeight, style: style, isStaggered: isStaggered, animatableData: 0),
             identity: Blinds(slatWidth: clampedHeight, style: style, isStaggered: isStaggered, animatableData: 1)
         )
     }
 }
 
-internal struct Blinds: ViewModifier, ProgressableAnimation, AnimatableModifier, Hashable {
+struct Blinds: ViewModifier, ProgressableAnimation, AnimatableModifier, Hashable {
     var slatWidth: CGFloat
 
     var style: AnyTransition.MovingParts.BlindsStyle
@@ -58,12 +63,11 @@ private struct BlindsShape: Shape {
     var isStaggered: Bool
 
     func path(in rect: CGRect) -> Path {
-        let slatCount: Int
-        switch style {
+        let slatCount = switch style {
         case .venetian:
-            slatCount = Int((rect.height / slatWidth).rounded(.up))
+            Int((rect.height / slatWidth).rounded(.up))
         case .vertical:
-            slatCount = Int((rect.width / slatWidth).rounded(.up))
+            Int((rect.width / slatWidth).rounded(.up))
         }
 
         let slatRects = (0 ..< slatCount)
@@ -103,123 +107,122 @@ private struct BlindsShape: Shape {
 }
 
 #if os(iOS) && DEBUG
-struct Blinds_Preview: PreviewableAnimation & PreviewProvider {
+    struct Blinds_Preview: PreviewableAnimation & PreviewProvider {
 
-  static var animation: Blinds {
-    Blinds(slatWidth: 20, style: .venetian, isStaggered: false, animatableData: 0)
-  }
-}
+        static var animation: Blinds {
+            Blinds(slatWidth: 20, style: .venetian, isStaggered: false, animatableData: 0)
+        }
+    }
 
-@available(iOS 15.0, *)
-struct Blinds_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var indices: [UUID] = [UUID()]
+    @available(iOS 15.0, *)
+    struct Blinds_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var indices: [UUID] = [UUID()]
 
-        @State
-        var slatWidth: CGFloat = 10
+            @State
+            private var slatWidth: CGFloat = 10
 
-        @State
-        var blindsStyle: AnyTransition.MovingParts.BlindsStyle = .venetian
+            @State
+            private var blindsStyle: AnyTransition.MovingParts.BlindsStyle = .venetian
 
-        @State
-        var isStaggered: Bool = false
+            @State
+            private var isStaggered: Bool = false
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Blinds")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Blinds")
+                                .bold()
 
-                        Text("""
-                        myView.transition(
-                            .movingParts.blinds(slatWidth: 15, isStaggered: true))
+                            Text("""
+                            myView.transition(
+                                .movingParts.blinds(slatWidth: 15, isStaggered: true))
+                            )
+                            """)
+                        }
+                        .font(.footnote.monospaced())
+                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(.thickMaterial)
                         )
-                        """)
+
+                        Stepper {
+                            Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
+                        } onIncrement: {
+                            withAnimation {
+                                indices.append(UUID())
+                            }
+                        } onDecrement: {
+                            if !indices.isEmpty {
+                                let _ = withAnimation {
+                                    indices.removeLast()
+                                }
+                            }
+                        }
+
+                        if #available(iOS 16.0, *) {
+                            LabeledContent {
+                                Slider(value: $slatWidth, in: 0 ... 50)
+                            } label: {
+                                ZStack {
+                                    Text("99").hidden()
+                                    Text(slatWidth, format: .number.precision(.fractionLength(0)))
+                                }
+                                .monospacedDigit()
+                            }
+                        }
+
+                        if #available(iOS 16.0, *) {
+                            LabeledContent("Style") {
+                                Picker("Picker", selection: $blindsStyle) {
+                                    Text("Venetian").tag(AnyTransition.MovingParts.BlindsStyle.venetian)
+                                    Text("Vertical").tag(AnyTransition.MovingParts.BlindsStyle.vertical)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                        }
+
+                        Toggle("Staggered", isOn: $isStaggered)
+
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
+
+                        LazyVGrid(columns: columns) {
+                            ForEach(indices, id: \.self) { uuid in
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 32, style: .continuous)
+                                        .fill(Color.accentColor)
+
+                                    Text("Hello\nWorld!")
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(.title, design: .rounded))
+
+                                }
+                                .transition(.movingParts.blinds(slatWidth: slatWidth, style: blindsStyle, isStaggered: isStaggered))
+                                .aspectRatio(2, contentMode: .fit)
+                                .id(uuid)
+                            }
+                        }
+
+                        Spacer()
                     }
-                    .font(.footnote.monospaced())
-                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                     .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(.thickMaterial)
-                    )
-
-                    Stepper {
-                        Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
-                    } onIncrement: {
-                        withAnimation {
-                            indices.append(UUID())
-                        }
-                    } onDecrement: {
-                        if !indices.isEmpty {
-                            let _ = withAnimation {
-                                indices.removeLast()
-                            }
-                        }
-                    }
-
-                    if #available(iOS 16.0, *) {
-                        LabeledContent {
-                            Slider(value: $slatWidth, in: 0...50)
-                        } label: {
-                            ZStack {
-                                Text("99").hidden()
-                                Text(slatWidth, format: .number.precision(.fractionLength(0)))
-                            }
-                            .monospacedDigit()
-                        }
-                    }
-
-                    if #available(iOS 16.0, *) {
-                        LabeledContent("Style") {
-                            Picker("Picker", selection: $blindsStyle) {
-                                Text("Venetian").tag(AnyTransition.MovingParts.BlindsStyle.venetian)
-                                Text("Vertical").tag(AnyTransition.MovingParts.BlindsStyle.vertical)
-                            }
-                        }
-                        .pickerStyle(.menu)
-                    }
-
-                    Toggle("Staggered", isOn: $isStaggered)
-
-
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
-
-                    LazyVGrid(columns: columns) {
-                        ForEach(indices, id: \.self) { uuid in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 32, style: .continuous)
-                                    .fill(Color.accentColor)
-
-                                Text("Hello\nWorld!")
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(.title, design: .rounded))
-
-                            }
-                            .transition(.movingParts.blinds(slatWidth: slatWidth, style: blindsStyle, isStaggered: isStaggered))
-                            .aspectRatio(2, contentMode: .fit)
-                            .id(uuid)
-                        }
-                    }
-
-                    Spacer()
                 }
-                .padding()
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
             }
         }
     }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-    }
-}
 #endif

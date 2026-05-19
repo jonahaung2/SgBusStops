@@ -1,12 +1,10 @@
-//
 //  SgBusArrivalWidgetBundle.swift
-//  SgBusArrivalWidget
 //
-//  Created by Aung Ko Min on 29/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct SgBusArrivalWidgetBundle: WidgetBundle {

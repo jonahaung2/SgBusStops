@@ -1,16 +1,6 @@
-//
 //  PreciseRepeater.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 29/3/26.
-//
-
-
-//
-//  PreciseRepeater.swift
-//  Services
-//
-//  Created by Aung Ko Min on 18/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import Foundation
@@ -32,7 +22,7 @@ public actor PreciseRepeater {
         tolerance: Duration? = nil,
         immediate: Bool = false,
         preventOverlap: Bool = true,
-        operation: @escaping @Sendable () async -> Void,
+        operation: @escaping @Sendable () async -> Void
     ) {
         guard task == nil else { return }
 

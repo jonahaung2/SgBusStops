@@ -1,26 +1,24 @@
-//
 //  NavPath++.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 27/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import Models
-import Services
 import SwiftUI
+import Services
 
-extension NavPath {
-	@ViewBuilder
-	public func destiNation() -> some View {
-		switch self {
-		case .busRoutes(let item):
-			BusRoutesScene(item)
-		case .stopDetail(let stop):
-			StopBussesScene(stop)
-		case .stopArrivals(let stop):
-			BusStopArrivalsScene(stop)
-		case .routesOfStop(let item):
-			BusServiceRouteScene(busRoute: item)
-		}
-	}
+public extension NavPath {
+    @ViewBuilder
+    func destiNation() -> some View {
+        switch self {
+        case let .busRoutes(item):
+            BusRoutesScene(item)
+        case let .stopDetail(stop):
+            StopBussesScene(stop)
+        case let .stopArrivals(stop):
+            BusStopArrivalsScene(stop)
+        case let .routesOfStop(item):
+            BusServiceRouteScene(busRoute: item)
+        }
+    }
 }

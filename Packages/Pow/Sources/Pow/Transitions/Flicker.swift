@@ -1,3 +1,8 @@
+//  Flicker.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyTransition.MovingParts {
@@ -15,13 +20,13 @@ public extension AnyTransition.MovingParts {
         let count = clamp(1, count, .max)
 
         return .modifier(
-            active:   Flicker(count: count, animatableData: 0),
+            active: Flicker(count: count, animatableData: 0),
             identity: Flicker(count: count, animatableData: 1)
         )
     }
 }
 
-internal struct Flicker: ViewModifier, ProgressableAnimation, AnimatableModifier, Hashable {
+struct Flicker: ViewModifier, ProgressableAnimation, AnimatableModifier, Hashable {
     var count: Int
 
     var animatableData: CGFloat
@@ -38,34 +43,34 @@ internal struct Flicker: ViewModifier, ProgressableAnimation, AnimatableModifier
 }
 
 #if os(iOS) && DEBUG
-struct Flicker_Preview: PreviewableAnimation, PreviewProvider {
-  static var animation: Flicker {
-    Flicker(count: 1, animatableData: 0)
-  }
-}
+    struct Flicker_Preview: PreviewableAnimation, PreviewProvider {
+        static var animation: Flicker {
+            Flicker(count: 1, animatableData: 0)
+        }
+    }
 
-@available(iOS 15.0, *)
-struct Flicker_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var indices: [UUID] = [UUID()]
+    @available(iOS 15.0, *)
+    struct Flicker_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var indices: [UUID] = [UUID()]
 
-        @State
-        var count: Int = 2
+            @State
+            private var count: Int = 2
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Flicker")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Flicker")
+                                .bold()
 
-                        Text("""
-                        myView.transition(
-                            .transition(.flicker(count: 2))
-                        )
-                        """)
-                    }
+                            Text("""
+                            myView.transition(
+                                .transition(.flicker(count: 2))
+                            )
+                            """)
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -74,57 +79,57 @@ struct Flicker_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper {
-                        Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
-                    } onIncrement: {
-                        withAnimation {
-                            indices.append(UUID())
-                        }
-                    } onDecrement: {
-                        if !indices.isEmpty {
-                            let _ = withAnimation {
-                                indices.removeLast()
+                        Stepper {
+                            Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
+                        } onIncrement: {
+                            withAnimation {
+                                indices.append(UUID())
+                            }
+                        } onDecrement: {
+                            if !indices.isEmpty {
+                                let _ = withAnimation {
+                                    indices.removeLast()
+                                }
                             }
                         }
-                    }
 
-                    Stepper("Flicker Count \(count)", value: $count, in: 1...99)
+                        Stepper("Flicker Count \(count)", value: $count, in: 1 ... 99)
 
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
 
-                    LazyVGrid(columns: columns) {
-                        ForEach(indices, id: \.self) { uuid in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 32, style: .continuous)
-                                    .fill(Color.accentColor)
+                        LazyVGrid(columns: columns) {
+                            ForEach(indices, id: \.self) { uuid in
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 32, style: .continuous)
+                                        .fill(Color.accentColor)
 
-                                Text("Hello\nWorld!")
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(.title, design: .rounded))
+                                    Text("Hello\nWorld!")
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(.title, design: .rounded))
 
+                                }
+                                .transition(.movingParts.flicker(count: count))
+                                .aspectRatio(2, contentMode: .fit)
+                                .id(uuid)
                             }
-                            .transition(.movingParts.flicker(count: count))
-                            .aspectRatio(2, contentMode: .fit)
-                            .id(uuid)
                         }
-                    }
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
             }
         }
     }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-    }
-}
 #endif

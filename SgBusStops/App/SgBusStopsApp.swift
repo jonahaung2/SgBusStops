@@ -1,13 +1,11 @@
-//
 //  SgBusStopsApp.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 19/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import Client
-import Services
 import SwiftUI
+import Services
 
 @main
 struct SgBusStopsApp: App {
@@ -17,7 +15,7 @@ struct SgBusStopsApp: App {
 
     var body: some Scene {
         WindowGroup {
-			RootView()
+            RootView()
         }
     }
 }

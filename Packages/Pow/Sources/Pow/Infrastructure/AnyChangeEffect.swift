@@ -1,3 +1,8 @@
+//  AnyChangeEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 /// A type-erased change effect.
@@ -6,9 +11,9 @@ public struct AnyChangeEffect {
 
     private var animation: Animation?
 
-    internal var cooldown: Double
+    var cooldown: Double
 
-    internal var delay: Double = 0
+    var delay: Double = 0
 
     fileprivate init(modifier: @escaping (Int) -> AnyViewModifier, animation: Animation?, cooldown: Double) {
         self.modifier = modifier
@@ -16,7 +21,7 @@ public struct AnyChangeEffect {
         self.cooldown = cooldown
     }
 
-    internal func viewModifier(changeCount: Int) -> some ViewModifier {
+    func viewModifier(changeCount: Int) -> some ViewModifier {
         modifier(changeCount)
             .animation(animation)
     }
@@ -30,7 +35,7 @@ public struct AnyChangeEffect {
 }
 
 extension AnyChangeEffect {
-    static func animation<Modifier: ViewModifier & Animatable>(_ makeModifier: @escaping (Int) -> Modifier, animation: Animation? = .default, cooldown: Double = 0.33) -> AnyChangeEffect {
+    static func animation(_ makeModifier: @escaping (Int) -> some ViewModifier & Animatable, animation: Animation? = .default, cooldown: Double = 0.33) -> AnyChangeEffect {
         AnyChangeEffect(
             modifier: { change in
                 makeModifier(change)
@@ -41,7 +46,7 @@ extension AnyChangeEffect {
         )
     }
 
-    static func simulation<Modifier: ViewModifier & Simulative>(_ makeModifier: @escaping (Int) -> Modifier) -> AnyChangeEffect {
+    static func simulation(_ makeModifier: @escaping (Int) -> some ViewModifier & Simulative) -> AnyChangeEffect {
         AnyChangeEffect(modifier: { change in
             makeModifier(change).eraseToAnyViewModifier()
         }, animation: nil, cooldown: 0.0)

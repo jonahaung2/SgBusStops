@@ -1,3 +1,8 @@
+//  WiggleEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyChangeEffect {
@@ -14,9 +19,9 @@ public extension AnyChangeEffect {
 
         fileprivate var phaseLength: CGFloat {
             switch self {
-            case .default: return 0.8
-            case .fast: return 0.3
-            case .phaseLength(let phaseLength): return phaseLength
+            case .default: 0.8
+            case .fast: 0.3
+            case let .phaseLength(phaseLength): phaseLength
             }
         }
     }
@@ -25,13 +30,13 @@ public extension AnyChangeEffect {
     ///
     /// - Parameter rate: The rate of the wiggle.
     static func wiggle(rate: WiggleRate) -> AnyChangeEffect {
-        .simulation({ change in
+        .simulation { change in
             WiggleSimulationModifier(impulseCount: change, phaseLength: rate.phaseLength)
-        })
+        }
     }
 }
 
-internal struct WiggleSimulationModifier: ViewModifier, Simulative {
+struct WiggleSimulationModifier: ViewModifier, Simulative {
     // TODO: Not used, remove from protocol
     var initialVelocity: CGFloat = 0
 
@@ -63,7 +68,7 @@ internal struct WiggleSimulationModifier: ViewModifier, Simulative {
         displacement == .zero && wiggleCount <= 0
     }
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         let t = Transform3DEffect(
             angle: .degrees(displacement / 2),
             axis: (0, 0, 1)
@@ -105,71 +110,70 @@ internal struct WiggleSimulationModifier: ViewModifier, Simulative {
     }
 }
 
-
 #if os(iOS) && DEBUG
-struct WiggleEffect_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var value: Int = 0
+    struct WiggleEffect_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var value: Int = 0
 
-        var body: some View {
-            VStack(spacing: 8) {
-                Spacer()
+            var body: some View {
+                VStack(spacing: 8) {
+                    Spacer()
 
-                VStack(spacing: 32) {
-                    Label("Answer", systemImage: "phone.fill")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .changeEffect(.wiggle(rate: .fast), value: value)
-                        .changeEffect(.shine(angle: .degrees(90), duration: 0.75), value: value)
-                        .tint(.green)
-                        .font(.largeTitle)
+                    VStack(spacing: 32) {
+                        Label("Answer", systemImage: "phone.fill")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .changeEffect(.wiggle(rate: .fast), value: value)
+                            .changeEffect(.shine(angle: .degrees(90), duration: 0.75), value: value)
+                            .tint(.green)
+                            .font(.largeTitle)
+                    }
+
+                    Spacer()
+
+                    Stepper(value: $value) {
+                        Text("Value ") + Text("(\(value.formatted()))").foregroundColor(.secondary)
+                    }
                 }
-
-                Spacer()
-
-                Stepper(value: $value) {
-                    Text("Value ") + Text("(\(value.formatted()))").foregroundColor(.secondary)
-                }
+                .padding()
             }
-            .padding()
+        }
+
+        struct Preview2: View {
+            @State
+            private var isCalling: Bool = false
+
+            var body: some View {
+                VStack(spacing: 8) {
+                    Spacer()
+
+                    VStack(spacing: 32) {
+                        Label("Answer", systemImage: "phone.fill")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .conditionalEffect(.repeat(.wiggle(rate: .fast), every: 2), condition: isCalling)
+                            .tint(.green)
+                            .font(.largeTitle)
+                    }
+
+                    Spacer()
+
+                    Toggle("Calling", isOn: $isCalling)
+                }
+                .padding()
+            }
+        }
+
+        static var previews: some View {
+            Preview()
+                .preferredColorScheme(.dark)
+                .previewDisplayName("Change Effect")
+            Preview2()
+                .preferredColorScheme(.dark)
+                .previewDisplayName("Conditional Effect")
         }
     }
-
-    struct Preview2: View {
-        @State
-        var isCalling: Bool = false
-
-        var body: some View {
-            VStack(spacing: 8) {
-                Spacer()
-
-                VStack(spacing: 32) {
-                    Label("Answer", systemImage: "phone.fill")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .conditionalEffect(.repeat(.wiggle(rate: .fast), every: 2), condition: isCalling)
-                        .tint(.green)
-                        .font(.largeTitle)
-                }
-
-                Spacer()
-
-                Toggle("Calling", isOn: $isCalling)
-            }
-            .padding()
-        }
-    }
-
-    static var previews: some View {
-        Preview()
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Change Effect")
-        Preview2()
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Conditional Effect")
-    }
-}
 #endif

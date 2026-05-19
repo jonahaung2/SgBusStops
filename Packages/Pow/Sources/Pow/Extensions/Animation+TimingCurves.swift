@@ -1,3 +1,8 @@
+//  Animation+TimingCurves.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension Animation.MovingParts {
@@ -61,44 +66,44 @@ public extension Animation.MovingParts {
 }
 
 #if os(iOS) && DEBUG
-@available(iOS 15.0, *)
-struct TimingCurves_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var isOn: Bool = false
+    @available(iOS 15.0, *)
+    struct TimingCurves_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var isOn: Bool = false
 
-        var body: some View {
-            let shape = Rectangle()
-                .fill(.red)
-                .frame(width: 64, height: 64)
-                .frame(maxWidth: .infinity, alignment: isOn ? .trailing : .leading)
+            var body: some View {
+                let shape = Rectangle()
+                    .fill(.red)
+                    .frame(width: 64, height: 64)
+                    .frame(maxWidth: .infinity, alignment: isOn ? .trailing : .leading)
 
-            VStack {
-                Toggle(isOn: $isOn) { Text("Toggle Me") }
+                VStack {
+                    Toggle(isOn: $isOn) { Text("Toggle Me") }
 
-                shape
-                    .animation(.easeInOut, value: isOn)
+                    shape
+                        .animation(.easeInOut, value: isOn)
 
-                shape
-                    .animation(.movingParts.easeInExponential, value: isOn)
+                    shape
+                        .animation(.movingParts.easeInExponential, value: isOn)
 
-                shape
-                    .animation(.movingParts.anticipate, value: isOn)
+                    shape
+                        .animation(.movingParts.anticipate, value: isOn)
 
-                shape
-                    .animation(.movingParts.overshoot, value: isOn)
+                    shape
+                        .animation(.movingParts.overshoot, value: isOn)
 
-                shape
-                    .animation(.movingParts.anticipateOvershoot, value: isOn)
+                    shape
+                        .animation(.movingParts.anticipateOvershoot, value: isOn)
 
-                Spacer()
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
+        }
+
+        static var previews: some View {
+            Preview()
         }
     }
-
-    static var previews: some View {
-        Preview()
-    }
-}
 #endif

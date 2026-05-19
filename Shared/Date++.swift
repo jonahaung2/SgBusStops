@@ -1,12 +1,10 @@
-//
 //  Date++.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 29/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import Foundation
 
 extension Date {
-	var secondsFromNow: Int { Int(self.timeIntervalSince(.now))}
+    var secondsFromNow: Int { Int(timeIntervalSince(.now))}
 }

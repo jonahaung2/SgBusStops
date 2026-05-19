@@ -1,17 +1,14 @@
-//
 //  Interpolation.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 24/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
-
 
 /*
-See the LICENSE.txt file for this sample’s licensing information.
+ See the LICENSE.txt file for this sample’s licensing information.
 
-Abstract:
-Helper extension to calculate animation progress and timing.
-*/
+ Abstract:
+ Helper extension to calculate animation progress and timing.
+ */
 
 import Foundation
 
@@ -28,7 +25,7 @@ public extension ClosedRange where Bound: BinaryFloatingPoint {
         }
         return (1 - percent) * lowerBound + percent * upperBound
     }
-    
+
     /// Returns the percentage of `value` as it lays between this bound's lower and upper bounds.
     /// - Parameters:
     ///   - value: A value between this range's lower and upper bounds.
@@ -50,11 +47,11 @@ public extension BinaryFloatingPoint {
     /// - Parameter clamped: Ignores values outside `0...1`, defaults to `true`.
     /// - Returns: A value that is easing from 0 to 1.
     func easeInOut(clamped: Bool = true) -> Self {
-        assert(self.isFinite)
+        assert(isFinite)
         let timing = clamped ? min(max(self, 0), 1) : self
         return timing * timing * (3.0 - 2.0 * timing)
     }
-    
+
     /// Takes a value from 0 to 1 and returns a value that starts at 0, eases into 1, and eases back into 0.
     ///
     /// For example, the following inputs generate these outputs:
@@ -70,7 +67,7 @@ public extension BinaryFloatingPoint {
     /// - Parameter clamped: Ignores values outside `0...1`, defaults to `true`.
     /// - Returns: A value that is easing from 0 to 1 and back to 0.
     func symmetricEaseInOut(clamped: Bool = true) -> Self {
-        assert(self.isFinite)
+        assert(isFinite)
         let timing = clamped ? min(max(self, 0), 1) : self
         if timing <= 0.5 {
             return (timing * 2).easeInOut(clamped: clamped)
@@ -78,7 +75,7 @@ public extension BinaryFloatingPoint {
             return (2 - (timing * 2)).easeInOut(clamped: clamped)
         }
     }
-    
+
     /// Truncates a value by `truncation` and returns the percentage between that value and `truncation` itself.
     ///
     /// If this value is 175 and you pass 50 for the `truncation` value, this would return 0.5 as it is 50% towards the next `truncation` value.
@@ -87,11 +84,11 @@ public extension BinaryFloatingPoint {
     /// - Parameter truncation: A truncation value that also determines the percentage.
     /// - Returns: A value from 0 to 1.
     func percent(truncation: Self) -> Self {
-        assert(self.isFinite)
+        assert(isFinite)
         assert(!truncation.isZero && truncation.isFinite)
-        return self.truncatingRemainder(dividingBy: truncation) / truncation
+        return truncatingRemainder(dividingBy: truncation) / truncation
     }
-    
+
     /// Maps this value, assumed to be a percentage from 0 to 1, to the corresponding value between the `range`'s lower and upper bounds.
     ///
     /// If this value is 0.5 and you pass a range from 0 to 10, the result would be 5 because it's 50% between 0 and 10.
@@ -102,10 +99,10 @@ public extension BinaryFloatingPoint {
     ///   - clamped: Ignores values outside `0...1`, defaults to `true`.
     /// - Returns: A value within the range that this value maps to as a percentage.
     func map(to range: ClosedRange<Self>, clamped: Bool = true) -> Self {
-        assert(self.isFinite)
+        assert(isFinite)
         return range.value(percent: self, clamped: clamped)
     }
-    
+
     /// Maps a value from `originalRange` into a percentage that is used to return an equivalent value in `newRange`.
     ///
     /// > Important: The value this method is called on must be a finite number.
@@ -115,10 +112,10 @@ public extension BinaryFloatingPoint {
     ///   - clamped: Ignores percentages in either range that are outside `0...1`, defaults to `true`
     /// - Returns: A value within `newRange` that this value maps to as a percentage in `originalRange`.
     func remap(from originalRange: ClosedRange<Self>, to newRange: ClosedRange<Self>, clamped: Bool = true) -> Self {
-        assert(self.isFinite)
+        assert(isFinite)
         return newRange.value(percent: originalRange.percent(for: self, clamped: clamped), clamped: clamped)
     }
-    
+
     func interpolate(to destination: Self, percent: Self, clamped: Bool = true) -> Self {
         let percent = clamped ? min(max(percent, 0), 1) : percent
         return (1 - percent) * self + percent * destination

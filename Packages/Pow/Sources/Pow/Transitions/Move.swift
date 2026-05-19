@@ -1,11 +1,16 @@
-import SwiftUI
+//  Move.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import simd
+import SwiftUI
 
 public extension AnyTransition.MovingParts {
     /// A transition that moves the view from the specified edge of the on
     /// insertion and towards it on removal.
     static func move(edge: Edge) -> AnyTransition {
-        return .modifier(
+        .modifier(
             active: Scaled(Move(edge: edge)),
             identity: Scaled(Move())
         )
@@ -29,14 +34,14 @@ public extension AnyTransition.MovingParts {
     ///
     /// - Parameter angle: The direction of the animation.
     static func move(angle: Angle) -> AnyTransition {
-        return .modifier(
+        .modifier(
             active: Scaled(Move(angle: angle)),
             identity: Scaled(Move())
         )
     }
 }
 
-internal struct Move: GeometryEffect, Animatable {
+struct Move: GeometryEffect, Animatable {
     /// Translation is relative, depth is ignored, anchor is always
     /// `UnitPoint(0.5, 0.5)`.
     var animatableData: TRS = .identity
@@ -48,9 +53,9 @@ internal struct Move: GeometryEffect, Animatable {
         case .leading:
             animatableData.translation.x = -1
         case .bottom:
-            animatableData.translation.y =  1
+            animatableData.translation.y = 1
         case .trailing:
-            animatableData.translation.x =  1
+            animatableData.translation.x = 1
         }
     }
 
@@ -64,8 +69,8 @@ internal struct Move: GeometryEffect, Animatable {
         let v_2: Double = pow(v, 2)
         let sq2: Double = sqrt(2.0)
 
-        let x: Double = 0.5 * sqrt(abs(2.0 + u_2 - v_2 + 2.0 * u * sq2)) - 0.5 * sqrt(abs(2.0 + u_2 - v_2 - 2.0 * u * sq2))
-        let y: Double = 0.5 * sqrt(abs(2.0 - u_2 + v_2 + 2.0 * v * sq2)) - 0.5 * sqrt(abs(2.0 - u_2 + v_2 - 2.0 * v * sq2))
+        let x = 0.5 * sqrt(abs(2.0 + u_2 - v_2 + 2.0 * u * sq2)) - 0.5 * sqrt(abs(2.0 + u_2 - v_2 - 2.0 * u * sq2))
+        let y = 0.5 * sqrt(abs(2.0 - u_2 + v_2 + 2.0 * v * sq2)) - 0.5 * sqrt(abs(2.0 - u_2 + v_2 - 2.0 * v * sq2))
 
         animatableData.translation.x = -x
         animatableData.translation.y = -y
@@ -92,73 +97,73 @@ internal struct Move: GeometryEffect, Animatable {
 }
 
 #if os(iOS) && DEBUG
-@available(iOS 15.0, *)
-struct Move_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var indices: [UUID] = [UUID()]
+    @available(iOS 15.0, *)
+    struct Move_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var indices: [UUID] = [UUID()]
 
-        enum DirectionType: String, Hashable, Identifiable, CaseIterable {
-            case edge = "Edge"
-            case angle = "Angle"
+            enum DirectionType: String, Hashable, Identifiable, CaseIterable {
+                case edge = "Edge"
+                case angle = "Angle"
 
-            var name: String {
-                return rawValue
-            }
-
-            var id: Self {
-                return self
-            }
-        }
-
-        @State
-        var directionType: DirectionType = .edge
-
-        @State
-        var edge: Edge = .leading
-
-        @State
-        var angle: Angle = .degrees(0)
-
-        @State
-        var isRightToLeft: Bool = false
-
-        func makeTransition() -> AnyTransition {
-            switch directionType {
-            case .edge:
-                return .movingParts.move(edge: edge)
-            case .angle:
-                return .movingParts.move(angle: angle)
-            }
-        }
-
-        var resolvedAngle: Angle {
-            switch directionType {
-            case .edge:
-                switch edge {
-                case .top:
-                    return .degrees(90)
-                case .leading:
-                    return .degrees(0)
-                case .bottom:
-                    return .degrees(270)
-                case .trailing:
-                    return .degrees(180)
+                var name: String {
+                    rawValue
                 }
-            case .angle:
-                return angle
+
+                var id: Self {
+                    self
+                }
             }
-        }
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Swoosh")
-                            .bold()
+            @State
+            private var directionType: DirectionType = .edge
 
-                        Text("myView.transition(**.movingParts.move**)")
+            @State
+            private var edge: Edge = .leading
+
+            @State
+            private var angle: Angle = .degrees(0)
+
+            @State
+            private var isRightToLeft: Bool = false
+
+            func makeTransition() -> AnyTransition {
+                switch directionType {
+                case .edge:
+                    .movingParts.move(edge: edge)
+                case .angle:
+                    .movingParts.move(angle: angle)
+                }
+            }
+
+            var resolvedAngle: Angle {
+                switch directionType {
+                case .edge:
+                    switch edge {
+                    case .top:
+                        .degrees(90)
+                    case .leading:
+                        .degrees(0)
+                    case .bottom:
+                        .degrees(270)
+                    case .trailing:
+                        .degrees(180)
                     }
+                case .angle:
+                    angle
+                }
+            }
+
+            var body: some View {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Swoosh")
+                                .bold()
+
+                            Text("myView.transition(**.movingParts.move**)")
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -167,97 +172,97 @@ struct Move_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper {
-                        Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
-                    } onIncrement: {
-                        withAnimation(.spring()) {
-                            indices.append(UUID())
-                        }
-                    } onDecrement: {
-                        if !indices.isEmpty {
-                            let _ = withAnimation {
-                                indices.removeLast()
+                        Stepper {
+                            Text("View Count ") + Text("(\(indices.count))").foregroundColor(.secondary)
+                        } onIncrement: {
+                            withAnimation(.spring()) {
+                                indices.append(UUID())
                             }
-                        }
-                    }
-
-                    Toggle("Right To Left", isOn: $isRightToLeft)
-
-                    if #available(iOS 16.0, *) {
-                        Picker("Type", selection: $directionType) {
-                            ForEach(DirectionType.allCases) { type in
-                                Text(type.name).tag(type)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-
-                        switch directionType {
-                        case .edge:
-                            LabeledContent("Edge") {
-                                Picker("Edge", selection: $edge) {
-                                    Group {
-                                        Text("Leading").tag(Edge.leading)
-                                        Text("Trailing").tag(Edge.trailing)
-                                        Text("Top").tag(Edge.top)
-                                        Text("Bottom").tag(Edge.bottom)
-                                    }
+                        } onDecrement: {
+                            if !indices.isEmpty {
+                                let _ = withAnimation {
+                                    indices.removeLast()
                                 }
                             }
-                            .pickerStyle(.menu)
-                            .frame(height: 44)
-                        case .angle:
-                            LabeledContent("Angle") {
-                                AngleControl(angle: $angle)
+                        }
+
+                        Toggle("Right To Left", isOn: $isRightToLeft)
+
+                        if #available(iOS 16.0, *) {
+                            Picker("Type", selection: $directionType) {
+                                ForEach(DirectionType.allCases) { type in
+                                    Text(type.name).tag(type)
+                                }
                             }
-                            .frame(height: 44)
-                        }
+                            .pickerStyle(.segmented)
 
-                        LabeledContent("Reference") {
-                            Image(systemName: "arrow.forward.circle")
-                                .imageScale(.large)
-                                .rotationEffect(resolvedAngle)
-                                .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
-                        }
-                    }
-
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
-
-                    LazyVGrid(columns: columns) {
-                        ForEach(indices, id: \.self) { uuid in
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(Color.accentColor)
-
-                                Text("Hello\nWorld!")
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(.title, design: .rounded))
-
+                            switch directionType {
+                            case .edge:
+                                LabeledContent("Edge") {
+                                    Picker("Edge", selection: $edge) {
+                                        Group {
+                                            Text("Leading").tag(Edge.leading)
+                                            Text("Trailing").tag(Edge.trailing)
+                                            Text("Top").tag(Edge.top)
+                                            Text("Bottom").tag(Edge.bottom)
+                                        }
+                                    }
+                                }
+                                .pickerStyle(.menu)
+                                .frame(height: 44)
+                            case .angle:
+                                LabeledContent("Angle") {
+                                    AngleControl(angle: $angle)
+                                }
+                                .frame(height: 44)
                             }
-                            .transition(
-                                makeTransition().combined(with: .opacity)
-                            )
-                            .aspectRatio(1.1, contentMode: .fit)
-                            .id(uuid)
-                        }
-                    }
-                    .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
 
-                    Spacer()
+                            LabeledContent("Reference") {
+                                Image(systemName: "arrow.forward.circle")
+                                    .imageScale(.large)
+                                    .rotationEffect(resolvedAngle)
+                                    .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
+                            }
+                        }
+
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
+
+                        LazyVGrid(columns: columns) {
+                            ForEach(indices, id: \.self) { uuid in
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Color.accentColor)
+
+                                    Text("Hello\nWorld!")
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(.title, design: .rounded))
+
+                                }
+                                .transition(
+                                    makeTransition().combined(with: .opacity)
+                                )
+                                .aspectRatio(1.1, contentMode: .fit)
+                                .id(uuid)
+                            }
+                        }
+                        .environment(\.layoutDirection, isRightToLeft ? .rightToLeft : .leftToRight)
+
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+            }
+        }
+
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
             }
         }
     }
-
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
-        }
-    }
-}
 #endif

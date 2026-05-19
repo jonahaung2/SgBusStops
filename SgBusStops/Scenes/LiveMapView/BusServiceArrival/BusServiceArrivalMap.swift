@@ -1,15 +1,13 @@
-//
 //  BusServiceArrivalMap.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 23/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-import CoreLocation
 import SwiftUI
+import CoreLocation
 internal import MapKit
-import Models
 import UI
+import Models
 
 struct BusServiceArrivalMap: View {
     @State private var viewModel: BusServiceArrivalMapViewModel
@@ -23,11 +21,11 @@ struct BusServiceArrivalMap: View {
             region: .init(
                 center: CLLocationCoordinate2D(
                     latitude: 1.3521,
-                    longitude: 103.8198,
+                    longitude: 103.8198
                 ),
-                span: .init(latitudeDelta: 0.05, longitudeDelta: 0.05),
+                span: .init(latitudeDelta: 0.05, longitudeDelta: 0.05)
             ),
-            annotations: $viewModel.annotations,
+            annotations: $viewModel.annotations
         ) { item in
             RotatingBusMarker(title: item.title)
         }

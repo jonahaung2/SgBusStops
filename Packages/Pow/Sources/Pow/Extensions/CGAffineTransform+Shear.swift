@@ -1,10 +1,15 @@
+//  CGAffineTransform+Shear.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import CoreGraphics
 
 extension CGAffineTransform {
     init(shearX x: CGFloat, y: CGFloat) {
         self = .identity
-        self.c = x
-        self.b = y
+        c = x
+        b = y
     }
 }
 

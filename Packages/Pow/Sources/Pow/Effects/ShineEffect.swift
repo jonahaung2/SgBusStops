@@ -1,3 +1,8 @@
+//  ShineEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyChangeEffect {
@@ -31,11 +36,11 @@ public extension AnyChangeEffect {
     }
 }
 
-internal struct ShineModifier: ViewModifier, Animatable {
+struct ShineModifier: ViewModifier, Animatable {
     var angle: Angle?
 
-    public var animatableData: CGFloat = 0
-    public func body(content: Content) -> some View {
+    var animatableData: CGFloat = 0
+    func body(content: Content) -> some View {
         let fraction = CGFloat(fmodf(Float(animatableData), 1))
 
         content
@@ -73,84 +78,83 @@ internal struct ShineModifier: ViewModifier, Animatable {
 }
 
 #if os(iOS) && DEBUG
-struct ShineChangeEffect_Previews: PreviewProvider {
-    struct Cart: View {
-        @State
-        var itemCount: Int = 0
+    struct ShineChangeEffect_Previews: PreviewProvider {
+        struct Cart: View {
+            @State
+            private var itemCount: Int = 0
 
-        @State private var degrees: Double = 45
+            @State private var degrees: Double = 45
 
-        var body: some View {
-            List {
-                HStack(alignment: .center, spacing: 16) {
-                    AsyncImage(url: URL(string: "https://movingparts.io/frontpage/checkout-smooth-blend@3x.png")) { phase in
-                        if let image = phase.image {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                        }
-                    }
-                    .background(Color(white: 0.9))
-                    .frame(width: 72, height: 72)
-                    .changeEffect(.shine(angle: .degrees(180), duration: 0.5), value: itemCount, isEnabled: itemCount > 0)
-
-                    HStack(alignment: .firstTextBaseline) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Seasonal Blend, Spring Here")
-                                .font(.body.weight(.medium))
-                                .lineSpacing(-10)
-
-                            Text("500g")
-                                .font(.callout)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
-
-                        VStack(alignment: .trailing) {
-                            Text("\(itemCount.formatted())× ").foregroundColor(.secondary) +
-                            Text(9.99.formatted(.currency(code: "EUR")))
-                            Stepper(value: $itemCount, in: 0...10) {
-                                Text("Quantity ") + Text(itemCount.formatted()).foregroundColor(.secondary)
+            var body: some View {
+                List {
+                    HStack(alignment: .center, spacing: 16) {
+                        AsyncImage(url: URL(string: "https://movingparts.io/frontpage/checkout-smooth-blend@3x.png")) { phase in
+                            if let image = phase.image {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
                             }
-                            .labelsHidden()
+                        }
+                        .background(Color(white: 0.9))
+                        .frame(width: 72, height: 72)
+                        .changeEffect(.shine(angle: .degrees(180), duration: 0.5), value: itemCount, isEnabled: itemCount > 0)
+
+                        HStack(alignment: .firstTextBaseline) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Seasonal Blend, Spring Here")
+                                    .font(.body.weight(.medium))
+                                    .lineSpacing(-10)
+
+                                Text("500g")
+                                    .font(.callout)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+
+                            VStack(alignment: .trailing) {
+                                Text("\(itemCount.formatted())× ").foregroundColor(.secondary) +
+                                    Text(9.99.formatted(.currency(code: "EUR")))
+                                Stepper(value: $itemCount, in: 0 ... 10) {
+                                    Text("Quantity ") + Text(itemCount.formatted()).foregroundColor(.secondary)
+                                }
+                                .labelsHidden()
+                                .font(.callout)
+                            }
                             .font(.callout)
                         }
-                        .font(.callout)
                     }
+
+                    Text(degrees, format: .number.precision(.fractionLength(2)))
+                    Slider(value: $degrees, in: -360.0 ... 360.0)
+
                 }
-
-                Text(degrees, format: .number.precision(.fractionLength(2)))
-                Slider(value: $degrees, in: -360.0...360.0)
-
-            }
-            .listStyle(.plain)
-            .navigationTitle("Cart")
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                VStack(spacing: 32) {
-                    Button {
-                    } label: {
-                        Label("Checkout", systemImage: "cart")
-                            .frame(maxWidth: .infinity)
+                .listStyle(.plain)
+                .navigationTitle("Cart")
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    VStack(spacing: 32) {
+                        Button {} label: {
+                            Label("Checkout", systemImage: "cart")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .disabled(itemCount == 0)
+                        .animation(.default, value: itemCount == 0)
+                        .changeEffect(
+                            .shine(angle: .degrees(degrees)).delay(0.5),
+                            value: itemCount,
+                            isEnabled: itemCount > 0
+                        )
+                        .padding()
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .disabled(itemCount == 0)
-                    .animation(.default, value: itemCount == 0)
-                    .changeEffect(
-                        .shine(angle: .degrees(degrees)).delay(0.5),
-                        value: itemCount,
-                        isEnabled: itemCount > 0
-                    )
-                    .padding()
                 }
             }
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            Cart()
+        static var previews: some View {
+            NavigationView {
+                Cart()
+            }
         }
     }
-}
 #endif

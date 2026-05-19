@@ -1,6 +1,11 @@
-import Foundation
+//  OnChangeEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 import Dispatch
+import Foundation
 
 public extension View {
     /// Applies the given change effect to this view when the specified value changes.
@@ -11,8 +16,7 @@ public extension View {
     ///   - isEnabled: A Boolean value that indicates whether the effect should be applied when the value changes.  Defaults to `true`.
     ///
     /// - Returns: A view that applies the effect to this view whenever value changes.
-    @ViewBuilder
-    func changeEffect<V: Equatable>(_ effect: AnyChangeEffect, value: V, isEnabled: @autoclosure @escaping () -> Bool = true) -> some View {
+    func changeEffect(_ effect: AnyChangeEffect, value: some Equatable, isEnabled: @autoclosure @escaping () -> Bool = true) -> some View {
         modifier(HighlightChangeModifier(value, effect: effect, predicate: { _ in isEnabled() }))
     }
 }
@@ -67,88 +71,88 @@ struct HighlightChangeModifier<Value: Equatable>: ViewModifier {
 }
 
 #if os(iOS) && DEBUG
-struct OnChangeEffectPreview_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var value: Int = 0
+    struct OnChangeEffectPreview_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var value: Int = 0
 
-        @State
-        var delay: Double = 0
+            @State
+            private var delay: Double = 0
 
-        var body: some View {
-            VStack(spacing: 8) {
-                GroupBox {
-                    Stepper(value: $value) {
-                        Text("Value ") + Text("(\(value.formatted()))").foregroundColor(.secondary)
-                    }
-
-                    Stepper(value: $value.animation(.easeInOut)) {
-                        Text("Value (animated) ") + Text("(\(value.formatted()))").foregroundColor(.secondary)
-                    }
-
-                    Slider(value: $delay, in: -2 ... 2)
-                }
-
-                VStack(spacing: 32) {
-                    Label("Shine (Default)", systemImage: "arrow.forward.square")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.blue)
-                        .changeEffect(.shine.delay(delay), value: value)
-
-                    Label("Ping", systemImage: "arrow.forward.square")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .changeEffect(.pulse(shape: RoundedRectangle(cornerRadius: 16, style: .continuous), count: 3), value: value)
-                        .tint(.green)
-
-                    Label("Jump", systemImage: "arrow.forward.square")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.orange, in: Capsule(style: .continuous))
-                        .changeEffect(.jump(height: 50), value: value)
-
-                    Label("Spin Simulation", systemImage: "arrow.forward.square")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.red, in: Capsule(style: .continuous))
-                        .changeEffect(.spin, value: value)
-
-                    HStack {
-                        let effect = AnyChangeEffect.spray {
-                            Image(systemName: "heart.fill")
-                                .foregroundColor(.pink)
-                                .font(.system(size: 40))
+            var body: some View {
+                VStack(spacing: 8) {
+                    GroupBox {
+                        Stepper(value: $value) {
+                            Text("Value ") + Text("(\(value.formatted()))").foregroundColor(.secondary)
                         }
 
-                        Label("Spray", systemImage: "sparkles")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(.blue, in: Capsule(style: .continuous))
+                        Stepper(value: $value.animation(.easeInOut)) {
+                            Text("Value (animated) ") + Text("(\(value.formatted()))").foregroundColor(.secondary)
+                        }
 
-                            .changeEffect(effect, value: value)
-
-                        Label("Spray (delay)", systemImage: "sparkles")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(.blue, in: Capsule(style: .continuous))
-                            .changeEffect(effect.delay(0.5), value: value)
+                        Slider(value: $delay, in: -2 ... 2)
                     }
 
-                    Label("Shake", systemImage: "arrow.left.arrow.right")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(.purple, in: Capsule(style: .continuous))
-                        .changeEffect(.shake, value: value)
+                    VStack(spacing: 32) {
+                        Label("Shine (Default)", systemImage: "arrow.forward.square")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.blue)
+                            .changeEffect(.shine.delay(delay), value: value)
+
+                        Label("Ping", systemImage: "arrow.forward.square")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.green, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .changeEffect(.pulse(shape: RoundedRectangle(cornerRadius: 16, style: .continuous), count: 3), value: value)
+                            .tint(.green)
+
+                        Label("Jump", systemImage: "arrow.forward.square")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.orange, in: Capsule(style: .continuous))
+                            .changeEffect(.jump(height: 50), value: value)
+
+                        Label("Spin Simulation", systemImage: "arrow.forward.square")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.red, in: Capsule(style: .continuous))
+                            .changeEffect(.spin, value: value)
+
+                        HStack {
+                            let effect = AnyChangeEffect.spray {
+                                Image(systemName: "heart.fill")
+                                    .foregroundColor(.pink)
+                                    .font(.system(size: 40))
+                            }
+
+                            Label("Spray", systemImage: "sparkles")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(.blue, in: Capsule(style: .continuous))
+
+                                .changeEffect(effect, value: value)
+
+                            Label("Spray (delay)", systemImage: "sparkles")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(.blue, in: Capsule(style: .continuous))
+                                .changeEffect(effect.delay(0.5), value: value)
+                        }
+
+                        Label("Shake", systemImage: "arrow.left.arrow.right")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(.purple, in: Capsule(style: .continuous))
+                            .changeEffect(.shake, value: value)
+                    }
                 }
+                .padding()
             }
-            .padding()
+        }
+
+        static var previews: some View {
+            Preview()
         }
     }
-
-    static var previews: some View {
-        Preview()
-    }
-}
 #endif

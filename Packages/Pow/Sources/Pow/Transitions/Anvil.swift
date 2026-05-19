@@ -1,6 +1,11 @@
+//  Anvil.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 #if os(iOS) && EMG_PREVIEWS
-import SnapshotPreferences
+    import SnapshotPreferences
 #endif
 
 public extension AnyTransition.MovingParts {
@@ -10,7 +15,7 @@ public extension AnyTransition.MovingParts {
     static var anvil: AnyTransition {
         .asymmetric(
             insertion: .modifier(
-                active:   Anvil(animatableData: 0),
+                active: Anvil(animatableData: 0),
                 identity: Anvil(animatableData: 1)
             ),
             removal: .identity
@@ -19,15 +24,15 @@ public extension AnyTransition.MovingParts {
     }
 }
 
-internal struct Anvil: ViewModifier, ProgressableAnimation, AnimatableModifier {
+struct Anvil: ViewModifier, ProgressableAnimation, AnimatableModifier {
     var animatableData: CGFloat = 0
 
     #if os(iOS)
-    @State
-    var feedbackGenerator: UIImpactFeedbackGenerator?
+        @State
+        private var feedbackGenerator: UIImpactFeedbackGenerator?
     #endif
 
-    internal init(animatableData: CGFloat = 0) {
+    init(animatableData: CGFloat = 0) {
         self.animatableData = animatableData
     }
 
@@ -36,29 +41,29 @@ internal struct Anvil: ViewModifier, ProgressableAnimation, AnimatableModifier {
         let fall: CGFloat = 0.1
 
         /// Progress of the fall.
-        let fallT  = map(value: min(progress, fall), inMin: 0, inMax: fall, outMin: 0, outMax: 1)
+        let fallT = map(value: min(progress, fall), inMin: 0, inMax: fall, outMin: 0, outMax: 1)
 
         /// Progress of the shake.
         let shakeT = map(value: clamp(fall, progress - 0.01, 2 * fall) - fall, inMin: 0, inMax: fall, outMin: 0, outMax: 1)
 
         let padding = EdgeInsets(top: 150, leading: 130, bottom: 100, trailing: 130)
 
-        let grayImage: Image = Image("anvil_smoke_gray", bundle: .module)
-        let whiteImage: Image = Image("anvil_smoke_white", bundle: .module)
+        let grayImage = Image("anvil_smoke_gray", bundle: .module)
+        let whiteImage = Image("anvil_smoke_white", bundle: .module)
 
         content
-            #if os(iOS)
-            .onChange(of: fallT) { newFallT in
-                if fallT < 1 && newFallT >= 1 {
-                    feedbackGenerator?.impactOccurred()
-                    feedbackGenerator = nil
-                } else if newFallT > 0 && feedbackGenerator == nil {
-                    feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-                    feedbackGenerator?.prepare()
-                }
+        #if os(iOS)
+        .onChange(of: fallT) { newFallT in
+            if fallT < 1, newFallT >= 1 {
+                feedbackGenerator?.impactOccurred()
+                feedbackGenerator = nil
+            } else if newFallT > 0, feedbackGenerator == nil {
+                feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+                feedbackGenerator?.prepare()
             }
-            #endif
-            .offset(x: 0, y: -400 * (1 - fallT))
+        }
+        #endif
+        .offset(x: 0, y: -400 * (1 - fallT))
             .animation(nil, value: progress)
             .offset(
                 x: 2 * sin(shakeT * 3 * .pi) * (1 - shakeT),
@@ -155,7 +160,7 @@ internal struct Anvil: ViewModifier, ProgressableAnimation, AnimatableModifier {
                         let arc = 1 - pow(2 * speckT - 1, 2)
 
                         let maxOffsetY = bounds.height * 0.9
-                        let maxOffsetX = bounds.width  * 0.6
+                        let maxOffsetX = bounds.width * 0.6
 
                         for s in 0 ..< specks {
                             let s = CGFloat(s)
@@ -207,46 +212,47 @@ extension EdgeInsets {
 }
 
 #if os(iOS) && DEBUG
-struct Anvil_Preview: PreviewableAnimation, PreviewProvider {
-  static var animation: Anvil {
-    Anvil(animatableData: 0)
-  }
+    struct Anvil_Preview: PreviewableAnimation, PreviewProvider {
+        static var animation: Anvil {
+            Anvil(animatableData: 0)
+        }
 
-  static var content: any View {
-    RoundedRectangle(
-      cornerRadius: 8,
-      style: .continuous)
-    .fill(Color.blue)
-    .frame(width: 80, height: 80)
-    .preferredColorScheme(.dark)
-  }
-}
-
-@available(iOS 15.0, *)
-struct Anvil_Previews: PreviewProvider {
-    struct Item: Identifiable {
-        var color: Color
-
-        let id: UUID = UUID()
-
-        init() {
-            color = [Color.red, .orange, .yellow, .green, .purple, .mint].randomElement()!
+        static var content: any View {
+            RoundedRectangle(
+                cornerRadius: 8,
+                style: .continuous
+            )
+            .fill(Color.blue)
+            .frame(width: 80, height: 80)
+            .preferredColorScheme(.dark)
         }
     }
 
-    struct Preview: View {
-        @State
-        var items: [Item] = [Item()]
+    @available(iOS 15.0, *)
+    struct Anvil_Previews: PreviewProvider {
+        struct Item: Identifiable {
+            var color: Color
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            let id: UUID = .init()
+
+            init() {
+                color = [Color.red, .orange, .yellow, .green, .purple, .mint].randomElement()!
+            }
+        }
+
+        struct Preview: View {
+            @State
+            private var items: [Item] = [Item()]
+
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Anvil")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Anvil")
+                                .bold()
 
-                        Text("myView.transition(**.movingParts.anvil**)")
-                    }
+                            Text("myView.transition(**.movingParts.anvil**)")
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -255,47 +261,47 @@ struct Anvil_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper("Count") {
-                        withAnimation {
-                            items.append(Item())
+                        Stepper("Count") {
+                            withAnimation {
+                                items.append(Item())
+                            }
+                        } onDecrement: {
+                            if !items.isEmpty {
+                                items.removeLast()
+                            }
                         }
-                    } onDecrement: {
-                        if !items.isEmpty {
-                            items.removeLast()
+
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
+
+                        LazyVGrid(columns: columns) {
+                            ForEach(items) { item in
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(item.color)
+                                    .transition(.movingParts.anvil)
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .id(item.id)
+                            }
                         }
+
+                        Spacer()
                     }
-
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
-
-                    LazyVGrid(columns: columns) {
-                        ForEach(items) { item in
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(item.color)
-                                .transition(.movingParts.anvil)
-                                .aspectRatio(1, contentMode: .fit)
-                                .id(item.id)
-                        }
-                    }
-
-                    Spacer()
+                    .padding()
                 }
-                .padding()
             }
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
+            }
+            .environment(\.colorScheme, .dark)
+            #if os(iOS) && EMG_PREVIEWS
+                .emergeSnapshotPrecision(0)
+            #endif
         }
-        .environment(\.colorScheme, .dark)
-      #if os(iOS) && EMG_PREVIEWS
-        .emergeSnapshotPrecision(0)
-      #endif
     }
-}
 #endif

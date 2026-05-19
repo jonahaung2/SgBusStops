@@ -1,5 +1,10 @@
-import Foundation
+//  MKCoordinateRegion++.swift
+//
+//  Copyright © 2024 Aung Ko Min.
+//
+
 import MapKit
+import Foundation
 
 public extension MKCoordinateRegion {
     init(coordinates: [CLLocationCoordinate2D]) {

@@ -1,8 +1,6 @@
-//
 //  CLLocation+MRT.swift
-//  SgMaps
 //
-//  Created by Aung Ko Min on 30/11/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
 import CoreLocation

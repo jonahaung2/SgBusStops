@@ -1,8 +1,6 @@
-//
 //  SgMrtMapView.swift
 //
-//
-//  Created by Aung Ko Min on 1/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
 import MapKit
@@ -10,36 +8,12 @@ import SwiftUI
 
 public struct SgMrtMapView: View {
     private let onSelect: (MRT) -> Void
-    private let lines = MRTLine.allCases
-    @State var selectedLine: MRTLine?
-    @State var selection: MRT?
+    private let lines: [MRTLine] = MRTLine.allCases
+    @State private var selectedLine: MRTLine?
+    @State private var selection: MRT?
     @State private var animation: SgMapAnimation
-    @State private var touchedPoint = CLLocationCoordinate2D.singapore
+    @State private var touchedPoint: CLLocationCoordinate2D = .singapore
     @Environment(\.dismiss) private var dismiss
-
-    private var selectedMapItem: Binding<MKMapItem?> {
-        Binding<MKMapItem?>(
-            get: {
-                guard let mrt = selection else { return nil }
-                return mrt.asMapItem
-            },
-            set: { newValue in
-                // Keep MRT selection in sync when the sheet sets/clears the item
-                if let item = newValue, let coordinate = item.placemark.location?.coordinate {
-                    // Try to find the MRT that matches the map item's coordinate (within a small tolerance)
-                    let all = selectedLine?.mrts ?? MRT.allValues
-                    let found = all.min(by: { lhs, rhs in
-                        let lhsDist = CLLocation(latitude: lhs.latitude, longitude: lhs.longitude).distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
-                        let rhsDist = CLLocation(latitude: rhs.latitude, longitude: rhs.longitude).distance(from: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
-                        return lhsDist < rhsDist
-                    })
-                    selection = found
-                } else {
-                    selection = nil
-                }
-            }
-        )
-    }
 
     public init(_ onSelect: @escaping (MRT) -> Void) {
         self.onSelect = onSelect
@@ -95,9 +69,9 @@ public struct SgMrtMapView: View {
                         } else {
                             if selection == nil {
                                 selectedLine = nil
-							}
+                            }
                         }
-					}
+                    }
                 }
             }
         }
@@ -113,7 +87,7 @@ public struct SgMrtMapView: View {
                 LinearKeyframe(animation.pitch, duration: 1)
             }
         }
-		.toolbarVisibility(.hidden, for: .tabBar)
+        .toolbarVisibility(.hidden, for: .tabBar)
     }
 
     private func closestMRT(from location: CLLocation, mrts: [MRT]) -> (MRT, Int)? {
@@ -134,8 +108,9 @@ public struct SgMrtMapView: View {
         return nil
     }
 }
-extension MRT {
-    fileprivate var asMapItem: MKMapItem {
+
+private extension MRT {
+    var asMapItem: MKMapItem {
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let placemark = MKPlacemark(coordinate: coordinate)
         let item = MKMapItem(placemark: placemark)
@@ -143,4 +118,3 @@ extension MRT {
         return item
     }
 }
-

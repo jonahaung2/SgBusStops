@@ -1,7 +1,12 @@
-import SwiftUI
-import simd
+//  TRS.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
 
-internal struct TRS: Equatable {
+import simd
+import SwiftUI
+
+struct TRS: Equatable {
     var translation: simd_double3 = .zero
 
     var rotation: simd_quatd = .init()
@@ -18,7 +23,7 @@ internal struct TRS: Equatable {
 }
 
 extension TRS {
-    static let identity = TRS(translation: [0, 0, 0], rotation: .init(), scale: [1, 1, 1])
+    static let identity: TRS = .init(translation: [0, 0, 0], rotation: .init(), scale: [1, 1, 1])
 }
 
 extension TRS {
@@ -47,9 +52,9 @@ extension TRS: VectorArithmetic {
 
     var magnitudeSquared: Double {
         (translation * translation).sum() +
-        rotation.real * rotation.real +
-        (rotation.imag * rotation.imag).sum() +
-        (scale * scale).sum()
+            rotation.real * rotation.real +
+            (rotation.imag * rotation.imag).sum() +
+            (scale * scale).sum()
     }
 
     static var zero: Self {

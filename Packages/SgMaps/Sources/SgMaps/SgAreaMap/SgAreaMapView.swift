@@ -1,8 +1,6 @@
-//
 //  SgAreaMapView.swift
 //
-//
-//  Created by Aung Ko Min on 31/7/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
 import MapKit
@@ -35,9 +33,9 @@ public struct SgAreaMapView: View {
                 bounds: MapCameraBounds(
                     centerCoordinateBounds: region,
                     minimumDistance: 50000,
-                    maximumDistance: 200_000,
+                    maximumDistance: 200_000
                 ),
-                interactionModes: .all,
+                interactionModes: .all
             ) {
                 ForEach(sgAreas) { area in
                     let isSelected = selection == area
@@ -45,15 +43,15 @@ public struct SgAreaMapView: View {
                     case let .polygon(region):
                         MapPolyline(coordinates: region.verticies)
                             .stroke(
-								isSelected ? Color.orange : Color.secondary,
-								lineWidth: isSelected ? 2 : 0.5,
+                                isSelected ? Color.orange : Color.secondary,
+                                lineWidth: isSelected ? 2 : 0.5
                             )
                     case let .multiPolygon(regions):
                         ForEach(regions, id: \.id) { region in
                             MapPolyline(coordinates: region.verticies)
                                 .stroke(
                                     isSelected ? Color.accentColor : Color.secondary,
-                                    lineWidth: isSelected ? 2 : 1,
+                                    lineWidth: isSelected ? 2 : 1
                                 )
                         }
                     }
@@ -77,7 +75,7 @@ public struct SgAreaMapView: View {
                     animation = .init(
                         coordinate,
                         distance: nextSelection == nil ? 200_000 : 50000,
-                        pitch: nextSelection == nil ? 0 : 95,
+                        pitch: nextSelection == nil ? 0 : 95
                     )
                 } else {
                     selection = nil
@@ -87,19 +85,19 @@ public struct SgAreaMapView: View {
         }
         .mapStyle(
             .standard(
-				elevation: .realistic,
-				emphasis: .muted,
+                elevation: .realistic,
+                emphasis: .muted,
                 pointsOfInterest: .excludingAll,
-                showsTraffic: false,
-			)
+                showsTraffic: false
+            )
         )
         .mapControls {
             MapCompass()
             MapScaleView()
             MapUserLocationButton()
-			MapPitchToggle()
+            MapPitchToggle()
         }
-		.mapControlVisibility(.visible)
+        .mapControlVisibility(.visible)
         .mapCameraKeyframeAnimator(trigger: animation) { _ in
             KeyframeTrack(\MapCamera.centerCoordinate) {
                 LinearKeyframe(animation.coordinate, duration: 0.2)
@@ -122,6 +120,6 @@ public struct SgAreaMapView: View {
             initialAnimationWorkItem?.cancel()
             initialAnimationWorkItem = nil
         }
-		.toolbarVisibility(.hidden, for: .tabBar)
+        .toolbarVisibility(.hidden, for: .tabBar)
     }
 }

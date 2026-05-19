@@ -1,8 +1,6 @@
-//
 //  String++.swift
 //
-//
-//  Created by Aung Ko Min on 5/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
 import Foundation

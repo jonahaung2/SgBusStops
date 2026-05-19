@@ -1,3 +1,8 @@
+//  PushDownEffect.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
 public extension AnyConditionalEffect {
@@ -16,13 +21,11 @@ struct PressDownEffectModifier: ViewModifier, Continuous {
     var isActive: Bool
 
     func body(content: Content) -> some View {
-        let animation: Animation = {
-            if isActive {
-                return .interactiveSpring(response: 0.20, dampingFraction: 0.4)
-            } else {
-                return .interactiveSpring(response: 0.30, dampingFraction: 0.4, blendDuration: 0.6)
-            }
-        }()
+        let animation: Animation = if isActive {
+            .interactiveSpring(response: 0.20, dampingFraction: 0.4)
+        } else {
+            .interactiveSpring(response: 0.30, dampingFraction: 0.4, blendDuration: 0.6)
+        }
 
         let d = isActive ? 0.95 : 1
 

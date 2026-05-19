@@ -1,12 +1,10 @@
-//
 //  SgMapAnimation.swift
 //
-//
-//  Created by Aung Ko Min on 31/7/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import Foundation
 import MapKit
+import Foundation
 
 public struct SgMapAnimation {
     public var coordinate: CLLocationCoordinate2D
@@ -16,7 +14,7 @@ public struct SgMapAnimation {
     public init(
         _ coordinate: CLLocationCoordinate2D = .singapore,
         distance: Double = 80000,
-        pitch: Double = 0.2,
+        pitch: Double = 0.2
     ) {
         self.coordinate = coordinate
         self.distance = distance

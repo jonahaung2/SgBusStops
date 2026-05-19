@@ -1,10 +1,7 @@
-//
 //  PreciseRepeatingTaskModifier.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 29/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
-
 
 import SwiftUI
 
@@ -15,7 +12,7 @@ public struct PreciseRepeatingTaskModifier: ViewModifier {
     let preventOverlap: Bool
     let action: @Sendable () async -> Void
 
-    @State private var repeater = PreciseRepeater()
+    @State private var repeater: PreciseRepeater = .init()
 
     public func body(content: Content) -> some View {
         content
@@ -25,7 +22,7 @@ public struct PreciseRepeatingTaskModifier: ViewModifier {
                     tolerance: tolerance,
                     immediate: immediate,
                     preventOverlap: preventOverlap,
-                    operation: action,
+                    operation: action
                 )
             }
             .onDisappear {
@@ -37,7 +34,7 @@ public struct PreciseRepeatingTaskModifier: ViewModifier {
                 },
                 background: {
                     Task { await repeater.pause() }
-                },
+                }
             )
     }
 }
@@ -48,7 +45,7 @@ public extension View {
         tolerance: Duration? = .seconds(1),
         immediate: Bool = true,
         preventOverlap: Bool = true,
-        _ action: @escaping @Sendable () async -> Void,
+        _ action: @escaping @Sendable () async -> Void
     ) -> some View {
         modifier(
             PreciseRepeatingTaskModifier(
@@ -56,8 +53,8 @@ public extension View {
                 tolerance: tolerance,
                 immediate: immediate,
                 preventOverlap: preventOverlap,
-                action: action,
-            ),
+                action: action
+            )
         )
     }
 }

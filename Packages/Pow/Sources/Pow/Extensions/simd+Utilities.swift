@@ -1,6 +1,11 @@
+//  simd+Utilities.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import simd
 
-internal extension simd_double4x4 {
+extension simd_double4x4 {
     init(translationX x: Double, y: Double, z: Double = 0) {
         self.init(diagonal: [1, 1, 1, 1])
 

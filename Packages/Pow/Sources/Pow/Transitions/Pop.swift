@@ -1,5 +1,10 @@
-import SwiftUI
+//  Pop.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import simd
+import SwiftUI
 
 public extension AnyTransition.MovingParts {
     /// A transition that shows a view with a ripple effect and a flurry of
@@ -35,10 +40,10 @@ public extension AnyTransition.MovingParts {
     /// The transition is only performed on insertion.
     ///
     /// - Parameter style: The style to use for the effect.
-    static func pop<S: ShapeStyle>(_ style: S) -> AnyTransition {
+    static func pop(_ style: some ShapeStyle) -> AnyTransition {
         let pop = AnyTransition
             .modifier(
-                active:   Pop(style: AnyShapeStyle(style), animatableData: 0),
+                active: Pop(style: AnyShapeStyle(style), animatableData: 0),
                 identity: Pop(style: AnyShapeStyle(style), animatableData: 1)
             )
             .animation(.linear(duration: 1.2))
@@ -64,7 +69,7 @@ struct Pop: AnimatableModifier, ProgressableAnimation, ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let t = clamp(2 * (progress - 1/2.5))
+        let t = clamp(2 * (progress - 1 / 2.5))
 
         content
             .scaleEffect(1 - pow(2, -20 * t))
@@ -79,7 +84,7 @@ struct Pop: AnimatableModifier, ProgressableAnimation, ViewModifier {
 
     @ViewBuilder
     var particles: some View {
-        let t = clamp(2 * (progress - 1/3))
+        let t = clamp(2 * (progress - 1 / 3))
 
         var rng = SeededRandomNumberGenerator(seed: seed)
 
@@ -93,23 +98,21 @@ struct Pop: AnimatableModifier, ProgressableAnimation, ViewModifier {
             let radius: CGFloat = min(size.width, size.height) - 22
 
             for p in 0 ..< particleCount {
-                let f: CGFloat = CGFloat.random(in: 0.95 ... 1.1, using: &rng)
+                let f = CGFloat.random(in: 0.95 ... 1.1, using: &rng)
 
-                let particleT = clamp(f * (t - (1 - 1/f)))
+                let particleT = clamp(f * (t - (1 - 1 / f)))
 
                 if particleT <= 0 { return }
 
-                let particleOpacity: CGFloat = {
-                    if particleT < 0.5 {
-                        return 1 - pow(2, -20 * particleT)
-                    } else {
-                        return 1 - pow(2, 10 * (particleT - 1))
-                    }
-                }()
+                let particleOpacity: CGFloat = if particleT < 0.5 {
+                    1 - pow(2, -20 * particleT)
+                } else {
+                    1 - pow(2, 10 * (particleT - 1))
+                }
 
                 if particleOpacity <= 0 { return }
 
-                let p: CGFloat     = CGFloat(p)
+                let p = CGFloat(p)
                 let pFrac: CGFloat = p / CGFloat(particleCount)
 
                 let yOffset = CGFloat.random(in: -2 ... 2, using: &rng)
@@ -165,174 +168,167 @@ struct Pop: AnimatableModifier, ProgressableAnimation, ViewModifier {
 }
 
 #if os(iOS) && DEBUG
-struct Pop_Preview: PreviewableAnimation, PreviewProvider {
-  static var animation: Pop {
-    Pop(style: AnyShapeStyle(.tint), animatableData: 0)
-  }
+    struct Pop_Preview: PreviewableAnimation, PreviewProvider {
+        static var animation: Pop {
+            Pop(style: AnyShapeStyle(.tint), animatableData: 0)
+        }
 
-  static var content: any View {
-    Image(systemName: "heart.fill")
-        .foregroundColor(.red)
-        .tint(.red)
-        .preferredColorScheme(.dark)
-  }
-}
+        static var content: any View {
+            Image(systemName: "heart.fill")
+                .foregroundColor(.red)
+                .tint(.red)
+                .preferredColorScheme(.dark)
+        }
+    }
 
-@available(iOS 15.0, *)
-struct Pop_Previews: PreviewProvider {
-    struct Preview: View {
-        @State
-        var favorited = false
+    @available(iOS 15.0, *)
+    struct Pop_Previews: PreviewProvider {
+        struct Preview: View {
+            @State
+            private var favorited = false
 
-        @State
-        var starred = false
+            @State
+            private var starred = false
 
-        @State
-        var commented = false
+            @State
+            private var commented = false
 
-        @State
-        var leaf = false
-
-        @State
-        var count = 0
-
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Pop")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Pop")
+                                .bold()
 
-                        Text("myView.transition(.movingParts.pop(.red))").padding(.trailing, -8)
-                    }
-                    .font(.footnote.monospaced())
-                    .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(.thickMaterial)
-                    )
-
-                    HStack(alignment: .top) {
-                        Circle()
-                            .fill(.blue)
-                            .overlay {
-                                Text("RB").font(.system(size: 20, design: .rounded))
-                            }
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 44, height: 44)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack(spacing: 4) {
-                                Text("robb")
-                                Text("@DLX").foregroundColor(.secondary)
-                            }
-                            .font(.subheadline)
-                            .layoutPriority(1)
-                            .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
-
-
-                            Text("Trying out button state transitions in SwiftUI.")
-
-                            HStack(spacing: 24) {
-                                Button {
-                                    withAnimation {
-                                        favorited.toggle()
-                                    }
-                                } label: {
-                                    HStack(spacing: 2) {
-                                        Group {
-                                            if favorited {
-                                                Image(systemName: "heart.fill")
-                                                    .foregroundColor(.red)
-                                                    .transition(.movingParts.pop)
-                                            } else {
-                                                Image(systemName: "heart")
-                                                    .foregroundColor(.gray)
-                                                    .transition(.identity)
-                                            }
-                                        }
-
-                                        Text((favorited ? 144 : 143).formatted())
-                                            .foregroundColor(favorited ? .red : .gray)
-                                    }
-                                }
-                                .tint(.red)
-
-                                Button {
-                                    withAnimation {
-                                        starred.toggle()
-                                    }
-                                } label: {
-                                    HStack(spacing: 2) {
-                                        Group {
-                                            if starred {
-                                                Image(systemName: "star.fill")
-                                                    .foregroundStyle(.tint)
-                                                    .transition(.movingParts.pop)
-                                            } else {
-                                                Image(systemName: "star")
-                                                    .foregroundColor(.gray)
-                                                    .transition(.identity)
-                                            }
-                                        }
-
-                                        Text((starred ? 80 : 79).formatted())
-                                            .foregroundColor(starred ? .orange : .gray)
-                                    }
-                                }
-                                .tint(.orange)
-
-                                Button {
-                                    withAnimation {
-                                        commented.toggle()
-                                    }
-                                } label: {
-                                    HStack(spacing: 2) {
-                                        Group {
-                                            if commented {
-                                                Image(systemName: "bubble.right.fill")
-                                                    .foregroundStyle(.tint)
-                                                    .transition(.movingParts.pop)
-                                            } else {
-                                                Image(systemName: "bubble.right")
-                                                    .foregroundColor(.gray)
-                                                    .transition(.identity)
-                                            }
-                                        }
-
-                                        Text((commented ? 3 : 2).formatted())
-                                            .foregroundColor(commented ? .blue : .gray)
-                                    }
-                                }
-
-                                Spacer()
-                            }
-                            .padding(.top, 4)
-                            .imageScale(.large)
-                            .font(.footnote.monospacedDigit().weight(.medium))
+                            Text("myView.transition(.movingParts.pop(.red))").padding(.trailing, -8)
                         }
+                        .font(.footnote.monospaced())
+                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(.thickMaterial)
+                        )
+
+                        HStack(alignment: .top) {
+                            Circle()
+                                .fill(.blue)
+                                .overlay {
+                                    Text("RB").font(.system(size: 20, design: .rounded))
+                                }
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 44, height: 44)
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(spacing: 4) {
+                                    Text("robb")
+                                    Text("@DLX").foregroundColor(.secondary)
+                                }
+                                .font(.subheadline)
+                                .layoutPriority(1)
+                                .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
+
+                                Text("Trying out button state transitions in SwiftUI.")
+
+                                HStack(spacing: 24) {
+                                    Button {
+                                        withAnimation {
+                                            favorited.toggle()
+                                        }
+                                    } label: {
+                                        HStack(spacing: 2) {
+                                            Group {
+                                                if favorited {
+                                                    Image(systemName: "heart.fill")
+                                                        .foregroundColor(.red)
+                                                        .transition(.movingParts.pop)
+                                                } else {
+                                                    Image(systemName: "heart")
+                                                        .foregroundColor(.gray)
+                                                        .transition(.identity)
+                                                }
+                                            }
+
+                                            Text((favorited ? 144 : 143).formatted())
+                                                .foregroundColor(favorited ? .red : .gray)
+                                        }
+                                    }
+                                    .tint(.red)
+
+                                    Button {
+                                        withAnimation {
+                                            starred.toggle()
+                                        }
+                                    } label: {
+                                        HStack(spacing: 2) {
+                                            Group {
+                                                if starred {
+                                                    Image(systemName: "star.fill")
+                                                        .foregroundStyle(.tint)
+                                                        .transition(.movingParts.pop)
+                                                } else {
+                                                    Image(systemName: "star")
+                                                        .foregroundColor(.gray)
+                                                        .transition(.identity)
+                                                }
+                                            }
+
+                                            Text((starred ? 80 : 79).formatted())
+                                                .foregroundColor(starred ? .orange : .gray)
+                                        }
+                                    }
+                                    .tint(.orange)
+
+                                    Button {
+                                        withAnimation {
+                                            commented.toggle()
+                                        }
+                                    } label: {
+                                        HStack(spacing: 2) {
+                                            Group {
+                                                if commented {
+                                                    Image(systemName: "bubble.right.fill")
+                                                        .foregroundStyle(.tint)
+                                                        .transition(.movingParts.pop)
+                                                } else {
+                                                    Image(systemName: "bubble.right")
+                                                        .foregroundColor(.gray)
+                                                        .transition(.identity)
+                                                }
+                                            }
+
+                                            Text((commented ? 3 : 2).formatted())
+                                                .foregroundColor(commented ? .blue : .gray)
+                                        }
+                                    }
+
+                                    Spacer()
+                                }
+                                .padding(.top, 4)
+                                .imageScale(.large)
+                                .font(.footnote.monospacedDigit().weight(.medium))
+                            }
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(.thickMaterial)
+                        )
+
+                        Spacer()
                     }
                     .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(.thickMaterial)
-                    )
-
-                    Spacer()
                 }
-                .padding()
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
+            }
+            .environment(\.colorScheme, .dark)
         }
-        .environment(\.colorScheme, .dark)
     }
-}
 #endif

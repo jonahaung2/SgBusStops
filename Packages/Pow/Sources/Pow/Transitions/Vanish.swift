@@ -1,6 +1,11 @@
+//  Vanish.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 #if os(iOS) && EMG_PREVIEWS
-import SnapshotPreferences
+    import SnapshotPreferences
 #endif
 
 public extension AnyTransition.MovingParts {
@@ -19,8 +24,8 @@ public extension AnyTransition.MovingParts {
     /// - Parameter increasedBrightness: A Boolean that indicates whether the particles should render with increased brightness. Defaults to `true`.
     ///
     /// - Note: This will use a ease-out animation with a duration of 900ms by default.
-    static func vanish<T: ShapeStyle>(_ style: T, increasedBrightness: Bool = true) -> AnyTransition {
-        return .asymmetric(
+    static func vanish(_ style: some ShapeStyle, increasedBrightness: Bool = true) -> AnyTransition {
+        .asymmetric(
             insertion: .identity,
             removal: .modifier(
                 active: Vanish(animatableData: 0, style: style, increasedBrightness: increasedBrightness)
@@ -41,8 +46,8 @@ public extension AnyTransition.MovingParts {
     /// - Parameter increasedBrightness: A Boolean that indicates whether the particles should render with increased brightness. Defaults to `true`.
     ///
     /// - Note: This will use a ease-out animation with a duration of 900ms by default.
-    static func vanish<T: ShapeStyle, S: Shape>(_ style: T, mask: S, eoFill: Bool = false, increasedBrightness: Bool = true) -> AnyTransition {
-        return .asymmetric(
+    static func vanish(_ style: some ShapeStyle, mask: some Shape, eoFill: Bool = false, increasedBrightness: Bool = true) -> AnyTransition {
+        .asymmetric(
             insertion: .identity,
             removal: .modifier(
                 active: Vanish(animatableData: 0, style: style, mask: mask, eoFill: eoFill, increasedBrightness: increasedBrightness)
@@ -54,7 +59,7 @@ public extension AnyTransition.MovingParts {
     }
 }
 
-internal struct Vanish: ViewModifier, Animatable, AnimatableModifier {
+struct Vanish: ViewModifier, Animatable, AnimatableModifier {
     static let defaultAnimation: Animation = .easeOut(duration: 0.9)
 
     var animatableData: CGFloat = 0
@@ -70,7 +75,7 @@ internal struct Vanish: ViewModifier, Animatable, AnimatableModifier {
     @Environment(\.colorScheme)
     var colorScheme
 
-    internal init<S: ShapeStyle>(animatableData: CGFloat = 0, style: S, mask: (any Shape)? = nil, eoFill: Bool = true, increasedBrightness: Bool = true) {
+    init(animatableData: CGFloat = 0, style: some ShapeStyle, mask: (any Shape)? = nil, eoFill: Bool = true, increasedBrightness: Bool = true) {
         self.animatableData = animatableData
         self.style = AnyShapeStyle(style)
         self.mask = mask
@@ -95,7 +100,7 @@ internal struct Vanish: ViewModifier, Animatable, AnimatableModifier {
 
                     let particleSize: CGFloat = 12
 
-                    let rows = Int((bounds.width  / particleSize).rounded(.up))
+                    let rows = Int((bounds.width / particleSize).rounded(.up))
                     let cols = Int((bounds.height / particleSize).rounded(.up))
 
                     var rng = SeededRandomNumberGenerator(seed: size.width)
@@ -135,9 +140,9 @@ internal struct Vanish: ViewModifier, Animatable, AnimatableModifier {
 
                             let dX: CGFloat = 6 * particleSize
 
-                            let speedUp: CGFloat = 1// + .random(in: -0.1 ... 0.1, using: &rng)
-                            let offsetX: CGFloat = .random(in: -dX / 2 ... dX / 2, using: &rng)
-                            let offsetY: CGFloat = .random(in: -dX / 2 ... dX / 2, using: &rng)
+                            let speedUp: CGFloat = 1 // + .random(in: -0.1 ... 0.1, using: &rng)
+                            let offsetX = CGFloat.random(in: -dX / 2 ... dX / 2, using: &rng)
+                            let offsetY = CGFloat.random(in: -dX / 2 ... dX / 2, using: &rng)
 
                             ctx.drawLayer { ctx in
                                 ctx.translateBy(
@@ -164,31 +169,31 @@ internal struct Vanish: ViewModifier, Animatable, AnimatableModifier {
 }
 
 #if os(iOS) && DEBUG
-@available(iOS 15.0, *)
-struct Vanish_Previews: PreviewProvider {
-    struct Item: Identifiable {
-        var color: Color
+    @available(iOS 15.0, *)
+    struct Vanish_Previews: PreviewProvider {
+        struct Item: Identifiable {
+            var color: Color
 
-        let id: UUID = UUID()
+            let id: UUID = .init()
 
-        init() {
-            color = [Color.red, .orange, .yellow, .green, .purple, .mint].randomElement()!
+            init() {
+                color = [Color.red, .orange, .yellow, .green, .purple, .mint].randomElement()!
+            }
         }
-    }
 
-    struct Preview: View {
-        @State
-        var items: [Item] = [Item()]
+        struct Preview: View {
+            @State
+            private var items: [Item] = [Item()]
 
-        var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+            var body: some View {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Vanish")
-                            .bold()
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Vanish")
+                                .bold()
 
-                        Text("myView.transition(\n  **.movingParts.vanish(mask: Capsule())**\n)")
-                    }
+                            Text("myView.transition(\n  **.movingParts.vanish(mask: Capsule())**\n)")
+                        }
                         .font(.footnote.monospaced())
                         .frame(maxWidth: .greatestFiniteMagnitude, alignment: .leading)
                         .padding()
@@ -197,51 +202,51 @@ struct Vanish_Previews: PreviewProvider {
                                 .fill(.thickMaterial)
                         )
 
-                    Stepper("Count") {
-                        withAnimation {
-                            items.append(Item())
-                        }
-                    } onDecrement: {
-                        withAnimation(.linear(duration: 1.2)) {
-                            if !items.isEmpty {
-                                items.removeLast()
+                        Stepper("Count") {
+                            withAnimation {
+                                items.append(Item())
+                            }
+                        } onDecrement: {
+                            withAnimation(.linear(duration: 1.2)) {
+                                if !items.isEmpty {
+                                    items.removeLast()
+                                }
                             }
                         }
-                    }
 
-                    let columns: [GridItem] = [
-                        .init(.flexible()),
-                        .init(.flexible())
-                    ]
+                        let columns: [GridItem] = [
+                            .init(.flexible()),
+                            .init(.flexible())
+                        ]
 
-                    let shape = Capsule()
+                        let shape = Capsule()
 
-                    LazyVGrid(columns: columns) {
-                        ForEach(items) { item in
-                            shape
-                                .fill(item.color)
-                                .transition(.movingParts.vanish(.white, mask: shape))
-                                .aspectRatio(1/1.4, contentMode: .fit)
-                                .id(item.id)
+                        LazyVGrid(columns: columns) {
+                            ForEach(items) { item in
+                                shape
+                                    .fill(item.color)
+                                    .transition(.movingParts.vanish(.white, mask: shape))
+                                    .aspectRatio(1 / 1.4, contentMode: .fit)
+                                    .id(item.id)
+                            }
                         }
-                    }
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
             }
         }
-    }
 
-    static var previews: some View {
-        NavigationView {
-            Preview()
-                .navigationBarHidden(true)
+        static var previews: some View {
+            NavigationView {
+                Preview()
+                    .navigationBarHidden(true)
+            }
+            .environment(\.colorScheme, .dark)
+            #if os(iOS) && EMG_PREVIEWS
+                .emergeSnapshotPrecision(0)
+            #endif
         }
-        .environment(\.colorScheme, .dark)
-        #if os(iOS) && EMG_PREVIEWS
-          .emergeSnapshotPrecision(0)
-        #endif
     }
-}
 #endif

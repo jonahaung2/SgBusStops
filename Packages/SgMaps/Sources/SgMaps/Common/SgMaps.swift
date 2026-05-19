@@ -1,8 +1,6 @@
-//
 //  SgMaps.swift
 //
-//
-//  Created by Aung Ko Min on 1/8/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
 import Foundation

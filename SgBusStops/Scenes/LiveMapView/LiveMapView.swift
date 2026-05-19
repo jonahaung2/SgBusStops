@@ -1,8 +1,6 @@
-//
 //  LiveMapView.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 23/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import SwiftUI
@@ -17,7 +15,7 @@ public struct LiveMapView<AnnotationView: View>: View {
     init(
         region: MKCoordinateRegion,
         annotations: Binding<[MapAnnotationItem]>,
-        @ViewBuilder annotationView: @escaping (MapAnnotationItem) -> AnnotationView,
+        @ViewBuilder annotationView: @escaping (MapAnnotationItem) -> AnnotationView
     ) {
         _annotations = annotations
         _position = State(initialValue: .userLocation(fallback: .region(region)))
@@ -29,7 +27,7 @@ public struct LiveMapView<AnnotationView: View>: View {
             ForEach(annotations) { item in
                 Annotation(
                     item.title,
-                    coordinate: item.coordinate,
+                    coordinate: item.coordinate
                 ) {
                     annotationView(item)
                 }
@@ -54,8 +52,8 @@ public struct LiveMapView<AnnotationView: View>: View {
                     centerCoordinate: item.coordinate,
                     distance: 450,
                     heading: 0,
-                    pitch: 45,
-                ),
+                    pitch: 45
+                )
             )
         }
     }

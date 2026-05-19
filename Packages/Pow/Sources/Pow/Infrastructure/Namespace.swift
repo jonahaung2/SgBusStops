@@ -1,10 +1,13 @@
+//  Namespace.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 import AVFoundation
 
 public extension Animation {
-    enum MovingParts {
-
-    }
+    enum MovingParts {}
 
     /// The namespace of Moving Parts animations.
     static var movingParts: MovingParts.Type {
@@ -13,9 +16,7 @@ public extension Animation {
 }
 
 public extension AnyTransition {
-    enum MovingParts {
-
-    }
+    enum MovingParts {}
 
     /// The namespace of Moving Parts transitions.
     static var movingParts: MovingParts.Type {

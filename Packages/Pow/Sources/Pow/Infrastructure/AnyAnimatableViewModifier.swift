@@ -1,15 +1,20 @@
+//  AnyAnimatableViewModifier.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
+
 import SwiftUI
 
-internal struct AnyAnimatableViewModifier: ViewModifier, Animatable {
+struct AnyAnimatableViewModifier: ViewModifier, Animatable {
     private var _body: (Content) -> AnyView
 
     var animatableData: EmptyAnimatableData
 
-    init<Modifier: ViewModifier & Animatable>(_ modifier: Modifier) {
-        self._body = { content in
+    init(_ modifier: some ViewModifier & Animatable) {
+        _body = { content in
             AnyView(content.modifier(modifier))
         }
-        self.animatableData = .zero
+        animatableData = .zero
     }
 
     func body(content: Content) -> AnyView {
@@ -17,7 +22,7 @@ internal struct AnyAnimatableViewModifier: ViewModifier, Animatable {
     }
 }
 
-internal extension ViewModifier where Self: Animatable {
+extension ViewModifier where Self: Animatable {
     func eraseToAnyAnimatableViewModifier() -> AnyAnimatableViewModifier {
         AnyAnimatableViewModifier(self)
     }

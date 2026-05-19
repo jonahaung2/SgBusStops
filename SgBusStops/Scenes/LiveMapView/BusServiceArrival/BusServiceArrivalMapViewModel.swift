@@ -1,8 +1,6 @@
-//
 //  BusServiceArrivalMapViewModel.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 23/2/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
 import SwiftUI
@@ -27,7 +25,7 @@ final class BusServiceArrivalMapViewModel {
         self.arrival = arrival
     }
 
-    func task() async {
+    func task() {
 //        var items = [MapAnnotationItem]()
 //        for each in arrival.arrivals() {
 //            if let coordinate = each.coordinate {

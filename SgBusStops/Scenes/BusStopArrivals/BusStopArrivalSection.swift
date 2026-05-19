@@ -1,19 +1,15 @@
+//  BusStopArrivalSection.swift
 //
-//  BusServiceArrivalSection.swift
-//  SgBusStops
-//
-//  Created by Aung Ko Min on 5/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-import Models
-import Services
-import SwiftUI
 import UI
+import Models
+import SwiftUI
+import Services
 
 struct BusStopArrivalSection: View {
     private let model: ArrivalRowViewModel
-    @Environment(BusStore.self) private var store
-
     init(_ model: ArrivalRowViewModel) {
         self.model = model
     }
@@ -24,7 +20,7 @@ struct BusStopArrivalSection: View {
         } header: {
             BusStopArrivalHeader(model)
         } footer: {
-			ArrivalFooter(model: model)
+            ArrivalFooter(model: model)
         }
     }
 }

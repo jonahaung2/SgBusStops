@@ -1,12 +1,10 @@
-//
 //  PolygonRegion.swift
 //
-//
-//  Created by Aung Ko Min on 31/7/24.
+//  Copyright © 2024 Aung Ko Min.
 //
 
-import CoreLocation
 import Foundation
+import CoreLocation
 
 public struct PolygonRegion: Conformable {
     public let verticies: [CLLocationCoordinate2D]
@@ -71,8 +69,14 @@ public struct PolygonRegion: Conformable {
     // See https://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon/218081?s=1|193.4130#218081
 
     private func intersectionType(_ ray1: Ray, _ ray2: Ray) -> IntersectionType {
-        var d1, d2: Double
-        var a1, a2, b1, b2, c1, c2: Double
+        var d1: Double
+        var d2: Double
+        var a1: Double
+        var a2: Double
+        var b1: Double
+        var b2: Double
+        var c1: Double
+        var c2: Double
 
         let v1x1 = ray1.point1.latitude
         let v1y1 = ray1.point1.longitude

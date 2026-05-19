@@ -1,27 +1,25 @@
-//
 //  BusDetailsViewModel.swift
-//  SgBusStops
 //
-//  Created by Aung Ko Min on 27/3/26.
+//  Copyright © 2026 Aung Ko Min.
 //
 
-import Foundation
 import Models
 import Services
+import Foundation
 
 @Observable
 final class BusRoutesViewModel: ViewModel {
 
-	let busRoutes: BusRoutes
-	init(_ busRoutes: BusRoutes) {
-		self.busRoutes = busRoutes
-	}
+    let busRoutes: BusRoutes
+    init(_ busRoutes: BusRoutes) {
+        self.busRoutes = busRoutes
+    }
 
-	func task() async {
-//		do {
+    func task() {
+        //		do {
 //
-//		} catch {
-//			showError(error)
-//		}
-	}
+        //		} catch {
+        //			showError(error)
+        //		}
+    }
 }

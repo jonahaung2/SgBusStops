@@ -1,6 +1,11 @@
-import Testing
-@testable import SgMaps
+//  SgMapsTests.swift
+//
+//  Copyright © 2026 Aung Ko Min.
+//
 
-@Test func example() async throws {
+@testable import SgMaps
+import Testing
+
+@Test func example() {
     // Write your test here and use APIs like `#expect(...)` to check expected conditions.
 }
