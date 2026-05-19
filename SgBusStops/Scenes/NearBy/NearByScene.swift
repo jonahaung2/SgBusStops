@@ -17,34 +17,45 @@ struct NearByScene: View {
 	@State private var viewModel = NearbyStopsViewModel()
 	@AppStorage("nearbyDistance") private var distance: Double = 1000
 	@Environment(LocationService.self) private var locationService
-	@Environment(BusStore.self) private var store
+	@Environment(NavRouter.self) private var navRouter
+	@Environment(LiveActivityViewModel.self) private var liveActivity
+
+	@State private var controller = LocationAuthorizationController()
 
 	var body: some View {
 		List {
-			Section {
-				if let error = viewModel.error {
-					ContentUnavailableView {
-						Label(error.title, systemImage: error.imageName)
-					} description: {
-						Text(error.description)
-					}
+			if controller.phase != .authorized {
+				Section("Permission") {
+					LocationCheckerContentUnavailableView()
 				}
+			} else {
+				Section {
+					if let error = viewModel.error {
+						ContentUnavailableView {
+							Label(error.title, systemImage: error.imageName)
+						} description: {
+							Text(error.description)
+						}
+					}
 
-				ForEach(viewModel.nearbyStops) { stop in
-					BusStopCell(busStop: stop)
-				}
-			} header: {
-				if let address = locationService.address {
-					VStack(alignment: .center) {
-						Text(address)
+					ForEach(viewModel.nearbyStops) { stop in
+						BusStopCell(busStop: stop) { selection in
+							navRouter.push(.stopArrivals(selection.busStopCode))
+						}
 					}
-					.font(.footnote.italic())
-					.lineHeight(.tight)
-				}
-			} footer: {
-				if !viewModel.nearbyStops.isEmpty {
-					Text("\(distance, specifier: "%.0f" )m")
-						.font(.caption2)
+				} header: {
+					if let address = locationService.address {
+						VStack(alignment: .center) {
+							Text(address)
+						}
+						.font(.footnote.italic())
+						.lineHeight(.tight)
+					}
+				} footer: {
+					if !viewModel.nearbyStops.isEmpty {
+						Text("\(distance, specifier: "%.0f" )m")
+							.font(.caption2)
+					}
 				}
 			}
 		}
@@ -63,11 +74,15 @@ struct NearByScene: View {
 					}
 				}
 			}
+			if let model = liveActivity.current {
+				ToolbarItem(placement: .principal) {
+					ArrivalActivityBadge(model: model)
+				}
+			}
 		}
 		.task(id: locationService.location) {
 			if let location = locationService.location {
-				viewModel.set(nearbyStops: await store
-					.near(by: location, distance: distance))
+				await viewModel.fetchNearby(location: location, distance: distance)
 			}
 		}
 		.refreshable {

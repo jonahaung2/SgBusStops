@@ -73,37 +73,40 @@ struct BusStopArrivalsScene: View {
 					}
 				}
 			} else {
+				
 				ForEach(viewModel.arrivalItems) {
 					BusStopArrivalSection($0)
 				}
 
-				let excluded = viewModel.serviceRoutes.filter(
-					{ item in
-						if viewModel.arrivalItems
-							.contains(
-								where: {
-									$0.arrival.arrival.serviceNo == item.busNumber
-								})
-						{
-							return false
-						}
-						return true
-					})
-				if excluded.isEmpty == false {
-					Section {
-						VStack(spacing: 8) {
-							Text("Not currently serving")
-								.font(.callout)
-								.foregroundStyle(.secondary)
-							FlowLayout(alignment: .center, spacing: 16) {
-								ForEach(excluded) { route in
-									BusNumberText(route.busNumber, .title3)
+				if !viewModel.isLoading {
+					let excluded = viewModel.serviceRoutes.filter(
+						{ item in
+							if viewModel.arrivalItems
+								.contains(
+									where: {
+										$0.arrival.arrival.serviceNo == item.busNumber
+									})
+							{
+								return false
+							}
+							return true
+						})
+					if excluded.isEmpty == false {
+						Section {
+							VStack(spacing: 8) {
+								Text("Not currently serving")
+									.font(.callout)
+									.foregroundStyle(.secondary)
+								FlowLayout(alignment: .center, spacing: 16) {
+									ForEach(excluded) { route in
+										BusNumberText(route.busNumber, .title3)
+									}
 								}
 							}
+							.frame(maxWidth: .infinity)
 						}
-						.frame(maxWidth: .infinity)
+						.listRowBackground(Color.clear)
 					}
-					.listRowBackground(Color.clear)
 				}
 			}
 		}.overlay {

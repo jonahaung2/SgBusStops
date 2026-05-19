@@ -16,11 +16,11 @@ struct ArrivalFooter: View {
 
     var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			if let codeA = model.item.arrival.nextBus?.originCode,
+			if let codeA = model.arrival.arrival.nextBus?.originCode,
 			   let original = store.busStop(
 				for: codeA,
 			   ) {
-				if let code = model.item.arrival.nextBus?.destinationCode,
+				if let code = model.arrival.arrival.nextBus?.destinationCode,
 				   let destination = store.busStop(
 					for: code,
 				   ) {
@@ -34,7 +34,7 @@ struct ArrivalFooter: View {
 				}
 			}
 			Spacer()
-			model.item.arrival.operatorCode.badge.frame(height: 10)
+			model.arrival.arrival.operatorCode.badge.frame(height: 10)
 		}
     }
 }

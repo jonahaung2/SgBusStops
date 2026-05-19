@@ -54,10 +54,9 @@ struct BusStopArrivalHeader: View {
 						model.isFavourite ? Color.yellow.gradient : Color.gray.gradient
 					)
 					.symbolVariant(model.isFavourite ? .fill : .none)
-					.imageScale(model.isFavourite ? .medium : .small)
 					.changeEffect(
 						model.isFavourite
-							? .spray {
+						? .spray(origin: .bottom) {
 								Group {
 									Image(systemName: "star.fill").foregroundStyle(Color.red)
 									Image(systemName: "star.fill").foregroundStyle(Color.blue)
@@ -65,12 +64,12 @@ struct BusStopArrivalHeader: View {
 									Image(systemName: "star.fill").foregroundStyle(Color.orange)
 								}
 								.shadow(radius: 1)
-							} : .spin,
+							} : .wiggle,
 						value: model.isFavourite,
 						isEnabled: !model.isUpdatingFavourite,
 					)
 			}
-			BusNumberText(model.arrival.arrival.serviceNo, .title1)
+			BusNumberText(model.arrival.arrival.serviceNo, .largeTitle)
 		}
 	}
 }

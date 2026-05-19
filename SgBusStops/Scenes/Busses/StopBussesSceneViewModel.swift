@@ -10,9 +10,28 @@ import Foundation
 import Models
 import Services
 
+@Observable
 final class StopBussesSceneViewModel: ViewModel {
-	let busses: [Bus]
-	init(_ busses: [Bus]) {
-		self.busses = busses
+	
+	let stop: Stop
+	var busRoutes = [StopBusRoutes]()
+
+	init(_ stop: Stop) {
+		self.stop = stop
+	}
+
+	func task() async {
+		do {
+			let busses = try await stop.busses()
+			let stop = self.stop
+			busRoutes = try await AsyncOrderedStream.mapOrdered(inputs: busses) { bus in
+				if let route = try await bus.routes().buildServiceRoutes().first {
+					return StopBusRoutes(route: route, stop: stop)
+				}
+				return nil
+			}.compactMap{ $0 }
+		} catch {
+			showError(error)
+		}
 	}
 }

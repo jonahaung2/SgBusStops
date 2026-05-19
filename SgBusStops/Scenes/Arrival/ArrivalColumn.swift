@@ -11,7 +11,7 @@ import UI
 import Pow
 
 struct ArrivalColumn: View {
-	let arrival: BusArrival
+	let arrival: BusArrival.Arrival
 	let rank: Int
 
 	var body: some View {
@@ -21,7 +21,7 @@ struct ArrivalColumn: View {
 				if let seconds = arrival.arrivalSeconds() {
 					if seconds <= 60 {
 						Text("Arriving")
-							.foregroundStyle(.green.mix(with: .primary, by: 0.1))
+							.foregroundStyle(.green.mix(with: .primary, by: 0.15))
 							.font(.title2.weight(.semibold))
 
 					} else if seconds < -60 {

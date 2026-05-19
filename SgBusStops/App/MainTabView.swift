@@ -12,58 +12,59 @@ import UI
 
 struct MainTabView: View {
 
-    @State private var router = Router()
-    private let locationService = LocationService()
-    @Environment(\.scenePhase) private var scenePhase
+	@State private var router = Router()
+	@State private var liveActivity = LiveActivityViewModel()
+	private let locationService = LocationService()
+	@Environment(\.scenePhase) private var scenePhase
+	let store: BusStore
 
-    var body: some View {
-        TabView(selection: $router.currentTab) {
-            ForEach(router.navRouters) { navRouter in
-                Tab(value: navRouter.id, role: navRouter.id.canSearch ? .search : nil) {
-                    NavigationStack(path: .init(get: { navRouter.path }, set: { navRouter.path = $0 })) {
-                        view(for: navRouter.id)
-                            .navigationTitle(navRouter.id.description)
-                            .navigationDestination(for: BusStop.self) { busStop in
-                                BusStopDetailsScene(busStop)
-                            }
-							.navigationDestination(for: ArrivalItem.self) { arrival in
-								BusServiceRouteScene(arrival: arrival)
+	var body: some View {
+		TabView(selection: $router.currentTab) {
+			ForEach(router.navRouters) { navRouter in
+				let tab: TabPath = navRouter.id
+				Tab(value: tab, role: tab.canSearch ? .search : nil) {
+					NavigationStack(path: navRouter.pathBinding) {
+						view(for: tab)
+							.navigationTitle(tab.description)
+							.navigationDestination(for: NavPath.self) { path in
+								path.destiNation()
 							}
-                    }
-                    .environment(navRouter)
-					.equatable(by: navRouter.id)
-                } label: {
-                    Label(navRouter.id.description, systemImage: navRouter.id.systemName)
-                        .labelStyle(.iconOnly)
-						.symbolRenderingMode(.multicolor)
-                }
-            }
-        }
-        .tabBarMinimizeBehavior(.onScrollDown)
-        .environment(locationService)
+					}
+					.environment(navRouter)
+				} label: {
+					Label(tab.description, systemImage: tab.systemName)
+						.labelStyle(.iconOnly)
+				}
+			}
+		}
+		.tabBarMinimizeBehavior(.onScrollDown)
+		.environment(store)
+		.environment(locationService)
+		.environment(liveActivity)
 		.environment(\.currentLocation, locationService.location ?? .default)
-        .listSectionSpacing(2)
-        .listSectionMargins(.horizontal, 0)
+		.listSectionSpacing(8)
+		.listSectionMargins(.horizontal, 0)
 		.listRowSpacing(0)
 		.listSectionSeparator(.hidden)
-        .task(id: scenePhase) {
-            if scenePhase == .active {
-                await locationService.startLocation()
-            }
-        }
-    }
+		.buttonStyle(.borderless)
+		.task(id: scenePhase) {
+			if scenePhase == .active {
+				await locationService.startLocation()
+			}
+		}
+	}
 
-    @ViewBuilder
-    private func view(for tab: TabPath) -> some View {
-        switch tab {
-        case .nearBy:
-            NearByScene()
-        case .busStops:
-            BusStopsScene()
-        case .settings:
-            SettingsScene()
-        case .saved:
-            FavouriteArrivalsScene()
-        }
-    }
+	@ViewBuilder
+	private func view(for tab: TabPath) -> some View {
+		switch tab {
+		case .nearBy:
+			NearByScene()
+		case .busStops:
+			BusStopsScene()
+		case .settings:
+			SettingsScene()
+		case .saved:
+			FavouriteArrivalsScene()
+		}
+	}
 }

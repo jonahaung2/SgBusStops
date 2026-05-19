@@ -11,11 +11,21 @@ import Services
 import SgMaps
 import SwiftUI
 import UI
+internal import _LocationEssentials
+
+enum DisplayType: String, Sendable, Hashable, Identifiable, CaseIterable {
+	case busStops = "Bus Stops"
+	case busses = "Busses"
+	var id: String { rawValue }
+}
 
 @MainActor
 struct BusStopsScene: View {
+
 	@State private var viewModel: BusStopsViewModel
 	@Environment(BusStore.self) private var busStopStore
+	@Environment(NavRouter.self) private var navRouter
+	@Environment(\.dismissSearch) private var dismissSearch
 
 	init() {
 		_viewModel = .init(
@@ -30,7 +40,6 @@ struct BusStopsScene: View {
 					SgAreaMapView { area in
 						print(area)
 					}
-
 				} label: {
 					Label {
 						Text("Area Map")
@@ -38,14 +47,13 @@ struct BusStopsScene: View {
 						IconView {
 							Image(systemName: "globe.asia.australia.fill")
 						}
-						.foregroundStyle(RandomShapeStyle.style(for: "globe.asia.australia.fill"))
+						.foregroundStyle(Color.blue)
 					}
 				}
 				NavigationLink {
 					SgMrtMapView { mrt in
-						print(mrt)
-					}
 
+					}
 				} label: {
 					Label {
 						Text("MRT Map")
@@ -53,31 +61,86 @@ struct BusStopsScene: View {
 						IconView {
 							Image(systemName: "train.side.front.car")
 						}
-						.foregroundStyle(RandomShapeStyle.style(for: "train.side.front.car"))
+						.foregroundStyle(Color.red)
 					}
 				}
 			}
-			ForEach(viewModel.groupedBusStops, id: \.roadName) { group in
-				Section {
-					ForEach(group.stops) { stop in
-						BusStopCell(busStop: stop)
+
+			Section {
+				Picker("Display Type", selection: $viewModel.displayType) {
+					ForEach(DisplayType.allCases) { each in
+						Text(each.rawValue)
+							.tag(each)
 					}
-				} header: {
-					Text(group.roadName)
-						.font(.subheadline.lowercaseSmallCaps().bold())
-						.foregroundStyle(Color(uiColor: .label))
+				} currentValueLabel: {
+					Text(viewModel.displayType.rawValue)
+				}
+				.pickerStyle(.segmented)
+				.listRowBackground(Color.clear)
+				.listRowInsets(.init())
+			}
+			switch viewModel.displayType {
+			case .busStops:
+				if viewModel.groupedBusStops.isEmpty && viewModel.searchText.isEmpty == false {
+					ContentUnavailableView.search
+				}
+				ForEach(viewModel.groupedBusStops, id: \.roadName) { group in
+					Section {
+						ForEach(group.stops) { stop in
+							BusStopCell(busStop: stop) { selection in
+								navRouter.push(.stopDetail(selection))
+							}
+						}
+					} header: {
+						Text(group.roadName)
+							.font(.title2.bold())
+							.foregroundStyle(Color.primary)
+					} footer: {
+						Text(group.stops.count.formatted() + " stops")
+					}
+					.id(group.roadName)
+				}
+			case .busses:
+				if viewModel.routes.isEmpty && viewModel.searchText.isEmpty == false {
+					ContentUnavailableView.search
+				}
+				ForEach(viewModel.routes) { item in
+					Button {
+						navRouter.push(.busRoutes(item))
+					} label: {
+						LabeledContent {
+							item.bus.busOperator.badge.frame(height: 20)
+						} label: {
+							HStack(alignment: .top, spacing: 8) {
+								BusNumberText(item.bus.busNumber, .title3)
+								if item.direction != .inbound {
+									Text("\(item.direction.rawValue.formatted())")
+										.font(.caption2.bold())
+										.italic()
+										.foregroundStyle(.secondary)
+								}
+							}
+						}
+					}.id(item.id)
 				}
 			}
 		}
-		.animation(.default, value: viewModel.groupedBusStops.count)
-		.listSectionIndexVisibility(.automatic)
-		.searchable(text: $viewModel.searchText, prompt: "Search Bus Stops")
+		.animation(
+			.anticipate,
+			value: viewModel.displayType == .busses ? viewModel.routes.count : viewModel
+				.groupedBusStops.count)
+		.ignoresSafeArea(.keyboard)
+		.searchable(
+			text: .init(get: { viewModel.searchText }, set: { viewModel.search($0) }),
+			prompt: viewModel.displayType == .busStops ? "Search Bus Stops" : "Search Bus Number"
+		)
 		.refreshable {
-			await busStopStore.fetch()
-			viewModel.items = busStopStore.allBusStops
+			await busStopStore.fetch(forceRefresh: true)
+			await viewModel.task()
 		}
-		.task {
-			viewModel.items = busStopStore.allBusStops
+		.task(id: viewModel.displayType) {
+			dismissSearch()
+			await viewModel.task()
 		}
 	}
 }

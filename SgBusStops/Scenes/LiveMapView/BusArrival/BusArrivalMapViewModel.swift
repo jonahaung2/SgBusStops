@@ -13,7 +13,7 @@ import Models
 @MainActor
 final class BusArrivalMapViewModel {
     var annotations: [MapAnnotationItem] = []
-    let arrival: BusArrival
+    let arrival: BusArrival.Arrival
     func update(with newItems: [MapAnnotationItem]) {
         let oldSet = Set(annotations)
         let newSet = Set(newItems)
@@ -23,7 +23,7 @@ final class BusArrivalMapViewModel {
         }
     }
 
-    init(arrival: BusArrival) {
+    init(arrival: BusArrival.Arrival) {
         self.arrival = arrival
     }
 

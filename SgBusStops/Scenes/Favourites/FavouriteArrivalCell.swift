@@ -14,88 +14,56 @@ struct FavouriteArrivalCell: View {
 
 	let model: ArrivalRowViewModel
 	@Environment(NavRouter.self) private var navRouter
+	@Environment(BusStore.self) private var store
 
 	var body: some View {
 		Section {
 			VStack(alignment: .leading, spacing: 4) {
 				ArrivalRow(model)
-				if let distance = model.item.arrival.nextBus?.coordinate?.distance(
-					to: model.item.busStop
-						.coordinate
+				if let stop = store.busStop(for: model.arrival.busStopCode), let distance = model.arrival.arrival.nextBus?.coordinate?.distance(
+					to: stop.coordinate
 				) {
 					Text(
-						"\(Image(systemName: "signpost.right.and.left.fill"))⎯⎯ \(distance.formatted(.number.precision(.fractionLength(1)))) km ⎯⎯\(Image(systemName: "bus"))"
+						"\(Image(systemName: "signpost.right.and.left.fill")) ⎯ \(distance.formatted()) km ⎯\(Image(systemName: "bus"))"
 					)
-					.font(.caption2)
+					.font(.caption2.width(.condensed))
 					.foregroundStyle(.secondary)
 				}
 			}.transition(.identity)
 		} header: {
-			Button {
-				navRouter.push(model.item.busStop)
-			} label: {
-				let busStop = model.item.busStop
-				HStack(alignment: .center) {
-					VStack(alignment: .leading, spacing: 0) {
-						Text(busStop.desc)
-							.font(.subheadline).fontWeight(.medium)
-							.foregroundStyle(Color.primary)
+			if let stop = store.busStop(for: model.arrival.busStopCode) {
+				Button {
+					navRouter.push(.stopDetail(stop))
+				} label: {
 
-						Text(busStop.roadName)
-							.font(.caption2).italic()
-							.foregroundStyle(.secondary)
+					HStack(alignment: .center) {
+						VStack(alignment: .leading, spacing: 0) {
+							Text(stop.desc)
+								.font(.subheadline).fontWeight(.medium)
+								.foregroundStyle(Color.primary)
+
+							Text(stop.roadName)
+								.font(.caption2).italic()
+								.foregroundStyle(.secondary)
+						}
+						.lineHeight(.leading(increase: 2))
+						Spacer()
+						if let date = model.arrival.arrival.nextBus?.estimatedArrival {
+							let activity = LiveActivityModel(
+								busNumber: model.arrival.bus.busNumber,
+								stopCode: model.arrival.busStopCode,
+								stopName: stop.desc,
+								date: date
+							)
+							LiveActivityBadge(model: activity)
+						}
+                        BusNumberText(model.arrival.arrival.serviceNo, .largeTitle)
 					}
-					.lineHeight(.leading(increase: 2))
-					Spacer()
-					BusNumberText(model.item.arrival.serviceNo, .title1)
 				}
 			}
+
 		} footer: {
 			ArrivalFooter(model: model)
-		}
-	}
-}
-struct FavouriteArrivalRowContent: View {
-	let model: ArrivalRowViewModel
-
-	var body: some View {
-		VStack(alignment: .leading, spacing: 4) {
-			ArrivalRow(model)
-
-			if let distance = model.item.arrival.nextBus?.coordinate?
-				.distance(to: model.item.busStop.coordinate) {
-				Text(
-					"\(Image(systemName: "signpost.right.and.left.fill")) ⎯ \(distance.formatted(.number.precision(.fractionLength(1)))) km ⎯ \(Image(systemName: "bus"))"
-				)
-				.font(.caption2)
-				.foregroundStyle(.secondary)
-			}
-		}
-	}
-}
-struct FavouriteArrivalHeader: View {
-	let model: ArrivalRowViewModel
-	@Environment(NavRouter.self) private var navRouter
-
-	var body: some View {
-		HStack {
-			Button {
-				navRouter.push(model.item.busStop)
-			} label: {
-				VStack(alignment: .leading, spacing: 0) {
-					Text(model.item.busStop.desc)
-						.font(.subheadline).fontWeight(.medium)
-
-					Text(model.item.busStop.roadName)
-						.font(.caption2).italic()
-						.foregroundStyle(.secondary)
-				}
-				.lineHeight(.leading(increase: 2))
-			}
-
-			Spacer()
-
-			BusNumberText(model.item.arrival.serviceNo, .title1)
 		}
 	}
 }

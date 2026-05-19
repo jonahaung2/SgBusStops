@@ -17,7 +17,7 @@ struct SgBusStopsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            LocationCheckerScene()
+			RootView()
         }
     }
 }

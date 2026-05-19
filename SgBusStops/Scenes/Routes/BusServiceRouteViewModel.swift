@@ -13,21 +13,23 @@ import Observation
 @Observable
 final class BusServiceRouteViewModel: ViewModel {
 
-	let item: ArrivalItem
-	var routes = [BusRoute]()
+	let item: BusRoutes
+	let busStop: Stop?
+	var routes = [BusRoutingInfo]()
 
-	init(arrival: ArrivalItem) {
-		self.item = arrival
+	init(busRoute: StopBusRoutes) {
+		self.item = busRoute.route
+		self.busStop = busRoute.stop
+		self.routes = busRoute.route.routes
 	}
 
 	func task() async {
 		do {
-			let routes = try await SwiftDataStore.shared.busRouteStore
-				.routes(serviceNo: item.arrival.serviceNo)
-			let serviceRoutes = routes.buildServiceRoutes()
-				.filter { $0.contains(stopCode: item.busStop.busStopCode)}
-			let stops = serviceRoutes.first?.stops ?? []
-			var result = [BusRoute]()
+			let serviceRoutes = try await SwiftDataStore.shared.store
+				.busServiceStops(serviceNo: item.busNumber)
+				.filter { $0.contains(stopCode: busStop?.busStopCode ?? "")}
+			let stops = serviceRoutes.first?.routes ?? []
+			var result = [BusRoutingInfo]()
 
 			stops.forEach { route in
 
@@ -40,27 +42,27 @@ final class BusServiceRouteViewModel: ViewModel {
 	}
 
 	public func route(for serviceNo: String, direction: Int) async throws
-	-> BusServiceRoute? {
-	let allRoutes = try await SwiftDataStore.shared.busRouteStore.fetchAll()
+	-> BusRoutes? {
+		let allRoutes = try await SwiftDataStore.shared.store.routeAll()
 		let build = allRoutes.buildServiceRoutes()
 
-		return build.route(serviceNo: serviceNo, direction: direction)
+		return build.route(busService: serviceNo, direction: direction)
 	}
 
 	public func remaining(serviceNo: String, direction: Int, after busStopCode: String)
-	async throws -> [BusRoute] {
+	async throws -> [BusRoutingInfo] {
 		try await route(for: serviceNo, direction: direction)?.remainingStops(after: busStopCode)
 		?? []
 	}
 	public func remaining(serviceNo: String, direction: Int, including busStopCode: String)
-	async throws -> [BusRoute] {
+	async throws -> [BusRoutingInfo] {
 		try await route(for: serviceNo, direction: direction)?.remainingStops(including: busStopCode) ?? []
 	}
 }
-extension Array where Element == BusRoute {
+extension Array where Element == BusRoutingInfo {
 
 	/// Group by serviceNo → direction → sorted stops
-	public func groupedByService() -> [String: [Int: [BusRoute]]] {
+	public func groupedByService() -> [String: [BusDirection: [BusRoutingInfo]]] {
 		Dictionary(grouping: self) { $0.serviceNo }
 			.mapValues { routes in
 				Dictionary(grouping: routes) { $0.direction }
@@ -68,8 +70,8 @@ extension Array where Element == BusRoute {
 			}
 	}
 	/// Group by serviceNo → direction → sorted stops
-	public func groupedByDirection() -> [BusDirection: [Int: [BusRoute]]] {
-		Dictionary(grouping: self) { $0.busDirectioon }
+	public func groupedByDirection() -> [BusDirection: [BusDirection: [BusRoutingInfo]]] {
+		Dictionary(grouping: self) { $0.direction }
 			.mapValues { routes in
 				Dictionary(grouping: routes) { $0.direction }
 					.mapValues { $0.sorted { $0.stopSequence < $1.stopSequence } }
@@ -77,12 +79,12 @@ extension Array where Element == BusRoute {
 	}
 
 	/// Flatten into structured route objects
-	public func buildServiceRoutes() -> [BusServiceRoute] {
+	public func buildServiceRoutes() -> [BusRoutes] {
 		groupedByService()
 			.flatMap { serviceNo, directions in
 				directions.map { direction, stops in
-					BusServiceRoute(
-						serviceNo: serviceNo,
+					BusRoutes(
+						busNumber: serviceNo,
 						direction: direction,
 						stops: stops
 					)
@@ -91,14 +93,14 @@ extension Array where Element == BusRoute {
 	}
 }
 
-extension Array where Element == BusServiceRoute {
+extension Array where Element == BusRoutes {
 
 	/// StopCode → [Routes]
-	public func indexByStop() -> [String: [BusServiceRoute]] {
-		var result: [String: [BusServiceRoute]] = [:]
+	public func indexByStop() -> [String: [BusRoutes]] {
+		var result: [String: [BusRoutes]] = [:]
 
 		for route in self {
-			for stop in route.stops {
+			for stop in route.routes {
 				result[stop.busStopCode, default: []].append(route)
 			}
 		}
@@ -107,36 +109,36 @@ extension Array where Element == BusServiceRoute {
 	}
 
 	/// Get route by service + direction
-	public func route(serviceNo: String, direction: Int) -> BusServiceRoute? {
+	public func route(busService: String, direction: BusDirection) -> BusRoutes? {
 		first {
-			$0.serviceNo == serviceNo && $0.direction == direction
+			$0.busNumber == busService && $0.direction == direction
 		}
 	}
 
 	/// Find all routes that pass BOTH stops (basic trip planner)
-	public func routes(from start: String, to end: String) -> [BusServiceRoute] {
+	public func routes(from start: String, to end: String) -> [BusRoutes] {
 		filter {
 			$0.contains(stopCode: start) && $0.contains(stopCode: end)
 		}
 	}
 }
 
-extension BusServiceRoute {
+extension BusRoutes {
 
 	/// Remaining stops AFTER a given stop (excluding current)
-	func remainingStops(after stopCode: String) -> [BusRoute] {
-		guard let index = stops.firstIndex(where: { $0.busStopCode == stopCode }),
-			  index + 1 < stops.count
+	func remainingStops(after stopCode: String) -> [BusRoutingInfo] {
+		guard let index = routes.firstIndex(where: { $0.busStopCode == stopCode }),
+			  index + 1 < routes.count
 		else { return [] }
 
-		return Array(stops[(index + 1)...])
+		return Array(routes[(index + 1)...])
 	}
 
 	/// Remaining stops INCLUDING current stop
-	func remainingStops(including stopCode: String) -> [BusRoute] {
-		guard let index = stops.firstIndex(where: { $0.busStopCode == stopCode })
+	func remainingStops(including stopCode: String) -> [BusRoutingInfo] {
+		guard let index = routes.firstIndex(where: { $0.busStopCode == stopCode })
 		else { return [] }
 
-		return Array(stops[index...])
+		return Array(routes[index...])
 	}
 }

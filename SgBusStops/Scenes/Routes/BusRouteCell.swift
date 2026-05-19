@@ -10,35 +10,29 @@ import Services
 import Models
 
 struct BusRouteCell: View {
-	let route: BusRoute
-	let busStop: BusStop
+	let route: BusRoutingInfo
+	let busStop: Stop
 	let rank: RouteRank
 	@Environment(NavRouter.self) private var navRouter
 
     var body: some View {
-		LabeledContent {
-			Text(route.stopSequence.formatted())
-				.font(.caption2)
-				.fontWeight(.black)
-				.italic()
-				.foregroundStyle(.secondary)
+		Button {
+			navRouter.push(.stopArrivals(busStop.busStopCode))
 		} label: {
-			Text("\(busStop.desc)")
-				.font(.headline)
-			Text(busStop.roadName)
-				.foregroundStyle(.secondary)
+			LabeledContent {
+				Text(route.busStopCode).fontWidth(.condensed)
+					.foregroundStyle(.secondary)
+			} label: {
+				Text("\(busStop.desc)")
+					.font(.headline)
+				Text(busStop.roadName)
+					.foregroundStyle(.secondary)
 
+			}
+			.multilineTextAlignment(.leading)
+			.lineHeight(.multiple(factor: 1.3))
+			.badgeProminence(rank == .past ? .decreased : .standard)
+			.foregroundStyle(rank == .past ? .tertiary : .primary)
 		}
-		.multilineTextAlignment(.leading)
-		.lineHeight(.multiple(factor: 1.3))
-		.badge(route.busStopCode)
-		.badgeProminence(rank == .past ? .decreased : .standard)
-		.foregroundStyle(rank == .past ? .tertiary : .primary)
-		._onButtonGesture { _ in
-
-		} perform: {
-			navRouter.push(busStop)
-		}
-
     }
 }

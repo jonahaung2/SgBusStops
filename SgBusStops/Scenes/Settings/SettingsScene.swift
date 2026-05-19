@@ -13,18 +13,18 @@ import SwiftUI
 import UIKit
 import UI
 import StoreKit
+import Pow
 
 struct SettingsScene: View {
 
-	@Environment(\.openURL) private var openURL
 	@Environment(BusStore.self) private var store
-
 	@AppStorage("nearbyDistance") private var nearbyDistance: Double = 1000
+	@AppStorage("show_map_at_bus_stop_arrival") private var showMapAtBusStopArrival = true
+	@AppStorage("arrival_refresh_interval") private var arrivalRefreshInterval: Double = 20
 
 	private var appVersion: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown"
 	}
-
 	private var buildNumber: String {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "Unknown"
 	}
@@ -45,7 +45,7 @@ struct SettingsScene: View {
 					} actions: {
 						Button("Try Again") {
 							Task {
-								await store.refreshData()
+								await store.fetch(forceRefresh: true)
 							}
 						}
 					}
@@ -55,13 +55,13 @@ struct SettingsScene: View {
 			// MARK: - Data Update & System Settings
 			Section {
 				Button {
-					Task { await store.refreshData() }
+					Task { await store.fetch(forceRefresh: true) }
 				} label: {
 					Label {
 						if store.isLoading {
 							ProgressView().controlSize(.mini)
 						} else {
-							Text("Refresh Data")
+							Text("Refresh latest bus data")
 						}
 					} icon: {
 						IconView {
@@ -80,10 +80,10 @@ struct SettingsScene: View {
 				}
 			}
 
-			Section("Controls") {
+			Section {
 				Label {
 					LabeledContent("API Key") {
-						Text(hasAPIKey ? "API Key Set" : "API Key Missing")
+						Text(hasAPIKey ? "Configured" : "API Key Missing")
 					}
 				} icon: {
 					IconView {
@@ -94,7 +94,7 @@ struct SettingsScene: View {
 
 				Label {
 					Stepper(
-						"Nearby Radius: \(nearbyDistance.formatted()) m",
+						"Search Radius: \(nearbyDistance.formatted())m",
 						value: .init(get: { nearbyDistance }, set: { nearbyDistance = $0 }),
 						in: 50...3000,
 						step: 50
@@ -105,24 +105,56 @@ struct SettingsScene: View {
 					}
 					.foregroundStyle(Color.orange)
 				}
+				Label {
+					Stepper(
+						"Refresh Interval: \(arrivalRefreshInterval.formatted())s",
+						value: .init(get: { arrivalRefreshInterval }, set: { arrivalRefreshInterval = $0 }),
+						in: 20...60,
+						step: 5
+					)
+				} icon: {
+					IconView {
+						Image(systemName: "arrow.trianglehead.2.counterclockwise")
+					}
+					.foregroundStyle(Color.brown)
+				}
+				Label {
+					Toggle("View on Map", isOn: $showMapAtBusStopArrival)
+				} icon: {
+					IconView {
+						Image(systemName: "rotate.3d.fill")
+					}
+					.foregroundStyle(Color.purple)
+				}
+			} header: {
+				HStack {
+					Text("Controls")
+					Spacer()
+					Text("")
+						.changeEffect(.rise {
+							Text("-+\(nearbyDistance.formatted())")
+								.font(.caption2.bold())
+								.foregroundStyle(Color.pink.gradient)
+								.shadow(color: .gray, radius: 0.5, y: 0.5)
+						}, value: nearbyDistance)
+				}
 			}
 
 			Section("App") {
-				Label {
-					Button {
-						guard let url = URL(string: "https://jonahaung2.github.io/sg-bus-app-privacy/") else { return }
-						openURL(url)
-					} label: {
-						Text("Privacy Policy")
+				if let url = URL(string: "https://jonahaung2.github.io/sg-bus-app-privacy/") {
+					Link(destination: url) {
+						Label {
+							Text("Privacy Policy")
+						} icon: {
+							IconView {
+								Image(systemName: "quote.closing")
+							}
+							.foregroundStyle(Color.red)
+						}
 					}
-				} icon: {
-					IconView {
-						Image(systemName: "quote.closing")
-					}
-					.foregroundStyle(Color.red)
 				}
 				Label {
-					Button("Rate This App") {
+					Button("Rate this App") {
 						requestAppReview()
 					}
 				} icon: {
@@ -131,30 +163,36 @@ struct SettingsScene: View {
 					}
 					.foregroundStyle(Color.blue)
 				}
-
-				Button {
-					guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-					openURL(url)
-				} label: {
-					Label {
-						Text("Open iOS Settings")
-					} icon: {
-						IconView {
-							Image(systemName: "shield.pattern.checkered")
+				if let url = URL(string: UIApplication.openSettingsURLString) {
+					Link.init(destination: url) {
+						Label {
+							Text("Open iOS Settings")
+						} icon: {
+							IconView {
+								Image(systemName: "shield.pattern.checkered")
+							}
+							.foregroundStyle(Color.brown)
 						}
-						.foregroundStyle(Color.brown)
 					}
 				}
 			}
 
-			// MARK: - About
 			Section {} footer: {
 				Text(.init(aboutThisApp))
+					.padding(.vertical)
+			}.tint(Color.blue)
+		}
+		.formStyle(.grouped)
+		.toolbar {
+			ToolbarItem(placement: .subtitle) {
+				Image("header/truck/Bus 1", bundle: .main)
+					.resizable()
+					.scaledToFit()
+					.frame(maxHeight: 50)
 			}
 		}
 	}
 
-	// MARK: - About This App
 	private let aboutThisApp = """
  **About This App**
  
@@ -165,7 +203,7 @@ struct SettingsScene: View {
  The developer is not responsible for the accuracy, completeness, or availability of the transit data. Use this app as a guide; actual bus arrival times may vary.
  """
 	private func viewModelTask() async {
-		await store.refreshData()
+		await store.fetch(forceRefresh: true)
 	}
 
 	func requestAppReview() {

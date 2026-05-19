@@ -18,36 +18,45 @@ final class FavouriteArrivalViewModel: ViewModel {
 }
 
 extension FavouriteArrivalViewModel {
+	func item(for favourite: FavouriteArrival) -> ArrivalRowViewModel? {
+		items.first {
+			$0.arrival.busStopCode == favourite.busStopCode
+				&& $0.arrival.arrival.serviceNo == favourite.busServiceNumber
+		}
+	}
 
 	func task() async {
 		loading(true)
-		let favourites = FavouriteArrivalModel.fetchAll()
-		self.favourites = favourites
-		if favourites.isEmpty {
-			showError(
-				.init(
-					"star.slash",
-					title: "No Saved Arrivals",
-					description:
-						"You haven’t saved any favorite arrivals. Add one by tapping the star icon at your preferred bus stop."
-				)
-			)
-			return
-		}
+		
 		clearError()
 		do {
+			let favourites = try await SwiftDataStore.shared.store.favouriteAll()
+
+			if favourites.isEmpty {
+				loading(false)
+				self.favourites = []
+				items = []
+				showError(
+					.init(
+						"star.slash",
+						title: "No Saved Arrivals",
+						description:
+							"You haven’t saved any favorite arrivals. Add one by tapping the star icon at your preferred bus stop."
+					)
+				)
+				return
+			}
+
 			let items = try await AsyncOrderedStream.mapOrdered(inputs: favourites) { favourite in
 				let arrival = try await self.fetcher
 					.fetchArrivalForBusService(
 						busServiceNumber: favourite.busServiceNumber,
 						busStopCode: favourite.busStopCode,
 					)
-				if let busStop = await favourite.busStop() {
-					return await MainActor.run {
-						arrival.map { ArrivalItem(busStop: busStop, arrival: $0) }
-					}
+				return await MainActor.run {
+					arrival
+						.map { BusStopArrival(busStopCode: favourite.busStopCode, arrival: $0) }
 				}
-				return []
 			}
 			let flattened = items.flatMap(\.self)
 			loading(false)
@@ -61,6 +70,7 @@ extension FavouriteArrivalViewModel {
 				}
 				return .init(item: item)
 			}
+			self.favourites = favourites
 			clearError()
 		} catch {
 			showError(
@@ -77,14 +87,16 @@ extension FavouriteArrivalViewModel {
 		Task {
 			let item = favourites[index]
 			do {
-				try await FavouriteArrivalModel
-					.remove(
-						.init(
-							busStopCode: item.busStopCode,
-							busServiceNumber: item.busServiceNumber
-						)
+				try await SwiftDataStore.shared.store
+					.removeFavourite(
+						busStopCode: item.busStopCode,
+						busServiceNo: item.busServiceNumber
 					)
 				favourites.remove(at: index)
+				items.removeAll {
+					$0.arrival.busStopCode == item.busStopCode
+						&& $0.arrival.arrival.serviceNo == item.busServiceNumber
+				}
 			} catch {
 				showError(
 					.init(
@@ -100,10 +112,9 @@ extension FavouriteArrivalViewModel {
 	func onMove(from source: IndexSet, to destination: Int) {
 		Task { @MainActor in
 			favourites.move(fromOffsets: source, toOffset: destination)
-			items.move(fromOffsets: source, toOffset: destination)
 			let orderedIDs = favourites.map { $0.id }
 			do {
-				try await FavouriteArrivalModel.reorder(ids: orderedIDs)
+				try await SwiftDataStore.shared.store.reorderFavourites(ids: orderedIDs)
 			} catch {
 				showError(
 					.init(

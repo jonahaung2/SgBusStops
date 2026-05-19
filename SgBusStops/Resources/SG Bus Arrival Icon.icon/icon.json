@@ -1,0 +1,125 @@
+{
+  "fill" : {
+    "automatic-gradient" : "srgb:0.29412,0.47843,0.93725,1.00000"
+  },
+  "groups" : [
+    {
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "blend-mode" : "multiply",
+          "image-name" : "pngtree-luxury-bus-illustration-design-png-image_16170166-2 2.png",
+          "name" : "pngtree-luxury-bus-illustration-design-png-image_16170166-2 2",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              25.109375,
+              154.625
+            ]
+          }
+        },
+        {
+          "fill-specializations" : [
+            {
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            },
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
+          ],
+          "hidden" : false,
+          "image-name" : "landmarks-app-icon-layer-5.svg",
+          "name" : "landmarks-app-icon-layer-5",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -88.140625,
+              -173.3913614999999
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "image-name" : "landmarks-app-icon-layer-3.svg",
+          "name" : "landmarks-app-icon-layer-3",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              152.6875,
+              -74.5
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0
+      }
+    },
+    {
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "fill-specializations" : [
+            {
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            },
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
+          ],
+          "hidden" : false,
+          "image-name" : "landmarks-app-icon-layer-1.svg",
+          "name" : "landmarks-app-icon-layer-1",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              3.84375,
+              -277.86784350000005
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

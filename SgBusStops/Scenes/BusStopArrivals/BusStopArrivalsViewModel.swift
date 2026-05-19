@@ -11,39 +11,30 @@ import Models
 import Services
 
 final class BusStopArrivalsViewModel: ViewModel {
-	let busStop: BusStop
+	let busStopCode: String
 	var arrivalItems = [ArrivalRowViewModel]()
-	var serviceRoutes = [BusServiceRoute]()
+	var serviceRoutes = [BusRoutes]()
 
 	@ObservationIgnored let busArrivalRepository = BusArrivalRepository(
 		networkClient: NetworkClient(),
 	)
-	init(busStop: BusStop) {
-		self.busStop = busStop
+	init(busStopCode: String) {
+		self.busStopCode = busStopCode
 	}
 
 	func fetchArrivalForBusStop() async {
 		clearError()
 		loading(true)
 		do {
-			let serviceNumbers = try await SwiftDataStore.shared.busRouteStore
-				.serviceNumbers(busStopCode: busStop.busStopCode)
+			serviceRoutes = try await SwiftDataStore.shared.store
+				.busServiceStops(busStopCode: busStopCode)
 
-			let routes = try await AsyncOrderedStream
-				.mapOrdered(inputs: serviceNumbers) { number in
-				let routes = try await SwiftDataStore.shared.busRouteStore.routes(serviceNo: number)
-				return await routes.buildServiceRoutes()
-			}
-			serviceRoutes = routes
-				.flatMap{ $0 }
-				.filter { $0.contains(stopCode: busStop.busStopCode )}
-			
-			let arrival = try await busArrivalRepository.fetch(for: busStop.busStopCode)
+			let arrival = try await busArrivalRepository.fetch(for: busStopCode)
 			let existing = Dictionary(
 				uniqueKeysWithValues: arrivalItems.map { ($0.id, $0) },
 			)
 			arrivalItems = arrival.services.map { service in
-				let item = ArrivalItem(busStop: busStop, arrival: service)
+				let item = BusStopArrival(busStopCode: busStopCode, arrival: service)
 				if let model = existing[item.id] {
 					model.update(item: item)
 					return model

@@ -5,22 +5,22 @@
 //  Created by Aung Ko Min on 23/3/26.
 //
 
-import SwiftUI
-import Services
 import Models
+import Services
+import SwiftUI
 
 struct BusServiceRouteScene: View {
 
 	@State private var viewModel: BusServiceRouteViewModel
 	@Environment(BusStore.self) private var busStore
 
-	init(arrival: ArrivalItem) {
+	init(busRoute: StopBusRoutes) {
 		_viewModel = .init(
-			wrappedValue: .init(arrival: arrival)
+			wrappedValue: .init(busRoute: busRoute)
 		)
 	}
 
-    var body: some View {
+	var body: some View {
 		List {
 			if let error = viewModel.error {
 				ContentUnavailableView(
@@ -30,18 +30,20 @@ struct BusServiceRouteScene: View {
 				)
 			} else {
 				if viewModel.routes.isEmpty == false {
-					ForEach(viewModel.routes, id: \.id) { route in
-						if let stop = busStore.busStop(for: route.busStopCode) {
-							BusRouteCell(
-								route: route,
-								busStop: stop,
-								rank:
+					Section {
+						ForEach(viewModel.routes, id: \.id) { route in
+							if let stop = busStore.busStop(for: route.busStopCode) {
+								BusRouteCell(
+									route: route,
+									busStop: stop,
+									rank:
 										.rank(
 											for: route,
 											routes: viewModel.routes,
-											item: viewModel.item
+											busStopCode: viewModel.busStop?.busStopCode
 										)
-							)
+								)
+							}
 						}
 					}
 				} else {
@@ -49,28 +51,41 @@ struct BusServiceRouteScene: View {
 						ProgressView().controlSize(.mini)
 					}.frame(maxWidth: .infinity)
 						.frame(height: 400)
-
 				}
 			}
 		}
-		.navigationTitle(viewModel.item.arrival.serviceNo)
-		.navigationSubtitle(viewModel.item.busStop.desc)
 		.task {
-			await viewModel.task()
+			if viewModel.routes.isEmpty {
+				await viewModel.task()
+			}
 		}
-    }
+
+		.navigationTitle(viewModel.item.busNumber)
+		.navigationSubtitle(
+			viewModel.busStop?.desc ?? viewModel.item.direction.rawValue.formatted()
+		)
+	}
 }
 
 public enum RouteRank: Hashable {
 	case past, current, upcoming
 
-	static func rank(for route: BusRoute, routes: [BusRoute], item: ArrivalItem) -> RouteRank {
-		if route.busStopCode == item.busStop.busStopCode {
+	static func rank(for route: BusRoutingInfo, routes: [BusRoutingInfo], busStopCode: String?)
+		-> RouteRank
+	{
+		if busStopCode == nil {
+			return .upcoming
+		}
+		if route.busStopCode == busStopCode {
 			return .current
 		}
-		let position = routes.first(
-			where: { $0.busStopCode == item.busStop.busStopCode && $0.serviceNo
-				== item.arrival.serviceNo })?.stopSequence ?? 0
+		let position =
+			routes.first(
+				where: {
+					$0.busStopCode == busStopCode
+						&& $0.serviceNo
+							== route.serviceNo
+				})?.stopSequence ?? 0
 		return route.stopSequence < position ? .past : .upcoming
 	}
 }

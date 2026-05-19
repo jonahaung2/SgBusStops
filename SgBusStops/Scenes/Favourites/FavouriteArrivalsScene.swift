@@ -11,32 +11,50 @@ import SwiftUI
 import UI
 
 struct FavouriteArrivalsScene: View {
+
 	@State private var viewModel = FavouriteArrivalViewModel()
-	@Environment(\.editMode) private var editMode
+	@State private var isEditing = false
+	@AppStorage("arrival_refresh_interval") private var arrivalRefreshInterval: Double = 20
+	@Environment(LiveActivityViewModel.self) private var liveActivity
+	private func model(for favourite: FavouriteArrival) -> ArrivalRowViewModel? {
+        if let matched = viewModel.items.first(where: { item in
+			let stopCodeMatches = item.arrival.busStopCode == favourite.busStopCode
+			let serviceMatches = item.arrival.bus.busNumber == favourite.busServiceNumber
+            return stopCodeMatches && serviceMatches
+        }) {
+            return matched
+        }
+        return nil
+    }
+
 
 	var body: some View {
 		List {
-			if let error = viewModel.error {
-				ContentUnavailableView {
-					Label(error.title, systemImage: error.imageName)
-				} description: {
-					Text(error.description)
-				}
-			}
-			if editMode?.wrappedValue.isEditing == true {
+            if let error = viewModel.error {
+                ContentUnavailableView {
+                    Label(error.title, systemImage: error.imageName)
+                } description: {
+                    Text(error.description)
+                }
+            }
+
+			if isEditing {
 				ForEach(viewModel.favourites) { favourite in
-					if let model = viewModel.items.first(
-						where: {
-							$0.item.busStop.busStopCode == favourite.busStopCode
-							&& $0.item.arrival.serviceNo == favourite.busServiceNumber
-						}) {
-						VStack {
-							FavouriteArrivalCell(model: model)
+					VStack {
+						if let matched = model(for: favourite) {
+							if isEditing {
+								VStack {
+									FavouriteArrivalCell(model: matched)
+								}
+							} else {
+								FavouriteArrivalCell(model: matched)
+							}
+						} else {
+							FavouriteCell(item: favourite)
 						}
-					} else {
-						FavouriteCell(item: favourite)
 					}
-				}.onDelete { indexSet in
+				}
+				.onDelete { indexSet in
 					for index in indexSet {
 						viewModel.onDelete(index)
 					}
@@ -46,22 +64,26 @@ struct FavouriteArrivalsScene: View {
 				}
 			} else {
 				ForEach(viewModel.favourites) { favourite in
-					if let model = viewModel.items.first(
-						where: {
-							$0.item.busStop.busStopCode == favourite.busStopCode
-							&& $0.item.arrival.serviceNo == favourite.busServiceNumber
-						}) {
-						FavouriteArrivalCell(model: model)
+					if let matched = model(for: favourite) {
+						if isEditing {
+							VStack {
+								FavouriteArrivalCell(model: matched)
+							}
+						} else {
+							FavouriteArrivalCell(model: matched)
+						}
 					} else {
 						FavouriteCell(item: favourite)
 					}
-				}.onDelete { indexSet in
+				}
+				.onDelete { indexSet in
 					for index in indexSet {
 						viewModel.onDelete(index)
 					}
 				}
 			}
 		}
+		.environment(\.editMode, .constant(isEditing ? .active : .inactive))
 		.overlay {
 			if viewModel.isLoading {
 				ProgressView().controlSize(.mini)
@@ -72,10 +94,14 @@ struct FavouriteArrivalsScene: View {
 		}
 		.toolbar {
 			ToolbarItem {
-				EditButton()
+				Button {
+					isEditing.toggle()
+				} label: {
+					Text(isEditing ? "Done" : "Edit")
+				}
 			}
 		}
-		.repeatingTask {
+		.repeatingTask(every: .seconds(arrivalRefreshInterval)) {
 			await viewModel.task()
 		}
 		.refreshable {

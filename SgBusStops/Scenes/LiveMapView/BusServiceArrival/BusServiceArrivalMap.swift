@@ -14,7 +14,7 @@ import UI
 struct BusServiceArrivalMap: View {
     @State private var viewModel: BusServiceArrivalMapViewModel
 
-    init(arrivatl: BusServicArrival) {
+    init(arrivatl: BusArrival) {
         _viewModel = .init(wrappedValue: .init(arrival: arrivatl))
     }
 
