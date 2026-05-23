@@ -100,17 +100,13 @@ final class BusStopsViewModel: ViewModel {
 
         case .busses:
             if searchText.isEmpty {
-                routes = busRoutes.sorted { one, two in
-                    one.busNumber < two.busNumber
-                }
+                routes = busRoutes.sortedByNumericPrefix()
             } else {
                 routes =
                     busRoutes
                         .filter {
                             $0.busNumber.contains(searchText)
-                        }.sorted { one, two in
-                            one.busNumber < two.busNumber
-                        }
+                        }.sortedByNumericPrefix()
             }
         }
     }

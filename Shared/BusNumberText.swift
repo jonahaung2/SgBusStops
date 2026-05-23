@@ -16,7 +16,7 @@ public struct BusNumberText: View {
 
     public var body: some View {
         Text(text)
-            .font(.custom("Impact", size: UIFont.preferredFont(forTextStyle: textStyle).pointSize))
+            .font(.custom("Impact", size: UIFont.preferredFont(forTextStyle: textStyle).pointSize).leading(.tight))
             .foregroundStyle(Color.indigo.mix(with: .primary, by: 0.3).gradient)
     }
 }
