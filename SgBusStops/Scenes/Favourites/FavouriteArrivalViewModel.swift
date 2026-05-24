@@ -28,7 +28,7 @@ extension FavouriteArrivalViewModel {
 
         clearError()
         do {
-            let favourites = try await SwiftDataStore.shared.store.favouriteAll()
+            let favourites = await SwiftDataStore.shared.store.favouriteAll()
 
             if favourites.isEmpty {
                 loading(false)

@@ -30,7 +30,7 @@ struct BusArrivalMap: View {
             RotatingBusMarker(title: item.title)
         }
         .task {
-            await viewModel.task()
+            viewModel.task()
         }
     }
 }

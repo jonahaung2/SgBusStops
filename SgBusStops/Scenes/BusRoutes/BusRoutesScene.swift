@@ -23,7 +23,7 @@ struct BusRoutesScene: View {
         .navigationTitle(viewModel.busRoutes.busNumber)
         .navigationSubtitle("Direction \(viewModel.busRoutes.direction.rawValue.formatted())")
         .task {
-            await viewModel.task()
+            viewModel.task()
         }
     }
 }
