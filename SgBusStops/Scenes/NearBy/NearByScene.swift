@@ -1,13 +1,12 @@
 //  NearByScene.swift
 //
 //  Copyright © 2026 Aung Ko Min.
-//
-
-import UI
 import Models
+import Charts
+import Services
 import SgMaps
 import SwiftUI
-import Services
+import UI
 internal import _LocationEssentials
 
 struct NearByScene: View {
@@ -27,6 +26,7 @@ struct NearByScene: View {
                     LocationCheckerContentUnavailableView()
                 }
             } else {
+                
                 Section {
                     if let error = viewModel.error {
                         ContentUnavailableView {
@@ -53,6 +53,41 @@ struct NearByScene: View {
                     if !viewModel.nearbyStops.isEmpty {
                         Text("\(distance, specifier: "%.0f" )m")
                             .font(.caption2)
+                    }
+                }
+                
+                if !chartEntries.isEmpty {
+                    Section {
+                        Chart(chartEntries) { entry in
+                            BarMark(
+                                x: .value("Distance", entry.distance),
+                                y: .value("Bus Stop", entry.label)
+                            )
+                            .clipShape(.rect(cornerRadius: 8))
+                            .foregroundStyle(.indigo.gradient)
+                            .annotation(position: .trailing, alignment: .leading) {
+                                Text(entry.distanceText)
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .chartXAxis {
+                            AxisMarks(position: .bottom) { value in
+                                AxisGridLine()
+                                AxisTick()
+                                AxisValueLabel {
+                                    if let distance = value.as(Double.self) {
+                                        Text(distanceLabel(for: distance))
+                                    }
+                                }
+                            }
+                        }
+                        .chartYAxis {
+                            AxisMarks(position: .leading)
+                        }
+                        .frame(minHeight: chartHeight)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(.all, 8)
                     }
                 }
             }
@@ -86,5 +121,46 @@ struct NearByScene: View {
         .refreshable {
             await locationService.startLocation()
         }
+    }
+}
+
+private extension NearByScene {
+    var chartEntries: [NearbyDistanceChartEntry] {
+        guard let location = locationService.location else {
+            return []
+        }
+        return viewModel.nearbyStops.prefix(8).map {
+            NearbyDistanceChartEntry(stop: $0, location: location)
+        }
+    }
+
+    var chartHeight: CGFloat {
+        CGFloat(chartEntries.count) * 40 + 24
+    }
+
+    func distanceLabel(for distance: Double) -> String {
+        "\(Int(distance.rounded()))m"
+    }
+}
+
+private struct NearbyDistanceChartEntry: Identifiable {
+    let stop: Stop
+    let distance: Double
+
+    init(stop: Stop, location: LocationResult) {
+        self.stop = stop
+        distance = stop.distance(from: location.coordinate) * 1000
+    }
+
+    var id: String {
+        stop.id
+    }
+
+    var label: String {
+        stop.desc
+    }
+
+    var distanceText: String {
+        "\(Int(distance.rounded())) m"
     }
 }

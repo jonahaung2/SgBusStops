@@ -29,6 +29,7 @@ struct ArrivalRow: View {
                         rank: index + 1
                     )
                     .frame(maxWidth: .infinity)
+                    .id(index)
                 }
             }
         }

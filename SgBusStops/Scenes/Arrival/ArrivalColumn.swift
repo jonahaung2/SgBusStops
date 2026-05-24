@@ -4,9 +4,10 @@
 //
 
 import Models
-import Pow
+import Anima
 import SwiftUI
 import UI
+import SGToolTip
 
 struct ArrivalColumn: View {
     let arrival: BusArrival.Arrival
@@ -55,24 +56,37 @@ struct ArrivalColumn: View {
                 }
             }
 
-            HStack(alignment: .bottom, spacing: 4) {
+            HStack(alignment: .bottom, spacing: 1) {
                 loadIcon
+                    .sgToolTip(.bottom) {
+                        Text("**\(arrival.load?.description ?? "")**\nCurrent bus occupancy / crowding level")
+                    }
                 Text(typeText ?? " ")
                     .font(.footnote.weight(.medium).width(.condensed))
                     .foregroundStyle(.secondary)
+                    .padding(.horizontal, 1)
                 if isWheelchairAccessible {
                     Image(systemName: "wheelchair")
-                        .font(.caption2)
+                        .font(.system(size: 9))
                         .foregroundStyle(.yellow.mix(with: .primary, by: 0.15))
+                        .sgToolTip(.bottom) {
+                            Text("Bus is wheel-chair accessible")
+                        }
                 }
                 if arrival.monitored {
                     Image(systemName: "clock")
-                        .font(.system(size: UIFont.smallSystemFontSize))
+                        .font(.system(size: 10))
                         .symbolRenderingMode(.multicolor)
+                        .foregroundStyle(.secondary)
+                        .sgToolTip(.bottom) {
+                            Text("**Monitored**\nIndicates the bus arrival time is based on the location of the bus.")
+                        }
+                    
                 }
             }
         }
         .lineHeight(.multiple(factor: 1.2))
+        .id(arrival)
     }
 }
 

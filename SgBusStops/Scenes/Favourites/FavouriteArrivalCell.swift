@@ -21,8 +21,9 @@ struct FavouriteArrivalCell: View {
                 if let stop = store.busStop(for: model.arrival.busStopCode), let distance = model.arrival.arrival.nextBus?.coordinate?.distance(
                     to: stop.coordinate
                 ) {
+                    let text = distance >= 1 ? "\(distance.rounded(to: 2)) km" : "\(Int(distance*1000)) m"
                     Text(
-                        "\(Image(systemName: "signpost.right.and.left.fill")) ⎯ \(distance.formatted()) km ⎯\(Image(systemName: "bus"))"
+                        "\(Image(systemName: "signpost.right.and.left.fill")) ⎯ **\(text)** ⎯\(Image(systemName: "bus"))"
                     )
                     .font(.caption2.width(.condensed))
                     .foregroundStyle(.secondary)
@@ -63,5 +64,12 @@ struct FavouriteArrivalCell: View {
         } footer: {
             ArrivalFooter(model: model)
         }
+    }
+}
+public extension Double {
+    @inline(__always)
+    func rounded(to decimals: Int) -> Double {
+        let factor = pow(10.0, Double(decimals))
+        return (self * factor).rounded() / factor
     }
 }
