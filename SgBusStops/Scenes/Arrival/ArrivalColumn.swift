@@ -10,6 +10,7 @@ import UI
 import SGToolTip
 
 struct ArrivalColumn: View {
+    
     let arrival: BusArrival.Arrival
     let rank: Int
 
@@ -58,6 +59,7 @@ struct ArrivalColumn: View {
 
             HStack(alignment: .bottom, spacing: 1) {
                 loadIcon
+                    .geometryGroup()
                     .sgToolTip(.bottom) {
                         Text("**\(arrival.load?.description ?? "")**\nCurrent bus occupancy / crowding level")
                     }
@@ -65,19 +67,32 @@ struct ArrivalColumn: View {
                     .font(.footnote.weight(.medium).width(.condensed))
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 1)
+                    .allowsHitTesting(false)
+                
                 if isWheelchairAccessible {
-                    Image(systemName: "wheelchair")
-                        .font(.system(size: 9))
+                    Circle()
+                        .overlay {
+                            Image(systemName: "wheelchair")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 12, height: 12)
+                                .foregroundColor(Color.white)
+                        }
+                        .frame(width: 13, height: 13)
                         .foregroundStyle(.yellow.mix(with: .primary, by: 0.15))
+                        .geometryGroup()
                         .sgToolTip(.bottom) {
                             Text("Bus is wheel-chair accessible")
                         }
                 }
                 if arrival.monitored {
                     Image(systemName: "clock")
-                        .font(.system(size: 10))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 12, height: 12)
                         .symbolRenderingMode(.multicolor)
                         .foregroundStyle(.secondary)
+                        .geometryGroup()
                         .sgToolTip(.bottom) {
                             Text("**Monitored**\nIndicates the bus arrival time is based on the location of the bus.")
                         }
@@ -86,7 +101,7 @@ struct ArrivalColumn: View {
             }
         }
         .lineHeight(.multiple(factor: 1.2))
-        .id(arrival)
+        .id(rank)
     }
 }
 
