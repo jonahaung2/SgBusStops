@@ -93,9 +93,6 @@ struct ArrivalColumn: View {
                         .symbolRenderingMode(.multicolor)
                         .foregroundStyle(.secondary)
                         .geometryGroup()
-                        .sgToolTip(.bottom) {
-                            Text("**Monitored**\nIndicates the bus arrival time is based on the location of the bus.")
-                        }
                     
                 }
             }

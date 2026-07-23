@@ -64,10 +64,9 @@ struct NearByScene: View {
                                 y: .value("Bus Stop", entry.label)
                             )
                             .clipShape(.rect(cornerRadius: 8))
-                            .foregroundStyle(.indigo.gradient)
                             .annotation(position: .trailing, alignment: .leading) {
                                 Text(entry.distanceText)
-                                    .font(.caption2)
+                                    .font(.caption2.smallCaps())
                                     .foregroundStyle(.secondary)
                             }
                         }
