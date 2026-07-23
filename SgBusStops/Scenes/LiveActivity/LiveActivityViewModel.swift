@@ -16,13 +16,25 @@ final class LiveActivityViewModel: ViewModel {
     private var repeater: PreciseRepeater = .init()
 
     func start(model: LiveActivityModel) async {
-        await endAll()
-        current = model
+        await repeater.stop()
         do {
             try await LiveActivityManager.start(model: model)
+            current = model
             await startObserving()
         } catch {
+            current = nil
             showError(error)
+        }
+    }
+
+    func handleScenePhase(isActive: Bool) async {
+        guard current != nil else { return }
+
+        if isActive {
+            await startObserving()
+            await repeater.resume()
+        } else {
+            await repeater.pause()
         }
     }
 
@@ -38,21 +50,36 @@ final class LiveActivityViewModel: ViewModel {
 
     private func action() async {
         guard let current else { return }
-        if let arrival = try? await BusStopFetcher()
-            .fetchArrivalForBusService(
+
+        guard LiveActivityManager.isTracking(
+            busNumber: current.busNumber,
+            busStopCode: current.stopCode
+        ) else {
+            await endAll()
+            return
+        }
+
+        do {
+            let arrivals = try await BusStopFetcher().fetchArrivalForBusService(
                 busServiceNumber: current.busNumber,
                 busStopCode: current.stopCode
-            ), let date = arrival.first?.nextBus?.estimatedArrival, date <= current.date
-        {
+            )
+
+            guard let date = arrivals.first?.nextBus?.estimatedArrival else {
+                await endAll()
+                return
+            }
+
             self.current?.date = date
-            await LiveActivityManager
-                .sync(
-                    busNumber: current.busNumber,
-                    busStopCode: current.stopCode,
-                    arrivalTime: date
-                )
-        } else {
-            await endAll()
+            await LiveActivityManager.sync(
+                busNumber: current.busNumber,
+                busStopCode: current.stopCode,
+                arrivalTime: date
+            )
+        } catch is CancellationError {
+            return
+        } catch {
+            return
         }
     }
 

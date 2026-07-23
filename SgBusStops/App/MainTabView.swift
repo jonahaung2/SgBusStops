@@ -46,7 +46,9 @@ struct MainTabView: View {
         .listSectionSeparator(.hidden)
         .buttonStyle(.borderless)
         .task(id: scenePhase) {
-            if scenePhase == .active {
+            let isActive = scenePhase == .active
+            await liveActivity.handleScenePhase(isActive: isActive)
+            if isActive {
                 await locationService.startLocation()
             }
         }

@@ -6,6 +6,7 @@
 import SwiftUI
 import WidgetKit
 import ActivityKit
+import AppIntents
 
 struct SgBusArrivalWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
@@ -33,11 +34,8 @@ struct SgBusArrivalWidgetLiveActivity: Widget {
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
-                    Button("End Activity") {
-                        Task {
-                            await LiveActivityManager.endAll()
-                        }
-                    }.buttonStyle(.borderless)
+                    Button("End Activity", intent: EndBusArrivalActivityIntent())
+                        .buttonStyle(.borderless)
                 }
             } compactLeading: {
                 Text(context.state.busNumber)

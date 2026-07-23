@@ -22,9 +22,6 @@ struct ArrivalActivityBadge: View {
                     Text("Departed")
                         .font(.footnote.width(.condensed).weight(.semibold))
                         .foregroundStyle(.red.gradient)
-                        .task {
-                            await LiveActivityManager.endAll()
-                        }
                 default:
                     Text("Arr")
                         .font(.footnote.width(.condensed).weight(.semibold))

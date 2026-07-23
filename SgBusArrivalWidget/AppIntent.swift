@@ -3,14 +3,14 @@
 //  Copyright © 2026 Aung Ko Min.
 //
 
-import WidgetKit
 import AppIntents
 
-struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource { "Configuration" }
-    static var description: IntentDescription { "This is an example widget." }
+struct EndBusArrivalActivityIntent: AppIntent {
+    static let title: LocalizedStringResource = "End Bus Arrival Activity"
+    static let description = IntentDescription("Stops the active bus arrival Live Activity.")
 
-    // An example configurable parameter.
-    @Parameter(title: "Favorite Emoji", default: "😃")
-    var favoriteEmoji: String
+    func perform() async throws -> some IntentResult {
+        await LiveActivityManager.endAll()
+        return .result()
+    }
 }

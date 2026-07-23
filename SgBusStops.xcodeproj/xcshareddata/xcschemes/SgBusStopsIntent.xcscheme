@@ -16,9 +16,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "479E26272F6BAF5E00E6B886"
-               BuildableName = "SgBusStopsIntent.appex"
-               BlueprintName = "SgBusStopsIntent"
+               BlueprintIdentifier = "4788845E2F78464C00E3D76A"
+               BuildableName = "SgBusArrivalWidgetExtension.appex"
+               BlueprintName = "SgBusArrivalWidgetExtension"
                ReferencedContainer = "container:SgBusStops.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
