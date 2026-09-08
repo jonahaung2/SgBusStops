@@ -57,48 +57,35 @@ struct ArrivalColumn: View {
                 }
             }
 
-            HStack(alignment: .bottom, spacing: 1) {
+            HStack(alignment: .bottom, spacing: 2) {
                 loadIcon
-                    .geometryGroup()
-                    .sgToolTip(.bottom) {
-                        Text("**\(arrival.load?.description ?? "")**\nCurrent bus occupancy / crowding level")
-                    }
-                Text(typeText ?? " ")
-                    .font(.footnote.weight(.medium).width(.condensed))
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 1)
-                    .allowsHitTesting(false)
+                    
+                typeIcon
+                    .opacity(0.7)
                 
                 if isWheelchairAccessible {
-                    Circle()
-                        .overlay {
-                            Image(systemName: "wheelchair")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 12, height: 12)
-                                .foregroundColor(Color.white)
-                        }
-                        .frame(width: 13, height: 13)
-                        .foregroundStyle(.yellow.mix(with: .primary, by: 0.15))
-                        .geometryGroup()
-                        .sgToolTip(.bottom) {
-                            Text("Bus is wheel-chair accessible")
-                        }
+                    ZStack {
+                        Image(systemName: "circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 12, height: 12)
+                            .foregroundStyle(.orange.mix(with: .primary, by: 0.15))
+                        Image(systemName: "wheelchair")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 7, height: 7)
+                    }
                 }
-                if arrival.monitored {
-                    Image(systemName: "clock")
+                if arrival.estimatedArrival != nil, !arrival.monitored {
+                    Image(systemName: "clock.badge")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 12, height: 12)
                         .symbolRenderingMode(.multicolor)
-                        .foregroundStyle(.secondary)
-                        .geometryGroup()
-                    
                 }
             }
         }
         .lineHeight(.multiple(factor: 1.2))
-        .id(rank)
     }
 }
 
@@ -121,23 +108,23 @@ extension ArrivalColumn {
             HStack(spacing: -4) {
                 Image(systemName: "figure.seated.side.right")
                     .iconStyle(
-                        height: 12,
+                        height: 10,
                         color: .green.mix(with: .primary, by: 0.1)
                     )
                 Image(systemName: "figure.seated.side.right")
                     .iconStyle(
-                        height: 13,
+                        height: 10,
                         color: .green.mix(with: .primary, by: 0.1)
                     )
             }
         case .standingAvailable:
-            iconPair("figure.wave", height: 15, color: .orange)
+            iconPair("figure.wave", height: 12, color: .orange)
         case .limitedStanding:
             HStack(spacing: -2) {
                 Image(systemName: "figure.taichi")
-                    .iconStyle(height: 15, color: .red)
+                    .iconStyle(height: 13, color: .red)
                 Image(systemName: "figure.wave")
-                    .iconStyle(height: 15, color: .red)
+                    .iconStyle(height: 13, color: .red)
             }
         case .none:
             EmptyView()
@@ -154,35 +141,24 @@ extension ArrivalColumn {
                 .iconStyle(height: height, color: color)
         }
     }
-
-    fileprivate var typeText: String? {
-        switch arrival.type {
-        case .singleDeck: "Single"
-        case .doubleDeck: "Double"
-        case .bendy: "Bendy"
-        case .none: nil
-        }
-    }
-
     @ViewBuilder
-    fileprivate var typeImage: some View {
+    private var typeIcon: some View {
         switch arrival.type {
         case .singleDeck:
-            Image("bus_single_deck")
+            Image(systemName: "bus.fill")
                 .resizable()
-                .frame(width: 20, height: 10)
+                .frame(width: 12, height: 12)
         case .doubleDeck:
-            Image("bus_double_deck")
+            Image(systemName: "bus.doubledecker.fill")
                 .resizable()
-                .frame(width: 20, height: 14)
+                .frame(width: 13, height: 17)
         case .bendy:
-            Image("bus_bendy")
-                .resizable()
-                .frame(width: 25, height: 10)
-        case .none:
             Image("bus_single_deck")
                 .resizable()
-                .frame(width: 20, height: 14)
+                .scaledToFit()
+                .frame(height: 12)
+        case .none:
+            EmptyView()
         }
     }
 
@@ -205,7 +181,7 @@ extension ArrivalColumn {
 }
 
 extension Image {
-    fileprivate func iconStyle(height: CGFloat, color: Color) -> some View {
+    func iconStyle(height: CGFloat, color: Color) -> some View {
         resizable()
             .scaledToFit()
             .frame(height: height)

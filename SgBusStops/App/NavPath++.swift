@@ -19,6 +19,8 @@ public extension NavPath {
             BusStopArrivalsScene(stop)
         case let .routesOfStop(item):
             BusServiceRouteScene(busRoute: item)
+        case .legend:
+            LegendScene()
         }
     }
 }

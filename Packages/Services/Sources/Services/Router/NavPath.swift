@@ -10,4 +10,5 @@ public enum NavPath: Sendable, Hashable {
     case stopDetail(_ item: Stop)
     case stopArrivals(_ code: String)
     case routesOfStop(_ item: StopBusRoutes)
+    case legend
 }

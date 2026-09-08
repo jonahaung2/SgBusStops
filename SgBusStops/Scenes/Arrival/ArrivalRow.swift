@@ -33,23 +33,16 @@ struct ArrivalRow: View {
                 }
             }
         }
-        ._onButtonGesture(
-            pressing: { _ in
-
-            },
-            perform: {
-
-                if let stop = store.busStop(for: model.arrival.busStopCode) {
-                    navRouter
-                        .push(
-                            .routesOfStop(
-                                .init(route: .init(bus: model.arrival.bus, stops: []), stop: stop)
-                            )
+        .onTapGesture {
+            if let stop = store.busStop(for: model.arrival.busStopCode) {
+                navRouter
+                    .push(
+                        .routesOfStop(
+                            .init(route: .init(bus: model.arrival.bus, stops: []), stop: stop)
                         )
-                }
-
+                    )
             }
-        )
+        }
         .transition(.identity)
     }
 }

@@ -175,6 +175,21 @@ struct SettingsScene: View {
                     }
                 }
             }
+            
+            Section("Help") {
+                NavigationLink {
+                    LegendScene()
+                } label: {
+                    Label {
+                        Text("Legend")
+                    } icon: {
+                        IconView {
+                            Image(systemName: "signpost.right.and.left.fill")
+                        }
+                        .foregroundStyle(Color.cyan)
+                    }
+                }
+            }
 
             Section {} footer: {
                 Text(.init(aboutThisApp))

@@ -25,7 +25,6 @@ private struct TapToGetFrameModifier<ContentView: View>: ViewModifier {
             .background {
                 if observeFrame {
                     Color.clear
-                        
                         .onGeometryChange(for: CGRect.self) { proxy in
                             proxy.frame(in: .global)
                         } action: { newValue in
@@ -47,8 +46,6 @@ private struct TapToGetFrameModifier<ContentView: View>: ViewModifier {
                         }
                 }
             }
-            
-            
     }
 
     private func onDismissTooltip() {

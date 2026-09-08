@@ -20,17 +20,17 @@ struct BusStopArrivalHeader: View {
 
     var body: some View {
         HStack(alignment: .lastTextBaseline, spacing: 16) {
-
-            if let stop = store.busStop(for: model.arrival.busStopCode),
-               let distance = model.arrival.arrival.nextBus?.coordinate?.distance(
-                   to: stop.coordinate
-               )
-            {
-                Text(
-                    "\(Image(systemName: "signpost.right.and.left.fill")) ⎯ \(distance.formatted()) km ⎯ \(Image(systemName: "bus"))"
-                )
-                .font(.caption2.width(.condensed))
-
+            if model.arrival.arrival.nextBus?.monitored == true {
+                if let stop = store.busStop(for: model.arrival.busStopCode),
+                   let distance = model.arrival.arrival.nextBus?.coordinate?.distance(
+                       to: stop.coordinate
+                   ).rounded(to: 2)
+                {
+                    Text(
+                        "\(Image(systemName: "signpost.right.and.left.fill")) ⎯ \(distance.formatted()) km ⎯ \(Image(systemName: "bus"))"
+                    )
+                    .font(.caption2.width(.condensed))
+                }
             }
             Spacer()
             if let stop = store.busStop(for: model.arrival.busStopCode),
